@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__visualize__show_widget",
+      "PowerShell($env:PATH = \"C:\\\\Program Files\\\\nodejs;$env:PATH\"; Set-Location \"C:\\\\Users\\\\yuval\\\\OneDrive - Aman Computers\\\\Claude\\\\Code\\\\routes-report\"; & npm run dev)",
+      "PowerShell($token = \"test\"; $headers = @{ \"Authorization\" = \"Bearer $token\" }; curl -s \"http://localhost:3000/api/routes?sessionDate=2026-06-25\" -Headers $headers | ConvertFrom-Json | ConvertTo-Json -Depth 3)",
+      "PowerShell(code \"C:\\\\Users\\\\yuval\\\\OneDrive - Aman Computers\\\\Claude\\\\Code\\\\routes-report\")",
+      "mcp__visualize__read_me",
+      "Bash(git init *)",
+      "Bash(git add *)",
+      "Bash(git commit -m 'Initial commit: ROADNET distribution dashboard with KPI calculations *)"
+    ]
+  }
+}
