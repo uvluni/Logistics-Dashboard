@@ -2,6 +2,37 @@ import { NextRequest, NextResponse } from 'next/server';
 import { calculateRouteKPI, calculateDashboardSummary } from '@/lib/kpiCalculator';
 import { Route, Equipment, RouteKPI } from '@/types';
 
+function calculateTrafficInsights(kpis: RouteKPI[], isHoliday: boolean = false): any {
+  let trafficRisk = 'נמוך';
+  let trafficNote = '';
+
+  // Peak hours in Israel: 7-9 AM and 4-7 PM
+  // Holidays cause heavier traffic
+  const maxDuration = Math.max(...kpis.map(k => k.totalDurationMinutes));
+
+  if (maxDuration > 600) {
+    trafficRisk = 'בינוני-גבוה';
+    trafficNote = 'מסלולים ארוכים עלולים להיתקל בעומס תנועה בשעות הערב (16:00-19:00)';
+    if (isHoliday) {
+      trafficNote += ' - חג יגביר את העומסים';
+    }
+  } else if (maxDuration > 360) {
+    const hasEveningRisk = kpis.some(k => k.totalDurationMinutes > 360);
+    if (hasEveningRisk) {
+      trafficRisk = 'בינוני';
+      trafficNote = 'סיכוי לעומס תנועה בשעות הערב';
+      if (isHoliday) {
+        trafficNote += ' - חג יגביר את העומסים';
+      }
+    }
+  } else if (isHoliday) {
+    trafficRisk = 'בינוני';
+    trafficNote = 'יום חג - עומסי תנועה גבוהים צפויים';
+  }
+
+  return { trafficRisk, trafficNote };
+}
+
 export async function GET(request: NextRequest) {
   try {
     const token = request.cookies.get('roadnet_token')?.value;
@@ -209,14 +240,14 @@ export async function GET(request: NextRequest) {
       insights.push(`${weightUtilization}% משקל, ${stopCount} תחנות`);
 
       if (timeUtilization > 100) {
-        insights.push('⚠️ חוגר זמן - יותר מ-9 שעות');
+        insights.push('⚠️ חורג זמן - יותר מ-9 שעות');
       } else if (timeUtilization < 70 && weightUtilization >= 50) {
         // רק הצע להוסיף תחנות אם הזמן נמוך והמשקל לא נמוך
         insights.push('יכול לכלול עוד תחנות');
       }
 
       if (weightUtilization > 100) {
-        insights.push('⚠️ חוגר משקל - עליית הקיבולה');
+        insights.push('⚠️ חורג משקל - עליית הקיבולה');
       } else if (weightUtilization < 50 && timeUtilization < 80) {
         // רק אמור על משקל נמוך אם הזמן גם לא גבוה
         insights.push('משקל נמוך - אפשר לשלב');
@@ -240,7 +271,42 @@ export async function GET(request: NextRequest) {
       };
     });
 
-    const summary = calculateDashboardSummary(kpis, 540);
+    // Fetch weather data from Open-Meteo
+    let weatherData: any = null;
+    try {
+      // Use coordinates for Israel (center point)
+      const lat = 31.95;
+      const lon = 35.19;
+      const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=Asia/Jerusalem&date=${sessionDate}`;
+      const weatherResponse = await fetch(weatherUrl);
+      if (weatherResponse.ok) {
+        weatherData = await weatherResponse.json();
+      }
+    } catch (err) {
+      console.error('Failed to fetch weather data:', err);
+    }
+
+    // Fetch holidays for Israel
+    let isHoliday = false;
+    let holidayName = '';
+    try {
+      const holidayUrl = `https://date.nager.at/api/v2/IsPublicHoliday?date=${sessionDate}&countryCode=IL`;
+      const holidayResponse = await fetch(holidayUrl);
+      if (holidayResponse.ok) {
+        const holiday = await holidayResponse.json();
+        isHoliday = holiday.isPublicHoliday === true;
+        if (isHoliday) {
+          holidayName = holiday.name || 'חג';
+        }
+      }
+    } catch (err) {
+      console.error('Failed to fetch holiday data:', err);
+    }
+
+    // Calculate traffic insights based on route times and holidays
+    const trafficInsights = calculateTrafficInsights(kpis, isHoliday);
+
+    const summary = calculateDashboardSummary(kpis, 540, sessionDate, weatherData, trafficInsights, isHoliday, holidayName);
 
     return NextResponse.json({
       routes: kpis,

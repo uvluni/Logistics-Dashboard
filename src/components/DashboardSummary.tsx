@@ -107,7 +107,7 @@ export default function DashboardSummary({ summary }: DashboardSummaryProps) {
         </div>
       )}
 
-      <div className="bg-white rounded-lg p-4 border border-gray-200">
+      <div className="bg-white rounded-lg p-4 border border-gray-200 mb-4">
         <p className="text-gray-600 text-sm text-right font-semibold mb-3">
           💡 חוות דעת על התכנון:
         </p>
@@ -115,17 +115,25 @@ export default function DashboardSummary({ summary }: DashboardSummaryProps) {
           className={`text-lg font-semibold text-right whitespace-pre-line ${
             summary.recommendation.includes('טוב')
               ? 'text-green-700'
-              : summary.recommendation.includes('התערבות')
+              : summary.recommendation.includes('חורגים')
                 ? 'text-red-700'
                 : 'text-orange-700'
           }`}
         >
           {summary.recommendation}
         </div>
-        <p className="text-gray-600 text-sm text-right mt-3">
-          יום עבודה רגיל: {formatMinutesAsTime(summary.normalWorkDay)}
-        </p>
       </div>
+
+      {summary.weatherNote && (
+        <div className="bg-white rounded-lg p-4 border border-gray-200">
+          <p className="text-gray-600 text-sm text-right font-semibold mb-3">
+            ⛅ תנאים יומיים:
+          </p>
+          <p className="text-gray-700 text-right font-medium">
+            {summary.weatherNote}
+          </p>
+        </div>
+      )}
     </div>
   );
 }

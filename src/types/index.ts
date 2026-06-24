@@ -72,4 +72,6 @@ export interface DashboardSummary {
   overTimeRoutes: string[];
   overWeightRoutes: string[];
   recommendation: string;
+  weatherNote: string;
+  trafficNote: string;
 }

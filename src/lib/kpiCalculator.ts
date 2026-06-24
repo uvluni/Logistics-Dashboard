@@ -73,7 +73,12 @@ function generateInsights(
 
 export function calculateDashboardSummary(
   kpis: RouteKPI[],
-  normalWorkDayMinutes: number = 540
+  normalWorkDayMinutes: number = 540,
+  sessionDate?: string,
+  weatherData?: any,
+  trafficInsights?: any,
+  isHoliday: boolean = false,
+  holidayName: string = ''
 ): DashboardSummary {
   if (kpis.length === 0) {
     return {
@@ -88,6 +93,8 @@ export function calculateDashboardSummary(
       overTimeRoutes: [],
       overWeightRoutes: [],
       recommendation: 'אין נתונים להצגה',
+      weatherNote: '',
+      trafficNote: '',
     };
   }
 
@@ -100,28 +107,78 @@ export function calculateDashboardSummary(
   const overUtilized = kpis.filter(k => k.weightUtilization > 85).length;
   const underUtilized = kpis.filter(k => k.weightUtilization < 50).length;
 
-  // מסלולים החורגים מקיבולת משקל (>100%)
+  // נהגים החורגים מקיבולת משקל (>100%)
   const overWeightRoutes = kpis
     .filter(k => k.weightUtilization > 100)
-    .map(k => k.routeId);
+    .map(k => k.driverName);
 
-  // מסלולים החורגים מ-9 שעות עבודה
+  // נהגים החורגים מ-9 שעות עבודה
   const overTimeRoutes = kpis
     .filter(k => k.totalDurationMinutes > normalWorkDayMinutes)
-    .map(k => k.routeId);
+    .map(k => k.driverName);
+
+  // Build weather note
+  let weatherNote = '';
+  if (weatherData?.daily) {
+    const weatherCode = weatherData.daily.weather_code?.[0];
+    const maxTemp = Math.round(weatherData.daily.temperature_2m_max?.[0] || 0);
+    const rainProbability = weatherData.daily.precipitation_probability_max?.[0] || 0;
+
+    let weatherDesc = 'בתנאים נורמליים';
+    let weatherImpact = 'אין השפעה צפויה על התכנון';
+    let hasExtremeConditions = false;
+
+    if (rainProbability > 50 || (weatherCode && weatherCode >= 80)) {
+      weatherDesc = 'עם סיכוי לגשם';
+      weatherImpact = 'צריך להתכונן לתנאים רטובים - זמנים עלולים להתארך בגלל החליקות ותנועה איטית';
+      hasExtremeConditions = true;
+    } else if (maxTemp > 32) {
+      weatherDesc = 'בחום קיצוני';
+      weatherImpact = 'צריך להתכונן לחום קיצוני - זמנים עלולים להתארך בגלל עומסים במערכות קירור';
+      hasExtremeConditions = true;
+    } else if (maxTemp > 30) {
+      weatherDesc = 'בחום גבוה';
+      weatherImpact = 'זמנים עלולים להתארך מעט בגלל חום';
+      hasExtremeConditions = true;
+    } else if (maxTemp < 0) {
+      weatherDesc = 'בקור קיצוני';
+      weatherImpact = 'צריך להתכונן לקור קיצוני - זמנים עלולים להתארך בגלל תנאי דרך קשים';
+      hasExtremeConditions = true;
+    }
+
+    weatherNote = `\n⛅ מזג אויר: ${weatherDesc} (${maxTemp}°C, גשם ${rainProbability}%) - ${weatherImpact}`;
+  }
+
+  // Build combined conditions note (weather + traffic + holidays)
+  let conditionsNote = '';
+  const parts = [];
+
+  if (weatherNote) {
+    parts.push(weatherNote.replace('\n⛅ מזג אויר: ', ''));
+  }
+
+  if (trafficNote) {
+    parts.push(trafficNote.replace('\n🚗 תנועה: ', ''));
+  }
+
+  if (parts.length > 0) {
+    conditionsNote = parts.join(' | ');
+  }
 
   let recommendation = 'התכנון טוב';
 
   if (overWeightRoutes.length > 0 && overTimeRoutes.length > 0) {
-    recommendation = `חורגים משקל: ${overWeightRoutes.join(', ')}\nחורגים זמן: ${overTimeRoutes.join(', ')}\nצריך התערבות`;
+    recommendation = `חורגים משקל: ${overWeightRoutes.join(', ')}\nחורגים זמן: ${overTimeRoutes.join(', ')}`;
   } else if (overWeightRoutes.length > 0) {
-    recommendation = `מסלולים ${overWeightRoutes.join(', ')} חורגים מקיבולת משקל\nצריך התערבות`;
+    recommendation = `נהגים ${overWeightRoutes.join(', ')} חורגים מקיבולת משקל`;
   } else if (overTimeRoutes.length > 0) {
-    recommendation = `מסלולים ${overTimeRoutes.join(', ')} חורגים מ-9 שעות עבודה\nשקול לשלב או להוסיף רכב`;
+    recommendation = `נהגים ${overTimeRoutes.join(', ')} חורגים מ-9 שעות עבודה`;
   } else if (overUtilized > kpis.length * 0.3) {
     recommendation = 'רוב המסלולים עמוסים - בחן אפשרות הוספת רכב';
   } else if (underUtilized > kpis.length * 0.4) {
     recommendation = 'חלק גדול מהמסלולים תחת ניצול - חפש דרך לשלב';
+  } else {
+    recommendation = 'התכנון טוב';
   }
 
   return {
@@ -136,6 +193,8 @@ export function calculateDashboardSummary(
     overTimeRoutes,
     overWeightRoutes,
     recommendation,
+    weatherNote: conditionsNote.trim(),
+    trafficNote: '',
   };
 }
 
