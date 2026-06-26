@@ -8,7 +8,16 @@
       "mcp__visualize__read_me",
       "Bash(git init *)",
       "Bash(git add *)",
-      "Bash(git commit -m 'Initial commit: ROADNET distribution dashboard with KPI calculations *)"
+      "Bash(git commit -m 'Initial commit: ROADNET distribution dashboard with KPI calculations *)",
+      "Bash(npm run *)",
+      "PowerShell(Get-Process node -ErrorAction SilentlyContinue | Select-Object Id, ProcessName, @{Name=\"Memory\\(MB\\)\"; Expression={[math]::Round\\($_.WorkingSet/1MB\\)}} | Format-Table)",
+      "PowerShell(Get-Content $env:TEMP\\\\roadnet-equipment.log -Tail 50 -ErrorAction SilentlyContinue)",
+      "Bash(cd \"C:\\\\\\\\Users\\\\\\\\yuval\\\\\\\\OneDrive - Aman Computers\\\\\\\\Claude\\\\\\\\Code\\\\\\\\routes-report\")",
+      "Bash(curl -s \"http://localhost:3000/api/routes?sessionDate=2026-06-25\" -b \"roadnet_token=test\")",
+      "Bash(node --check \"C:\\\\\\\\Users\\\\\\\\yuval\\\\\\\\OneDrive - Aman Computers\\\\\\\\Claude\\\\\\\\Code\\\\\\\\routes-report\\\\\\\\src\\\\\\\\lib\\\\\\\\kpiCalculator.ts\")",
+      "Skill(run)",
+      "Skill(run:*)",
+      "Bash(curl -s http://localhost:3000/)"
     ]
   }
 }

@@ -3,13 +3,20 @@ import { formatMinutesAsTime } from '@/lib/kpiCalculator';
 
 interface DashboardSummaryProps {
   summary: Summary;
+  normalWorkDayMinutes?: number;
 }
 
-export default function DashboardSummary({ summary }: DashboardSummaryProps) {
+function formatTotalWorkTime(minutes: number): string {
+  const hours = Math.floor(minutes / 60);
+  const mins = minutes % 60;
+  return `${hours} שעות, ${mins} דקות`;
+}
+
+export default function DashboardSummary({ summary, normalWorkDayMinutes = 540 }: DashboardSummaryProps) {
   const utilizationColor =
-    summary.averageWeightUtilization > 85
+    summary.weightUtilization > 85
       ? 'text-orange-600'
-      : summary.averageWeightUtilization > 60
+      : summary.weightUtilization > 60
         ? 'text-green-600'
         : 'text-red-600';
 
@@ -37,7 +44,7 @@ export default function DashboardSummary({ summary }: DashboardSummaryProps) {
           </p>
         </div>
         <div className="bg-white rounded-lg p-4 border border-gray-200">
-          <p className="text-gray-600 text-sm text-right">ניצול זמן (מ-9 שעות)</p>
+          <p className="text-gray-600 text-sm text-right">ניצול זמן (מ-{normalWorkDayMinutes === 300 ? '5' : '9'} שעות)</p>
           <p className="text-3xl font-bold text-indigo-600 text-right">
             {summary.timeUtilization}%
           </p>
@@ -45,19 +52,31 @@ export default function DashboardSummary({ summary }: DashboardSummaryProps) {
       </div>
 
       <div className="grid grid-cols-2 gap-4 mb-6 md:hidden">
-        <div className="bg-white rounded-lg p-4 border border-gray-200 md:col-span-2">
+        <div className="bg-white rounded-lg p-4 border border-gray-200">
           <p className="text-gray-600 text-sm text-right">סך זמן עבודה</p>
           <p className="text-3xl font-bold text-purple-600 text-right">
-            {formatMinutesAsTime(summary.totalWorkMinutes)}
+            {formatTotalWorkTime(summary.totalWorkMinutes)}
+          </p>
+        </div>
+        <div className="bg-white rounded-lg p-4 border border-gray-200">
+          <p className="text-gray-600 text-sm text-right">זמן ממוצע למסלול</p>
+          <p className="text-3xl font-bold text-blue-600 text-right">
+            {formatTotalWorkTime(Math.round(summary.totalWorkMinutes / summary.totalRoutes))}
           </p>
         </div>
       </div>
 
-      <div className="hidden md:grid grid-cols-1 gap-4 mb-6">
+      <div className="hidden md:grid grid-cols-2 gap-4 mb-6">
         <div className="bg-white rounded-lg p-4 border border-gray-200">
           <p className="text-gray-600 text-sm text-right">סך זמן עבודה</p>
           <p className="text-3xl font-bold text-purple-600 text-right">
-            {formatMinutesAsTime(summary.totalWorkMinutes)}
+            {formatTotalWorkTime(summary.totalWorkMinutes)}
+          </p>
+        </div>
+        <div className="bg-white rounded-lg p-4 border border-gray-200">
+          <p className="text-gray-600 text-sm text-right">זמן ממוצע למסלול</p>
+          <p className="text-3xl font-bold text-blue-600 text-right">
+            {formatTotalWorkTime(Math.round(summary.totalWorkMinutes / summary.totalRoutes))}
           </p>
         </div>
       </div>
@@ -65,19 +84,19 @@ export default function DashboardSummary({ summary }: DashboardSummaryProps) {
       <div className="bg-white rounded-lg p-4 border border-gray-200 mb-6">
         <div className="grid grid-cols-3 gap-4">
           <div className="text-center">
-            <p className="text-gray-600 text-sm text-right">עומסים (&gt;85%)</p>
+            <p className="text-gray-600 text-sm text-right">מסלולים שמשקלם 85%-100%</p>
             <p className="text-2xl font-bold text-orange-600 text-right">
               {summary.overUtilizedRoutes}
             </p>
           </div>
-          <div className="text-center border-r border-l border-gray-200">
-            <p className="text-gray-600 text-sm text-right">תת-ניצול (&lt;50%)</p>
+          <div className="text-center border-r border-l border-gray-200 px-4">
+            <p className="text-gray-600 text-sm text-right">מסלולים שמשקלם קטן מ-50%</p>
             <p className="text-2xl font-bold text-red-600 text-right">
               {summary.underUtilizedRoutes}
             </p>
           </div>
           <div className="text-center">
-            <p className="text-gray-600 text-sm text-right">חרוגים משקל (&gt;100%)</p>
+            <p className="text-gray-600 text-sm text-right">מסלולים שחורגים מקיבולת המשקל</p>
             <p className="text-2xl font-bold text-red-700 text-right">
               {summary.overWeightRoutes.length}
             </p>
@@ -93,14 +112,16 @@ export default function DashboardSummary({ summary }: DashboardSummaryProps) {
           {summary.overWeightRoutes.length > 0 && (
             <div className="text-right mt-3">
               <p className="text-red-700">
-                <span className="font-semibold">חורגים משקל:</span> {summary.overWeightRoutes.join(', ')}
+                <span className="font-semibold">חורגים משקל:</span>{' '}
+                <span className="blur-sm">{summary.overWeightRoutes.join(', ')}</span>
               </p>
             </div>
           )}
           {summary.overTimeRoutes.length > 0 && (
             <div className="text-right mt-3">
               <p className="text-red-700">
-                <span className="font-semibold">חורגים זמן (מ-9 שעות):</span> {summary.overTimeRoutes.join(', ')}
+                <span className="font-semibold">חורגים זמן (מ-{normalWorkDayMinutes === 300 ? '5' : '9'} שעות):</span>{' '}
+                <span className="blur-sm">{summary.overTimeRoutes.join(', ')}</span>
               </p>
             </div>
           )}
@@ -120,7 +141,30 @@ export default function DashboardSummary({ summary }: DashboardSummaryProps) {
                 : 'text-orange-700'
           }`}
         >
-          {summary.recommendation}
+          {summary.recommendation.split('\n').map((line, idx) => {
+            const trimmed = line.trim();
+
+            // Check if this is a line with driver names
+            // Either: pure driver list (only Hebrew + commas) OR a line after a "נהגים" header
+            const isPureDriverList = /^[\s,א-ת]+$/.test(trimmed) && trimmed.length > 0 && !trimmed.includes(':');
+
+            // Check if previous line indicates driver names are coming
+            const prevLine = idx > 0 ? summary.recommendation.split('\n')[idx - 1] : '';
+            const isAfterDriverHeader = prevLine.includes('נהגים') || prevLine.includes('נהג');
+
+            if (isPureDriverList || (isAfterDriverHeader && trimmed.length > 0)) {
+              const blurredLine = line.replace(/[א-ת]+(?:\s[א-ת]+)*/g, (match) => {
+                return `<span class="blur-sm">${match}</span>`;
+              });
+              return (
+                <div key={idx} dangerouslySetInnerHTML={{ __html: blurredLine }} />
+              );
+            }
+
+            return (
+              <div key={idx}>{line}</div>
+            );
+          })}
         </div>
       </div>
 
@@ -129,7 +173,7 @@ export default function DashboardSummary({ summary }: DashboardSummaryProps) {
           <p className="text-gray-600 text-sm text-right font-semibold mb-3">
             ⛅ תנאים יומיים:
           </p>
-          <p className="text-gray-700 text-right font-medium">
+          <p className="text-gray-700 text-right font-medium whitespace-pre-line">
             {summary.weatherNote}
           </p>
         </div>

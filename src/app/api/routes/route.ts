@@ -1,10 +1,14 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { calculateRouteKPI, calculateDashboardSummary } from '@/lib/kpiCalculator';
-import { Route, Equipment, RouteKPI } from '@/types';
+import { Route, Equipment, RouteKPI, RouteRound } from '@/types';
 
 function calculateTrafficInsights(kpis: RouteKPI[], isHoliday: boolean = false): any {
   let trafficRisk = 'נמוך';
   let trafficNote = '';
+
+  if (!kpis || kpis.length === 0) {
+    return { trafficRisk, trafficNote };
+  }
 
   // Peak hours in Israel: 7-9 AM and 4-7 PM
   // Holidays cause heavier traffic
@@ -71,6 +75,7 @@ export async function GET(request: NextRequest) {
 
     const routesUrl = `${baseUrl}/v1/dailyplan/routes?expand=All&sessionDate=${sessionDate}`;
 
+    console.log('DEBUG - Calling routes endpoint:', { routesUrl, sessionDate });
     const routesResponse = await fetch(routesUrl, { headers });
 
     console.log('ROADNET API Response:', {
@@ -94,6 +99,7 @@ export async function GET(request: NextRequest) {
           error: 'Failed to fetch data from ROADNET',
           details: {
             routesStatus: routesResponse.status,
+            equipmentStatus: 'unknown',
             errorText: errorText.substring(0, 500),
           }
         },
@@ -120,6 +126,12 @@ export async function GET(request: NextRequest) {
     });
 
     const rawRoutes: Route[] = routesData.items || routesData.routes || routesData.data || [];
+
+    // Check if it's Friday (normal work day is 5 hours, not 9)
+    const [year, month, day] = sessionDate.split('-').map(Number);
+    const sessionDateObj = new Date(year, month - 1, day); // month is 0-indexed
+    const dayOfWeek = sessionDateObj.getDay(); // 5 = Friday
+    const normalWorkDayMinutes = dayOfWeek === 5 ? 300 : 540; // 5 hours for Friday, 9 hours otherwise
 
     // Fetch equipment types for vehicle capacity
     let equipmentTypes: Record<string, any> = {};
@@ -178,7 +190,7 @@ export async function GET(request: NextRequest) {
         const lastStop = route.stops[route.stops.length - 1];
 
         // Get startTimestamp from OriginDepotStop or fallback to route.routeStartTime
-        let routeStart = new Date(route.routeStartTime).getTime();
+        let routeStart = route.routeStartTime ? new Date(route.routeStartTime).getTime() : 0;
         if (firstStop?.originDepotStopInfo?.startTimestamp) {
           routeStart = new Date(firstStop.originDepotStopInfo.startTimestamp).getTime();
         }
@@ -218,12 +230,62 @@ export async function GET(request: NextRequest) {
         travelTimeMinutes = Math.max(0, totalDurationMinutes - serviceTimeMinutes);
       }
 
-      // Get vehicle type and capacity from equipment
+      // Get vehicle type and capacity from equipment (need this before calculating rounds)
       const specificEquipmentId = route.equipmentInfo?.[0]?.specificEquipmentInfo?.identity?.identifier;
       const specificEquipment = equipmentMap[specificEquipmentId];
       const equipmentType = specificEquipment?.equipment;
       const vehicleType = specificEquipment?.equipmentTypeIdentity || specificEquipmentId || 'unknown';
       const vehicleCapacity = equipmentType?.operational?.capacity?.[0] || 0;
+
+      // Identify rounds (split by MidrouteDepotStop)
+      const rounds: RouteRound[] = [];
+      if (route.stops && Array.isArray(route.stops)) {
+        let currentRound: any = { weight: 0, stops: 0 };
+        let roundNumber = 1;
+
+        for (const stop of route.stops) {
+          if (stop.stopType === 'MidrouteDepotStop') {
+            // End current round and start new one
+            if (currentRound.stops > 0) {
+              rounds.push({
+                roundNumber,
+                weight: currentRound.weight,
+                stopCount: currentRound.stops,
+                weightUtilization: vehicleCapacity > 0 ? Math.round((currentRound.weight / vehicleCapacity) * 100) : 0
+              });
+              roundNumber++;
+              currentRound = { weight: 0, stops: 0 };
+            }
+            continue;
+          }
+
+          // Only count ServiceableStop, not DEPOT
+          if (stop.stopType === 'ServiceableStop') {
+            const deliveryQuantities = stop.serviceableStopInfo?.totalDeliveryQuantities ||
+                                     stop.totalDeliveryQuantities;
+            let weight = 0;
+            if (deliveryQuantities) {
+              if (Array.isArray(deliveryQuantities)) {
+                weight = deliveryQuantities[0] || 0;
+              } else if (typeof deliveryQuantities === 'number') {
+                weight = deliveryQuantities;
+              }
+            }
+            currentRound.weight += weight;
+            currentRound.stops += 1;
+          }
+        }
+
+        // Add last round if it has stops
+        if (currentRound.stops > 0) {
+          rounds.push({
+            roundNumber,
+            weight: currentRound.weight,
+            stopCount: currentRound.stops,
+            weightUtilization: vehicleCapacity > 0 ? Math.round((currentRound.weight / vehicleCapacity) * 100) : 0
+          });
+        }
+      }
 
       if (index === 0 || route.identity?.identifier === '1008') {
         const fs = require('fs');
@@ -234,10 +296,17 @@ export async function GET(request: NextRequest) {
       }
 
       const weightUtilization = vehicleCapacity > 0 ? Math.round((totalWeight / vehicleCapacity) * 100) : 0;
-      const timeUtilization = Math.round((totalDurationMinutes / 540) * 100); // 540 minutes = 9 hours
+      const timeUtilization = Math.round((totalDurationMinutes / normalWorkDayMinutes) * 100);
+
+      // Check if any round exceeds weight capacity
+      const hasWeightOverage = rounds.some(r => r.weightUtilization > 100);
 
       const insights: string[] = [];
-      insights.push(`${weightUtilization}% משקל, ${stopCount} תחנות`);
+      if (rounds.length > 1) {
+        insights.push(`${rounds.length} סבבים, סך כל משקל ${totalWeight.toLocaleString('he-IL')} ק"ג`);
+      } else {
+        insights.push(`${weightUtilization}% משקל, ${stopCount} תחנות`);
+      }
 
       if (timeUtilization > 100) {
         insights.push('⚠️ חורג זמן - יותר מ-9 שעות');
@@ -246,10 +315,10 @@ export async function GET(request: NextRequest) {
         insights.push('יכול לכלול עוד תחנות');
       }
 
-      if (weightUtilization > 100) {
-        insights.push('⚠️ חורג משקל - עליית הקיבולה');
-      } else if (weightUtilization < 50 && timeUtilization < 80) {
-        // רק אמור על משקל נמוך אם הזמן גם לא גבוה
+      if (hasWeightOverage) {
+        insights.push('⚠️ סבב חורג מקיבולת המשקל');
+      } else if (weightUtilization < 50 && timeUtilization < 80 && rounds.length === 1) {
+        // רק אמור על משקל נמוך אם הזמן גם לא גבוה ויש רק סבב אחד
         insights.push('משקל נמוך - אפשר לשלב');
       }
 
@@ -268,6 +337,8 @@ export async function GET(request: NextRequest) {
         weightUtilization,
         timeUtilization,
         insights,
+        rounds: rounds.length > 0 ? rounds : undefined,
+        normalWorkDayMinutes,
       };
     });
 
@@ -306,7 +377,9 @@ export async function GET(request: NextRequest) {
     // Calculate traffic insights based on route times and holidays
     const trafficInsights = calculateTrafficInsights(kpis, isHoliday);
 
-    const summary = calculateDashboardSummary(kpis, 540, sessionDate, weatherData, trafficInsights, isHoliday, holidayName);
+    console.log('DEBUG - Before calculateDashboardSummary');
+    const summary = calculateDashboardSummary(kpis, normalWorkDayMinutes, sessionDate, weatherData, trafficInsights, isHoliday, holidayName);
+    console.log('DEBUG - After calculateDashboardSummary');
 
     return NextResponse.json({
       routes: kpis,
@@ -316,8 +389,16 @@ export async function GET(request: NextRequest) {
     });
   } catch (error) {
     console.error('Routes fetch error:', error);
+    console.error('Error stack:', error instanceof Error ? error.stack : 'no stack');
     return NextResponse.json(
-      { error: 'Failed to fetch routes' },
+      {
+        error: 'Failed to fetch routes',
+        details: {
+          routesStatus: 'error',
+          equipmentStatus: 'error',
+          errorMessage: error instanceof Error ? error.message : String(error)
+        }
+      },
       { status: 500 }
     );
   }

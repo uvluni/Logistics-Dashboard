@@ -6,10 +6,14 @@ export interface AuthResponse {
 export interface Stop {
   id: string;
   name: string;
-  type: 'SERVICEABLE_STOP' | 'DEPOT';
+  type: 'SERVICEABLE_STOP' | 'DEPOT' | 'ORIGIN_DEPOT_STOP' | 'DESTINATION_DEPOT_STOP' | 'MIDROUTE_DEPOT_STOP';
   weight?: number;
   serviceTime?: number;
   sequence: number;
+  originDepotStopInfo?: any;
+  destinationDepotStopInfo?: any;
+  serviceableStopInfo?: any;
+  [key: string]: any;
 }
 
 export interface Route {
@@ -45,6 +49,13 @@ export interface Equipment {
   };
 }
 
+export interface RouteRound {
+  roundNumber: number;
+  weight: number;
+  stopCount: number;
+  weightUtilization: number;
+}
+
 export interface RouteKPI {
   routeId: string;
   driverName: string;
@@ -58,6 +69,8 @@ export interface RouteKPI {
   weightUtilization: number;
   timeUtilization: number;
   insights: string[];
+  rounds?: RouteRound[];
+  normalWorkDayMinutes?: number;
 }
 
 export interface DashboardSummary {

@@ -136,6 +136,30 @@ export default function Home() {
               </div>
             )}
 
+            <div>
+              <label className="block text-gray-700 text-sm font-medium mb-2 text-right">
+                שם משתמש
+              </label>
+              <input
+                type="email"
+                defaultValue="yuval@rasner.co.il"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg text-right"
+                disabled
+              />
+            </div>
+
+            <div>
+              <label className="block text-gray-700 text-sm font-medium mb-2 text-right">
+                סיסמא
+              </label>
+              <input
+                type="password"
+                defaultValue="••••••••••••"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg text-right"
+                disabled
+              />
+            </div>
+
             <button
               type="submit"
               disabled={isLoading}
@@ -195,7 +219,7 @@ export default function Home() {
 
         {summary && (
           <>
-            <DashboardSummary summary={summary} />
+            <DashboardSummary summary={summary} normalWorkDayMinutes={kpis[0]?.normalWorkDayMinutes} />
 
             <div className="mb-8">
               <h2 className="text-2xl font-bold text-gray-900 mb-6 text-right">

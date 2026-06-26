@@ -4,7 +4,6 @@ import './globals.css';
 export const metadata: Metadata = {
   title: 'ROADNET - דוח תכנון הפצה',
   description: 'מערכת בקרה ממשית של תכנון מסלולי הפצה עם KPIs',
-  charset: 'utf-8',
 };
 
 export default function RootLayout({
@@ -14,6 +13,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="he" dir="rtl">
+      <head>
+        <meta charSet="utf-8" />
+      </head>
       <body className="bg-gray-50">{children}</body>
     </html>
   );

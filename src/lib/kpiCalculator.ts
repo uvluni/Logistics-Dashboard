@@ -5,7 +5,7 @@ export function calculateRouteKPI(
   equipment: Equipment | undefined,
   normalWorkDayMinutes: number = 540
 ): RouteKPI {
-  const serviceableStops = route.stops.filter(s => s.type === 'SERVICEABLE_STOP');
+  const serviceableStops = (route.stops || []).filter(s => s.type === 'SERVICEABLE_STOP');
 
   const totalWeight = serviceableStops.reduce((sum, stop) => sum + (stop.weight || 0), 0);
   const serviceTimeMinutes = serviceableStops.reduce((sum, stop) => sum + (stop.serviceTime || 0), 0);
@@ -15,7 +15,7 @@ export function calculateRouteKPI(
 
   const insights = generateInsights(
     weightUtilization,
-    route.totalTime,
+    route.totalTime || 0,
     normalWorkDayMinutes,
     serviceableStops.length,
     totalWeight,
@@ -23,15 +23,17 @@ export function calculateRouteKPI(
   );
 
   return {
-    routeId: route.id,
-    vehicleId: route.vehicleId,
-    totalDurationMinutes: route.totalTime,
-    travelTimeMinutes: route.travelTime,
+    routeId: route.id || '',
+    driverName: '',
+    vehicleType: '',
+    totalDurationMinutes: route.totalTime || 0,
+    travelTimeMinutes: route.travelTime || 0,
     serviceTimeMinutes,
     stopCount: serviceableStops.length,
     totalWeight,
     vehicleCapacity,
     weightUtilization: Math.round(weightUtilization * 10) / 10,
+    timeUtilization: 0,
     insights,
   };
 }
@@ -108,11 +110,19 @@ export function calculateDashboardSummary(
   const underUtilized = kpis.filter(k => k.weightUtilization < 50).length;
 
   // נהגים החורגים מקיבולת משקל (>100%)
+  // בדוק אם יש סבב שחורג (לא הסכום הכללי)
   const overWeightRoutes = kpis
-    .filter(k => k.weightUtilization > 100)
+    .filter(k => {
+      if (k.rounds && k.rounds.length > 0) {
+        // אם יש סבבים, בדוק אם סבב כלשהו חורג
+        return k.rounds.some(r => r.weightUtilization > 100);
+      }
+      // אחרת בדוק את הערך הכללי
+      return k.weightUtilization > 100;
+    })
     .map(k => k.driverName);
 
-  // נהגים החורגים מ-9 שעות עבודה
+  // נהגים החורגים מנורמת יום העבודה
   const overTimeRoutes = kpis
     .filter(k => k.totalDurationMinutes > normalWorkDayMinutes)
     .map(k => k.driverName);
@@ -150,6 +160,7 @@ export function calculateDashboardSummary(
   }
 
   // Build combined conditions note (weather + traffic + holidays)
+  const trafficNote = trafficInsights?.trafficNote || '';
   let conditionsNote = '';
   const parts = [];
 
@@ -162,23 +173,67 @@ export function calculateDashboardSummary(
   }
 
   if (parts.length > 0) {
-    conditionsNote = parts.join(' | ');
+    conditionsNote = parts.join('\n');
   }
 
-  let recommendation = 'התכנון טוב';
+  // Find drivers with underutilized weight (<80%) and short hours (<8 hours)
+  const underweightShortHours = kpis
+    .filter(k => k.weightUtilization < 80 && k.totalDurationMinutes < 480)
+    .map(k => k.driverName);
 
-  if (overWeightRoutes.length > 0 && overTimeRoutes.length > 0) {
-    recommendation = `חורגים משקל: ${overWeightRoutes.join(', ')}\nחורגים זמן: ${overTimeRoutes.join(', ')}`;
-  } else if (overWeightRoutes.length > 0) {
-    recommendation = `נהגים ${overWeightRoutes.join(', ')} חורגים מקיבולת משקל`;
-  } else if (overTimeRoutes.length > 0) {
-    recommendation = `נהגים ${overTimeRoutes.join(', ')} חורגים מ-9 שעות עבודה`;
-  } else if (overUtilized > kpis.length * 0.3) {
-    recommendation = 'רוב המסלולים עמוסים - בחן אפשרות הוספת רכב';
-  } else if (underUtilized > kpis.length * 0.4) {
-    recommendation = 'חלק גדול מהמסלולים תחת ניצול - חפש דרך לשלב';
+  // Find drivers with rounds exceeding weight (>100%)
+  const overCapacityDrivers = kpis
+    .filter(k => k.rounds && k.rounds.some(r => r.weightUtilization > 100))
+    .map(k => k.driverName);
+
+  // Find drivers with long hours (>10 hours / 600 minutes)
+  const longHoursDrivers = kpis
+    .filter(k => k.totalDurationMinutes > 600)
+    .map(k => k.driverName);
+
+  // Build recommendation in natural language with line breaks
+  let recommendation = '';
+
+  // Line 1: Average metrics
+  recommendation += `ניצול זמן ממוצע: ${Math.round(timeUtil)}%\n`;
+  recommendation += `ניצול משקל ממוצע: ${Math.round(averageWeightUtil)}%\n\n`;
+
+  // Line 2: Underutilized drivers
+  if (underweightShortHours.length > 0) {
+    const driverLabel = underweightShortHours.length === 1
+      ? `נהג ${underweightShortHours.length}`
+      : `${underweightShortHours.length} נהגים`;
+    recommendation += `${driverLabel} עם ניצול נמוך וזמן קצר (משקל קטן מ-80%, זמן קטן מ-8 שעות):\n`;
+    recommendation += `${underweightShortHours.join(', ')}\n\n`;
+  }
+
+  // Line 3: Overutilized drivers (weight)
+  if (overCapacityDrivers.length > 0) {
+    const driverLabel = overCapacityDrivers.length === 1
+      ? `נהג ${overCapacityDrivers.length}`
+      : `${overCapacityDrivers.length} נהגים`;
+    recommendation += `${driverLabel} עם חריגה מקיבולת משקל (סבב גדול מ-100%):\n`;
+    recommendation += `${overCapacityDrivers.join(', ')}\n\n`;
+  }
+
+  // Line 4: Long hours drivers
+  if (longHoursDrivers.length > 0) {
+    const driverLabel = longHoursDrivers.length === 1
+      ? `נהג ${longHoursDrivers.length}`
+      : `${longHoursDrivers.length} נהגים`;
+    recommendation += `${driverLabel} עם חריגה מזמן עבודה (גדול מ-10 שעות):\n`;
+    recommendation += `${longHoursDrivers.join(', ')}\n\n`;
+  }
+
+  // Line 5: Recommendations
+  if (underweightShortHours.length > 0 || overCapacityDrivers.length > 0 || longHoursDrivers.length > 0) {
+    recommendation += `דרוש התאמה בהקצאת המשימות.`;
+  } else if (averageWeightUtil < 60) {
+    recommendation += `משקל ממוצע נמוך - שקול שילוב מסלולים או הוספת תחנות.`;
+  } else if (timeUtil > 90) {
+    recommendation += `ניצול זמן גבוה - בחן הוספת רכב או חלוקה של מסלולים.`;
   } else {
-    recommendation = 'התכנון טוב';
+    recommendation += `התכנון מאוזן וטוב.`;
   }
 
   return {
@@ -201,5 +256,5 @@ export function calculateDashboardSummary(
 export function formatMinutesAsTime(minutes: number): string {
   const hours = Math.floor(minutes / 60);
   const mins = minutes % 60;
-  return `${hours}h ${mins}m`;
+  return `${String(hours).padStart(2, '0')}:${String(mins).padStart(2, '0')}`;
 }
