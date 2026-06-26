@@ -204,15 +204,11 @@ export default function Home() {
             <label className="block text-sm font-medium mb-3 text-right opacity-90">
               בחר תאריך
             </label>
-            <div className="flex gap-2 items-center">
-              <button
-                type="button"
-                onClick={() => datePickerRef.current?.setOpen(true)}
-                className="bg-white hover:bg-gray-100 text-gray-900 px-3 py-3 rounded-lg transition-colors flex items-center justify-center"
-                title="פתח תאריכון"
-              >
-                📅
-              </button>
+            <div
+              onClick={() => datePickerRef.current?.setOpen(true)}
+              className="bg-white hover:bg-gray-50 cursor-pointer rounded-lg px-4 py-3 flex items-center gap-3 transition-colors focus-within:ring-2 focus-within:ring-blue-300 focus-within:ring-offset-2"
+            >
+              <span className="text-2xl">📅</span>
               <DatePicker
                 ref={datePickerRef}
                 selected={new Date(selectedDate + 'T00:00:00')}
@@ -225,7 +221,7 @@ export default function Home() {
                   }
                 }}
                 dateFormat="dd/MM/yy"
-                className="flex-1 px-4 py-3 border-0 rounded-lg text-gray-900 font-semibold text-lg focus:ring-2 focus:ring-blue-300 focus:ring-offset-2"
+                className="flex-1 border-0 bg-transparent text-gray-900 font-semibold text-lg focus:outline-none"
                 wrapperClassName="flex-1"
               />
             </div>
