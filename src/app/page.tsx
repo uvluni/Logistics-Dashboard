@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import KPICard from '@/components/KPICard';
@@ -38,6 +38,7 @@ export default function Home() {
   const [summary, setSummary] = useState<Summary | null>(null);
   const [selectedDate, setSelectedDate] = useState(getNextBusinessDay());
   const [error, setError] = useState('');
+  const datePickerRef = useRef<DatePicker>(null);
 
   // Removed auto-auth check - user must click login button
 
@@ -203,20 +204,31 @@ export default function Home() {
             <label className="block text-sm font-medium mb-3 text-right opacity-90">
               בחר תאריך
             </label>
-            <DatePicker
-              selected={new Date(selectedDate + 'T00:00:00')}
-              onChange={(date: Date | null) => {
-                if (date) {
-                  const year = date.getFullYear();
-                  const month = String(date.getMonth() + 1).padStart(2, '0');
-                  const day = String(date.getDate()).padStart(2, '0');
-                  setSelectedDate(`${year}-${month}-${day}`);
-                }
-              }}
-              dateFormat="dd/MM/yy"
-              className="w-full px-4 py-3 border-0 rounded-lg text-gray-900 font-semibold text-lg focus:ring-2 focus:ring-blue-300 focus:ring-offset-2"
-              wrapperClassName="w-full"
-            />
+            <div className="flex gap-2 items-center">
+              <button
+                type="button"
+                onClick={() => datePickerRef.current?.setOpen(true)}
+                className="bg-white hover:bg-gray-100 text-gray-900 px-3 py-3 rounded-lg transition-colors flex items-center justify-center"
+                title="פתח תאריכון"
+              >
+                📅
+              </button>
+              <DatePicker
+                ref={datePickerRef}
+                selected={new Date(selectedDate + 'T00:00:00')}
+                onChange={(date: Date | null) => {
+                  if (date) {
+                    const year = date.getFullYear();
+                    const month = String(date.getMonth() + 1).padStart(2, '0');
+                    const day = String(date.getDate()).padStart(2, '0');
+                    setSelectedDate(`${year}-${month}-${day}`);
+                  }
+                }}
+                dateFormat="dd/MM/yy"
+                className="flex-1 px-4 py-3 border-0 rounded-lg text-gray-900 font-semibold text-lg focus:ring-2 focus:ring-blue-300 focus:ring-offset-2"
+                wrapperClassName="flex-1"
+              />
+            </div>
           </div>
           {isLoading && (
             <p className="text-center mt-4 text-blue-100 text-sm">טוען מסלולים...</p>
