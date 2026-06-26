@@ -36,14 +36,19 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [kpis, setKpis] = useState<RouteKPI[]>([]);
   const [summary, setSummary] = useState<Summary | null>(null);
-  const [selectedDate, setSelectedDate] = useState(getNextBusinessDay());
+  const [selectedDate, setSelectedDate] = useState('');
   const [error, setError] = useState('');
+  const [mounted, setMounted] = useState(false);
   const datePickerRef = useRef<DatePicker>(null);
 
-  // Removed auto-auth check - user must click login button
+  // Initialize date on client only to avoid hydration mismatch
+  useEffect(() => {
+    setSelectedDate(getNextBusinessDay());
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
-    if (isLoggedIn) {
+    if (isLoggedIn && selectedDate) {
       loadRoutes();
     }
   }, [selectedDate, isLoggedIn]);
@@ -199,7 +204,7 @@ export default function Home() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="bg-gradient-to-br from-blue-600 to-indigo-600 rounded-lg p-8 mb-8 shadow-md text-white">
-          <h2 className="text-2xl font-bold mb-6 text-right">תכנון הפצה - {formatDateForDisplay(selectedDate)}</h2>
+          <h2 className="text-2xl font-bold mb-6 text-right">תכנון הפצה - {selectedDate ? formatDateForDisplay(selectedDate) : '...'}</h2>
           <div className="max-w-md">
             <label className="block text-sm font-medium mb-3 text-right opacity-90">
               בחר תאריך
@@ -209,21 +214,23 @@ export default function Home() {
               className="bg-white hover:bg-gray-50 cursor-pointer rounded-lg px-2 py-2 flex items-center gap-2 transition-colors focus-within:ring-2 focus-within:ring-blue-300 focus-within:ring-offset-2 w-fit"
             >
               <span className="text-2xl">📅</span>
-              <DatePicker
-                ref={datePickerRef}
-                selected={new Date(selectedDate + 'T00:00:00')}
-                onChange={(date: Date | null) => {
-                  if (date) {
-                    const year = date.getFullYear();
-                    const month = String(date.getMonth() + 1).padStart(2, '0');
-                    const day = String(date.getDate()).padStart(2, '0');
-                    setSelectedDate(`${year}-${month}-${day}`);
-                  }
-                }}
-                dateFormat="dd/MM/yy"
-                className="flex-1 border-0 bg-transparent text-gray-900 font-semibold text-lg focus:outline-none"
-                wrapperClassName="flex-1"
-              />
+              {selectedDate && (
+                <DatePicker
+                  ref={datePickerRef}
+                  selected={new Date(selectedDate + 'T00:00:00')}
+                  onChange={(date: Date | null) => {
+                    if (date) {
+                      const year = date.getFullYear();
+                      const month = String(date.getMonth() + 1).padStart(2, '0');
+                      const day = String(date.getDate()).padStart(2, '0');
+                      setSelectedDate(`${year}-${month}-${day}`);
+                    }
+                  }}
+                  dateFormat="dd/MM/yy"
+                  className="flex-1 border-0 bg-transparent text-gray-900 font-semibold text-lg focus:outline-none"
+                  wrapperClassName="flex-1"
+                />
+              )}
             </div>
           </div>
           {isLoading && (
