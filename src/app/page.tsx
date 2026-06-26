@@ -206,7 +206,7 @@ export default function Home() {
             </label>
             <div
               onClick={() => datePickerRef.current?.setOpen(true)}
-              className="bg-white hover:bg-gray-50 cursor-pointer rounded-lg px-4 py-3 flex items-center gap-3 transition-colors focus-within:ring-2 focus-within:ring-blue-300 focus-within:ring-offset-2"
+              className="bg-white hover:bg-gray-50 cursor-pointer rounded-lg px-2 py-2 flex items-center gap-2 transition-colors focus-within:ring-2 focus-within:ring-blue-300 focus-within:ring-offset-2 w-fit"
             >
               <span className="text-2xl">📅</span>
               <DatePicker
