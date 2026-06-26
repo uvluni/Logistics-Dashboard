@@ -1,15 +1,24 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 import KPICard from '@/components/KPICard';
 import DashboardSummary from '@/components/DashboardSummary';
 import { RouteKPI, DashboardSummary as Summary } from '@/types';
 
 function getNextBusinessDay(): string {
   let date = new Date();
-  date.setDate(date.getDate() + 1);
+  const today = date.getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
 
-  while (date.getDay() === 0 || date.getDay() === 6) {
+  // If today is Thursday (4), Friday (5), Saturday (6), or Sunday (0),
+  // jump to next Sunday (which will be the default)
+  if (today === 4 || today === 5 || today === 6 || today === 0) {
+    // Calculate days until next Sunday
+    const daysUntilNextSunday = (7 - today) % 7 || 7;
+    date.setDate(date.getDate() + daysUntilNextSunday);
+  } else {
+    // Otherwise just go to next day (Sun→Mon, Mon→Tue, Tue→Wed, Wed→Thu)
     date.setDate(date.getDate() + 1);
   }
 
@@ -194,17 +203,20 @@ export default function Home() {
             <label className="block text-sm font-medium mb-3 text-right opacity-90">
               בחר תאריך
             </label>
-            <div className="flex items-center gap-2">
-              <input
-                type="date"
-                value={selectedDate}
-                onChange={(e) => setSelectedDate(e.target.value)}
-                className="flex-1 px-4 py-3 border-0 rounded-lg text-gray-900 font-semibold text-lg focus:ring-2 focus:ring-blue-300 focus:ring-offset-2"
-              />
-              <div className="text-white text-center font-semibold text-sm px-2 py-3">
-                {formatDateForDisplay(selectedDate)}
-              </div>
-            </div>
+            <DatePicker
+              selected={new Date(selectedDate + 'T00:00:00')}
+              onChange={(date: Date | null) => {
+                if (date) {
+                  const year = date.getFullYear();
+                  const month = String(date.getMonth() + 1).padStart(2, '0');
+                  const day = String(date.getDate()).padStart(2, '0');
+                  setSelectedDate(`${year}-${month}-${day}`);
+                }
+              }}
+              dateFormat="dd/MM/yy"
+              className="w-full px-4 py-3 border-0 rounded-lg text-gray-900 font-semibold text-lg focus:ring-2 focus:ring-blue-300 focus:ring-offset-2"
+              wrapperClassName="w-full"
+            />
           </div>
           {isLoading && (
             <p className="text-center mt-4 text-blue-100 text-sm">טוען מסלולים...</p>

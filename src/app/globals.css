@@ -30,3 +30,31 @@ input::-webkit-inner-spin-button {
 input[type='number'] {
   -moz-appearance: textfield;
 }
+
+/* React DatePicker RTL adjustments */
+.react-datepicker__input-container {
+  position: relative;
+  display: block;
+}
+
+.react-datepicker {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+}
+
+.react-datepicker__header {
+  background-color: #2563eb;
+  color: white;
+  border-bottom: none;
+}
+
+.react-datepicker__day--selected {
+  background-color: #2563eb;
+}
+
+.react-datepicker__day--keyboard-selected {
+  background-color: #3b82f6;
+}
+
+.react-datepicker__day:hover {
+  background-color: #dbeafe;
+}
