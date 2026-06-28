@@ -43,6 +43,7 @@ export default function Home() {
 
   // Initialize date on client only to avoid hydration mismatch
   useEffect(() => {
+    setSelectedDate(getNextBusinessDay());
     setMounted(true);
   }, []);
 
