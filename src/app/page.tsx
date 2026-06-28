@@ -232,11 +232,14 @@ export default function Home() {
                       const month = String(date.getMonth() + 1).padStart(2, '0');
                       const day = String(date.getDate()).padStart(2, '0');
                       setSelectedDate(`${year}-${month}-${day}`);
-                      datePickerRef.current?.setOpen(false);
                     }
                   }}
+                  onSelect={() => {
+                    setTimeout(() => {
+                      datePickerRef.current?.setOpen(false);
+                    }, 0);
+                  }}
                   dateFormat="dd/MM/yy"
-                  shouldCloseOnSelect={true}
                   className="flex-1 border-0 bg-transparent text-gray-900 font-semibold text-lg focus:outline-none"
                   wrapperClassName="flex-1"
                 />
