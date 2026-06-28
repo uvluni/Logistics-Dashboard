@@ -257,7 +257,7 @@ export default function Home() {
           </div>
         )}
 
-        {summary && (
+        {summary && kpis.length > 0 && (
           <>
             <DashboardSummary summary={summary} normalWorkDayMinutes={kpis[0]?.normalWorkDayMinutes} />
 
@@ -266,19 +266,19 @@ export default function Home() {
                 מסלולים - KPIs
               </h2>
 
-              {kpis.length === 0 ? (
-                <div className="bg-white border border-gray-200 rounded-lg p-8 text-center">
-                  <p className="text-gray-600">אין מסלולים עבור התאריך שנבחר</p>
-                </div>
-              ) : (
-                <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-                  {kpis.map((kpi) => (
-                    <KPICard key={kpi.routeId} kpi={kpi} />
-                  ))}
-                </div>
-              )}
+              <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+                {kpis.map((kpi) => (
+                  <KPICard key={kpi.routeId} kpi={kpi} />
+                ))}
+              </div>
             </div>
           </>
+        )}
+
+        {summary && kpis.length === 0 && (
+          <div className="bg-white border border-gray-200 rounded-lg p-12 text-center">
+            <p className="text-gray-600 text-lg">אין מסלולים עבור התאריך שנבחר</p>
+          </div>
         )}
 
         {!summary && isLoggedIn && !error && !isLoading && (
