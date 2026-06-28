@@ -11,11 +11,11 @@ function getNextBusinessDay(): string {
   let date = new Date();
   const today = date.getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
 
-  // If today is Thursday (4), Friday (5), Saturday (6), or Sunday (0),
-  // jump to next Sunday (which will be the default)
-  if (today === 4 || today === 5 || today === 6 || today === 0) {
+  // If today is Thursday (4), Friday (5), or Saturday (6), jump to next Sunday
+  // Otherwise advance by 1 day (including Sunday → Monday)
+  if (today === 4 || today === 5 || today === 6) {
     // Calculate days until next Sunday
-    const daysUntilNextSunday = (7 - today) % 7 || 7;
+    const daysUntilNextSunday = (7 - today);
     date.setDate(date.getDate() + daysUntilNextSunday);
   } else {
     // Otherwise just go to next day (Sun→Mon, Mon→Tue, Tue→Wed, Wed→Thu)
