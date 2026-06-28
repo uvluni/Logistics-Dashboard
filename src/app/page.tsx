@@ -43,9 +43,15 @@ export default function Home() {
 
   // Initialize date on client only to avoid hydration mismatch
   useEffect(() => {
-    setSelectedDate(getNextBusinessDay());
     setMounted(true);
   }, []);
+
+  // Reset date to next business day when logged in
+  useEffect(() => {
+    if (isLoggedIn) {
+      setSelectedDate(getNextBusinessDay());
+    }
+  }, [isLoggedIn]);
 
   useEffect(() => {
     if (isLoggedIn && selectedDate) {
