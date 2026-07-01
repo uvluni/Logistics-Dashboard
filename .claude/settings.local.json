@@ -44,7 +44,8 @@
       "Bash(findstr :3000)",
       "Bash(taskkill /PID 33116 /F)",
       "Bash(git commit -m 'Fix: Align Hebrew insights bullets to the right side properly *)",
-      "Bash(git commit -m 'Fix: Position Hebrew insights bullets correctly on right side of text *)"
+      "Bash(git commit -m 'Fix: Position Hebrew insights bullets correctly on right side of text *)",
+      "Bash(git commit -m 'Fix: Position Hebrew insights bullets on the right side of text *)"
     ]
   }
 }
