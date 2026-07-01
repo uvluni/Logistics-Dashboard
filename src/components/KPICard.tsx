@@ -179,18 +179,8 @@ export default function KPICard({ kpi }: KPICardProps) {
       <div className={`space-y-1 ${isRTL ? 'text-right' : ''}`}>
         <p className={`text-gray-600 text-xs font-semibold ${isRTL ? 'text-right' : 'text-left'}`}>{t('kpi.insights', language)}</p>
         {kpi.insights.map((insight, idx) => (
-          <p key={idx} className='text-gray-700 text-sm flex items-start'>
-            {isRTL ? (
-              <>
-                <span className='ml-1'>•</span>
-                <span>{insight}</span>
-              </>
-            ) : (
-              <>
-                <span>{insight}</span>
-                <span className='mr-1'>•</span>
-              </>
-            )}
+          <p key={idx} className='text-gray-700 text-sm'>
+            {insight}
           </p>
         ))}
       </div>
