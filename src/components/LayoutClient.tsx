@@ -3,15 +3,14 @@
 import { useLanguage } from '@/context/LanguageContext';
 import { useEffect } from 'react';
 
-export default function LayoutClient({ children }: { children: React.ReactNode }) {
+export default function LanguageInitializer() {
   const { language, isRTL } = useLanguage();
 
   useEffect(() => {
     const html = document.documentElement;
     html.lang = language;
     html.dir = isRTL ? 'rtl' : 'ltr';
-    html.setAttribute('suppressHydrationWarning', '');
   }, [language, isRTL]);
 
-  return <>{children}</>;
+  return null;
 }
