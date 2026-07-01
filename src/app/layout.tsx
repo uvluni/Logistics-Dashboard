@@ -20,9 +20,13 @@ export default function RootLayout({
       </head>
       <body className="bg-gray-50" suppressHydrationWarning>
         <LanguageProvider>
-          <LayoutClient>{children}</LayoutClient>
+          <LayoutClientWrapper>{children}</LayoutClientWrapper>
         </LanguageProvider>
       </body>
     </html>
   );
+}
+
+function LayoutClientWrapper({ children }: { children: React.ReactNode }) {
+  return <LayoutClient>{children}</LayoutClient>;
 }
