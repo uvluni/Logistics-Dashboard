@@ -28,7 +28,10 @@
       "Bash(git commit -m 'Fix: always provide LanguageContext, remove early return *)",
       "Bash(git commit -m 'Add comprehensive translations and start translating DashboardSummary *)",
       "Bash(git commit -m 'Release v1.3.0: Multi-language support \\(Hebrew, English, Spanish\\) *)",
-      "Bash(git commit -m 'Release v1.3.1: Complete UI translation \\(All components\\) *)"
+      "Bash(git commit -m 'Release v1.3.1: Complete UI translation \\(All components\\) *)",
+      "Bash(npm audit *)",
+      "Bash(grep -v \"// \")",
+      "Bash(git checkout *)"
     ]
   }
 }

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { calculateRouteKPI, calculateDashboardSummary } from '@/lib/kpiCalculator';
 import { Route, Equipment, RouteKPI, RouteRound } from '@/types';
 import { translations, Language } from '@/i18n/translations';
+import { checkRateLimit } from '@/lib/rateLimiter';
 
 // Helper function to translate text
 function t(key: string, lang: Language): string {
@@ -47,15 +48,6 @@ export async function GET(request: NextRequest) {
   try {
     const token = request.cookies.get('roadnet_token')?.value;
 
-    // Debug: Log all cookies and token info
-    const cookieString = request.headers.get('cookie') || '';
-    console.log('DEBUG - Cookies received:', {
-      hasCookie: !!token,
-      tokenLength: token?.length,
-      allCookies: cookieString.substring(0, 100),
-      timestamp: new Date().toISOString(),
-    });
-
     if (!token) {
       return NextResponse.json(
         { error: 'Not authenticated' },
@@ -63,9 +55,27 @@ export async function GET(request: NextRequest) {
       );
     }
 
+    // Rate limiting: 30 requests per minute per token
+    if (!checkRateLimit(token, 30, 60000)) {
+      return NextResponse.json(
+        { error: 'Rate limit exceeded. Maximum 30 requests per minute' },
+        { status: 429 }
+      );
+    }
+
     const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
     const { searchParams } = new URL(request.url);
-    const sessionDate = searchParams.get('sessionDate') || new Date().toISOString().split('T')[0];
+    const rawSessionDate = searchParams.get('sessionDate');
+    const sessionDate = rawSessionDate || new Date().toISOString().split('T')[0];
+
+    // Validate sessionDate format (yyyy-MM-dd)
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(sessionDate)) {
+      return NextResponse.json(
+        { error: 'Invalid sessionDate format. Use yyyy-MM-dd' },
+        { status: 400 }
+      );
+    }
+
     const language = (searchParams.get('language') || 'he') as Language;
     if (!['he', 'en', 'es'].includes(language)) {
       return NextResponse.json(
@@ -87,16 +97,7 @@ export async function GET(request: NextRequest) {
     };
 
     const routesUrl = `${baseUrl}/v1/dailyplan/routes?expand=All&sessionDate=${sessionDate}`;
-
-    console.log('DEBUG - Calling routes endpoint:', { routesUrl, sessionDate });
     const routesResponse = await fetch(routesUrl, { headers });
-
-    console.log('ROADNET API Response:', {
-      url: routesUrl,
-      status: routesResponse.status,
-      statusText: routesResponse.statusText,
-      contentType: routesResponse.headers.get('content-type'),
-    });
 
     if (routesResponse.status === 401) {
       return NextResponse.json(
@@ -124,19 +125,11 @@ export async function GET(request: NextRequest) {
     try {
       routesData = await routesResponse.json();
     } catch (parseError) {
-      console.error('JSON parse error:', parseError);
       return NextResponse.json(
-        { error: 'Failed to parse ROADNET response', parseError: String(parseError) },
+        { error: 'Failed to parse ROADNET response' },
         { status: 500 }
       );
     }
-
-    console.log('ROADNET Response Raw:', {
-      status: routesResponse.status,
-      hasItems: !!routesData.items,
-      itemsLength: routesData.items?.length || 0,
-      dataKeys: Object.keys(routesData).slice(0, 3),
-    });
 
     const rawRoutes: Route[] = routesData.items || routesData.routes || routesData.data || [];
 
@@ -300,14 +293,6 @@ export async function GET(request: NextRequest) {
         }
       }
 
-      if (index === 0 || route.identity?.identifier === '1008') {
-        const fs = require('fs');
-        const path = require('path');
-        const debugPath = path.join(process.env.TEMP || '/tmp', 'roadnet-equipment.log');
-        const debugMsg = `ROUTE ${route.identity?.identifier}:\nspecificEquipmentId="${specificEquipmentId}"\nequipmentTypeIdentity="${vehicleType}"\ncapacity=${vehicleCapacity}\nequipment found: ${!!specificEquipment}\n\n`;
-        fs.appendFileSync(debugPath, debugMsg);
-      }
-
       const weightUtilization = vehicleCapacity > 0 ? Math.round((totalWeight / vehicleCapacity) * 100) : 0;
       const timeUtilization = Math.round((totalDurationMinutes / normalWorkDayMinutes) * 100);
 
@@ -394,10 +379,7 @@ export async function GET(request: NextRequest) {
 
     // Calculate traffic insights based on route times and holidays
     const trafficInsights = calculateTrafficInsights(kpis, isHoliday, language);
-
-    console.log('DEBUG - Before calculateDashboardSummary');
     const summary = calculateDashboardSummary(kpis, normalWorkDayMinutes, sessionDate, weatherData, trafficInsights, isHoliday, holidayName, language);
-    console.log('DEBUG - After calculateDashboardSummary');
 
     return NextResponse.json({
       routes: kpis,
@@ -406,17 +388,9 @@ export async function GET(request: NextRequest) {
       timestamp: new Date().toISOString(),
     });
   } catch (error) {
-    console.error('Routes fetch error:', error);
-    console.error('Error stack:', error instanceof Error ? error.stack : 'no stack');
+    console.error('Routes fetch error:', error instanceof Error ? error.message : String(error));
     return NextResponse.json(
-      {
-        error: 'Failed to fetch routes',
-        details: {
-          routesStatus: 'error',
-          equipmentStatus: 'error',
-          errorMessage: error instanceof Error ? error.message : String(error)
-        }
-      },
+      { error: 'Failed to fetch routes' },
       { status: 500 }
     );
   }

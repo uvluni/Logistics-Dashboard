@@ -181,11 +181,28 @@ export default function DashboardSummary({ summary, normalWorkDayMinutes = 540 }
               prevLine.includes('conductores') || prevLine.includes('conductor');  // Spanish
 
             if (isPureDriverList || (isAfterDriverHeader && trimmed.length > 0)) {
-              const blurredLine = line.replace(/[א-ת]+(?:\s[א-ת]+)*/g, (match) => {
-                return `<span class="blur-sm">${match}</span>`;
-              });
+              // Safely blur driver names without HTML injection vulnerability
+              const parts: (string | React.ReactNode)[] = [];
+              let lastIndex = 0;
+              const hebrewNameRegex = /[א-ת]+(?:\s[א-ת]+)*/g;
+              let match;
+
+              while ((match = hebrewNameRegex.exec(line)) !== null) {
+                if (match.index > lastIndex) {
+                  parts.push(line.substring(lastIndex, match.index));
+                }
+                parts.push(
+                  <span key={`${idx}-${match.index}`} className="blur-sm">{match[0]}</span>
+                );
+                lastIndex = match.index + match[0].length;
+              }
+
+              if (lastIndex < line.length) {
+                parts.push(line.substring(lastIndex));
+              }
+
               return (
-                <div key={idx} dangerouslySetInnerHTML={{ __html: blurredLine }} />
+                <div key={idx}>{parts.length > 0 ? parts : line}</div>
               );
             }
 
