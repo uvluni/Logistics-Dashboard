@@ -61,7 +61,7 @@ export default function Home() {
     if (isLoggedIn && selectedDate) {
       loadRoutes();
     }
-  }, [selectedDate, isLoggedIn]);
+  }, [selectedDate, isLoggedIn, language]);
 
   async function checkAuth() {
     try {
