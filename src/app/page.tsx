@@ -240,33 +240,33 @@ export default function Home() {
           <div className="flex gap-2 items-center">
             <button
               onClick={() => setLanguage('he')}
-              className={`px-2 py-1 rounded text-xs font-semibold transition-colors ${
+              className={`px-3 py-1 rounded font-semibold transition-colors ${
                 language === 'he'
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                  ? 'bg-white text-blue-600'
+                  : 'bg-blue-500 text-white hover:bg-blue-400'
               }`}
             >
               עברית
             </button>
             <button
               onClick={() => setLanguage('en')}
-              className={`px-2 py-1 rounded text-xs font-semibold transition-colors ${
+              className={`px-3 py-1 rounded font-semibold transition-colors ${
                 language === 'en'
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                  ? 'bg-white text-blue-600'
+                  : 'bg-blue-500 text-white hover:bg-blue-400'
               }`}
             >
-              EN
+              English
             </button>
             <button
               onClick={() => setLanguage('es')}
-              className={`px-2 py-1 rounded text-xs font-semibold transition-colors ${
+              className={`px-3 py-1 rounded font-semibold transition-colors ${
                 language === 'es'
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                  ? 'bg-white text-blue-600'
+                  : 'bg-blue-500 text-white hover:bg-blue-400'
               }`}
             >
-              ES
+              Español
             </button>
             <button
               onClick={handleLogout}
