@@ -126,9 +126,24 @@ export default function Home() {
     setError('');
 
     try {
+      // Get CSRF token first
+      const csrfRes = await fetch('/api/auth/csrf', { credentials: 'include' });
+      if (!csrfRes.ok) {
+        setError(t('auth.connection_error', language));
+        setIsLoading(false);
+        return;
+      }
+
+      const csrfData = await csrfRes.json();
+      const csrfToken = csrfData.token;
+
+      // Login with CSRF token
       const res = await fetch('/api/auth/login', {
         method: 'POST',
         credentials: 'include',
+        headers: {
+          'x-csrf-token': csrfToken,
+        },
       });
 
       if (res.ok) {

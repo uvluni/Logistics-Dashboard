@@ -1,7 +1,19 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { verifyCSRFToken } from '@/lib/csrf';
 
 export async function POST(request: NextRequest) {
   try {
+    // Verify CSRF token
+    const csrfToken = request.cookies.get('csrf_token')?.value;
+    const csrfHeader = request.headers.get('x-csrf-token');
+
+    if (!csrfToken || !csrfHeader || !verifyCSRFToken(csrfHeader) || csrfHeader !== csrfToken) {
+      return NextResponse.json(
+        { error: 'CSRF token validation failed' },
+        { status: 403 }
+      );
+    }
+
     const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
     const username = process.env.ROADNET_API_USERNAME;
     const password = process.env.ROADNET_API_PASSWORD;
@@ -33,14 +45,20 @@ export async function POST(request: NextRequest) {
     const res = NextResponse.json(data);
     res.cookies.set('roadnet_token', data.token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
+      secure: process.env.NODE_ENV === 'production' || process.env.FORCE_HTTPS === 'true',
       sameSite: 'strict',
       maxAge: 86400,
     });
 
+    // Clear CSRF token after use
+    res.cookies.delete('csrf_token');
+
     return res;
   } catch (error) {
-    console.error('Login error:', error);
+    // Don't log full error in production
+    if (process.env.NODE_ENV !== 'production') {
+      console.error('Login error:', error instanceof Error ? error.message : String(error));
+    }
     return NextResponse.json(
       { error: 'Login failed' },
       { status: 500 }

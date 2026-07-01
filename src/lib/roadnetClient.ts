@@ -26,7 +26,9 @@ class RoadnetClient {
       this.token = data.token;
       return data;
     } catch (error) {
-      console.error('Login error:', error);
+      if (process.env.NODE_ENV !== 'production') {
+        console.error('Login error:', error instanceof Error ? error.message : String(error));
+      }
       throw error;
     }
   }
@@ -69,7 +71,9 @@ class RoadnetClient {
       const data = await response.json();
       return data.routes || [];
     } catch (error) {
-      console.error('Get routes error:', error);
+      if (process.env.NODE_ENV !== 'production') {
+        console.error('Get routes error:', error instanceof Error ? error.message : String(error));
+      }
       throw error;
     }
   }
@@ -92,7 +96,9 @@ class RoadnetClient {
       const data = await response.json();
       return data.equipmentTypes || [];
     } catch (error) {
-      console.error('Get equipment error:', error);
+      if (process.env.NODE_ENV !== 'production') {
+        console.error('Get equipment error:', error instanceof Error ? error.message : String(error));
+      }
       throw error;
     }
   }

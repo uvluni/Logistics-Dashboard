@@ -1,5 +1,6 @@
 import { Route, RouteKPI, DashboardSummary, Equipment } from '@/types';
 import { translations, Language } from '@/i18n/translations';
+import { sanitizeDriverName } from '@/lib/sanitize';
 
 // Helper function to translate text
 function t(key: string, lang: Language): string {
@@ -129,12 +130,12 @@ export function calculateDashboardSummary(
       // אחרת בדוק את הערך הכללי
       return k.weightUtilization > 100;
     })
-    .map(k => k.driverName);
+    .map(k => sanitizeDriverName(k.driverName));
 
   // נהגים החורגים מנורמת יום העבודה
   const overTimeRoutes = kpis
     .filter(k => k.totalDurationMinutes > normalWorkDayMinutes)
-    .map(k => k.driverName);
+    .map(k => sanitizeDriverName(k.driverName));
 
   // Build weather note
   let weatherNote = '';
@@ -191,17 +192,17 @@ export function calculateDashboardSummary(
   // Find drivers with underutilized weight (<80%) and short hours (<8 hours)
   const underweightShortHours = kpis
     .filter(k => k.weightUtilization < 80 && k.totalDurationMinutes < 480)
-    .map(k => k.driverName);
+    .map(k => sanitizeDriverName(k.driverName));
 
   // Find drivers with rounds exceeding weight (>100%)
   const overCapacityDrivers = kpis
     .filter(k => k.rounds && k.rounds.some(r => r.weightUtilization > 100))
-    .map(k => k.driverName);
+    .map(k => sanitizeDriverName(k.driverName));
 
   // Find drivers with long hours (>10 hours / 600 minutes)
   const longHoursDrivers = kpis
     .filter(k => k.totalDurationMinutes > 600)
-    .map(k => k.driverName);
+    .map(k => sanitizeDriverName(k.driverName));
 
   // Build recommendation in natural language with line breaks
   let recommendation = '';

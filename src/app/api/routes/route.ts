@@ -3,6 +3,7 @@ import { calculateRouteKPI, calculateDashboardSummary } from '@/lib/kpiCalculato
 import { Route, Equipment, RouteKPI, RouteRound } from '@/types';
 import { translations, Language } from '@/i18n/translations';
 import { checkRateLimit } from '@/lib/rateLimiter';
+import { sanitizeDriverName, sanitizeString } from '@/lib/sanitize';
 
 // Helper function to translate text
 function t(key: string, lang: Language): string {
@@ -325,12 +326,13 @@ export async function GET(request: NextRequest) {
         insights.push(t('insight.low_weight_combine', language));
       }
 
-      const driverName = route.workersInfo?.[0]?.name?.firstName || (language === 'he' ? 'ללא נהג' : language === 'es' ? 'Sin conductor' : 'No driver');
+      let driverName = route.workersInfo?.[0]?.name?.firstName || (language === 'he' ? 'ללא נהג' : language === 'es' ? 'Sin conductor' : 'No driver');
+      driverName = sanitizeDriverName(driverName);
 
       return {
-        routeId: route.identity?.identifier || `route-${index}`,
+        routeId: sanitizeString(route.identity?.identifier || `route-${index}`, 50),
         driverName,
-        vehicleType,
+        vehicleType: sanitizeString(vehicleType, 50),
         totalDurationMinutes,
         travelTimeMinutes,
         serviceTimeMinutes,
@@ -357,7 +359,9 @@ export async function GET(request: NextRequest) {
         weatherData = await weatherResponse.json();
       }
     } catch (err) {
-      console.error('Failed to fetch weather data:', err);
+      if (process.env.NODE_ENV !== 'production') {
+        console.error('Failed to fetch weather data');
+      }
     }
 
     // Fetch holidays for Israel
@@ -374,7 +378,9 @@ export async function GET(request: NextRequest) {
         }
       }
     } catch (err) {
-      console.error('Failed to fetch holiday data:', err);
+      if (process.env.NODE_ENV !== 'production') {
+        console.error('Failed to fetch holiday data');
+      }
     }
 
     // Calculate traffic insights based on route times and holidays
@@ -388,7 +394,9 @@ export async function GET(request: NextRequest) {
       timestamp: new Date().toISOString(),
     });
   } catch (error) {
-    console.error('Routes fetch error:', error instanceof Error ? error.message : String(error));
+    if (process.env.NODE_ENV !== 'production') {
+      console.error('Routes fetch error:', error instanceof Error ? error.message : String(error));
+    }
     return NextResponse.json(
       { error: 'Failed to fetch routes' },
       { status: 500 }
