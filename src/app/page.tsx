@@ -44,63 +44,6 @@ export default function Home() {
   const [mounted, setMounted] = useState(false);
   const datePickerRef = useRef<DatePicker>(null);
 
-  // Initialize date on client only to avoid hydration mismatch
-  useEffect(() => {
-    setSelectedDate(getNextBusinessDay());
-    setMounted(true);
-  }, []);
-
-  // Reset date to next business day when logged in
-  useEffect(() => {
-    if (isLoggedIn) {
-      setSelectedDate(getNextBusinessDay());
-    }
-  }, [isLoggedIn]);
-
-  useEffect(() => {
-    if (isLoggedIn && selectedDate) {
-      loadRoutes();
-    }
-  }, [selectedDate, isLoggedIn, loadRoutes]);
-
-  async function checkAuth() {
-    try {
-      const res = await fetch('/api/auth/check', {
-        credentials: 'include',
-      });
-      if (res.ok) {
-        setIsLoggedIn(true);
-        loadRoutes();
-      }
-    } catch (err) {
-      setIsLoggedIn(false);
-    }
-  }
-
-  async function handleLogin(e: React.FormEvent) {
-    e.preventDefault();
-    setIsLoading(true);
-    setError('');
-
-    try {
-      const res = await fetch('/api/auth/login', {
-        method: 'POST',
-        credentials: 'include',
-      });
-
-      if (res.ok) {
-        setIsLoggedIn(true);
-        loadRoutes();
-      } else {
-        setError('שגיאה בהתחברות. בדוק את הקרדנשיאלס.');
-      }
-    } catch (err) {
-      setError('שגיאה בחיבור לשרת');
-    } finally {
-      setIsLoading(false);
-    }
-  }
-
   const loadRoutes = useCallback(async () => {
     setIsLoading(true);
     setError('');
@@ -137,6 +80,66 @@ export default function Home() {
       setIsLoading(false);
     }
   }, [selectedDate, language, setIsLoading, setError, setIsLoggedIn, setKpis, setSummary]);
+
+  // Initialize date on client only to avoid hydration mismatch
+  useEffect(() => {
+    setSelectedDate(getNextBusinessDay());
+    setMounted(true);
+  }, []);
+
+  // Reset date to next business day when logged in
+  useEffect(() => {
+    if (isLoggedIn) {
+      setSelectedDate(getNextBusinessDay());
+    }
+  }, [isLoggedIn]);
+
+  useEffect(() => {
+    if (isLoggedIn && selectedDate) {
+      loadRoutes();
+    }
+  }, [selectedDate, isLoggedIn, loadRoutes]);
+
+  // Check auth on mount
+  useEffect(() => {
+    async function checkAuth() {
+      try {
+        const res = await fetch('/api/auth/check', {
+          credentials: 'include',
+        });
+        if (res.ok) {
+          setIsLoggedIn(true);
+        }
+      } catch (err) {
+        setIsLoggedIn(false);
+      }
+    }
+    checkAuth();
+  }, []);
+
+  async function handleLogin(e: React.FormEvent) {
+    e.preventDefault();
+    setIsLoading(true);
+    setError('');
+
+    try {
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        credentials: 'include',
+      });
+
+      if (res.ok) {
+        setIsLoggedIn(true);
+        loadRoutes();
+      } else {
+        setError('שגיאה בהתחברות. בדוק את הקרדנשיאלס.');
+      }
+    } catch (err) {
+      setError('שגיאה בחיבור לשרת');
+    } finally {
+      setIsLoading(false);
+    }
+  }
 
   async function handleLogout() {
     setIsLoggedIn(false);

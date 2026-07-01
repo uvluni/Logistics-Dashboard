@@ -31,7 +31,14 @@
       "Bash(git commit -m 'Release v1.3.1: Complete UI translation \\(All components\\) *)",
       "Bash(npm audit *)",
       "Bash(grep -v \"// \")",
-      "Bash(git checkout *)"
+      "Bash(git checkout *)",
+      "Bash(git commit -m 'UI: Improve KPI Card formatting *)",
+      "Bash(git commit -m 'Fix: Align insights container to right in Hebrew \\(RTL\\) *)",
+      "Bash(git commit -m 'Fix: Properly align insight text to right in Hebrew *)",
+      "Bash(git commit -m 'UI: Unify language switcher buttons across login and dashboard *)",
+      "Bash(git commit -m 'UI: Use language code abbreviations for switcher buttons *)",
+      "Bash(curl -s http://localhost:3000)",
+      "Bash(git commit -m 'Fix: Reorganize loadRoutes hook and useEffect dependencies *)"
     ]
   }
 }
