@@ -24,7 +24,10 @@
       "PowerShell(Get-Process | Where-Object { $_.Name -match \"node|npm\" } | Select-Object Name, Id, ProcessName)",
       "Bash(git tag *)",
       "Bash(git commit -m 'Fix language provider context error *)",
-      "Bash(git commit *)"
+      "Bash(git commit *)",
+      "Bash(git commit -m 'Fix: always provide LanguageContext, remove early return *)",
+      "Bash(git commit -m 'Add comprehensive translations and start translating DashboardSummary *)",
+      "Bash(git commit -m 'Release v1.3.0: Multi-language support \\(Hebrew, English, Spanish\\) *)"
     ]
   }
 }

@@ -28,6 +28,13 @@ export const translations: Record<Language, Record<string, string>> = {
     'summary.overweight_routes': '⚠️ מסלולים חורגים',
     'summary.planning_recommendation': '💡 חוות דעת על התכנון',
     'summary.daily_conditions': '⛅ תנאים יומיים',
+    'summary.total_work_time': 'סך זמן עבודה',
+    'summary.avg_time_per_route': 'זמן ממוצע למסלול',
+    'summary.routes_85_100': 'מסלולים שמשקלם 85%-100%',
+    'summary.routes_under_50': 'מסלולים שמשקלם קטן מ-50%',
+    'summary.overweight_routes_count': 'מסלולים שחורגים מקיבולת המשקל',
+    'summary.overweight_label': 'חורגים משקל:',
+    'summary.overtime_label': 'חורגים זמן',
 
     // KPI Cards
     'kpi.title': 'מסלולים - KPIs',
@@ -76,6 +83,13 @@ export const translations: Record<Language, Record<string, string>> = {
     'summary.overweight_routes': '⚠️ Overweight Routes',
     'summary.planning_recommendation': '💡 Planning Recommendation',
     'summary.daily_conditions': '⛅ Daily Conditions',
+    'summary.total_work_time': 'Total Work Time',
+    'summary.avg_time_per_route': 'Avg Time per Route',
+    'summary.routes_85_100': 'Routes 85%-100% Weight',
+    'summary.routes_under_50': 'Routes Under 50% Weight',
+    'summary.overweight_routes_count': 'Routes Exceeding Capacity',
+    'summary.overweight_label': 'Overweight:',
+    'summary.overtime_label': 'Overtime',
 
     // KPI Cards
     'kpi.title': 'Routes - KPIs',
@@ -124,6 +138,13 @@ export const translations: Record<Language, Record<string, string>> = {
     'summary.overweight_routes': '⚠️ Rutas Sobrecargadas',
     'summary.planning_recommendation': '💡 Recomendación de Planificación',
     'summary.daily_conditions': '⛅ Condiciones Diarias',
+    'summary.total_work_time': 'Tiempo Total de Trabajo',
+    'summary.avg_time_per_route': 'Tiempo Promedio por Ruta',
+    'summary.routes_85_100': 'Rutas 85%-100% Peso',
+    'summary.routes_under_50': 'Rutas Bajo 50% Peso',
+    'summary.overweight_routes_count': 'Rutas Excediendo Capacidad',
+    'summary.overweight_label': 'Sobrecarga:',
+    'summary.overtime_label': 'Tiempo Extra',
 
     // KPI Cards
     'kpi.title': 'Rutas - KPIs',

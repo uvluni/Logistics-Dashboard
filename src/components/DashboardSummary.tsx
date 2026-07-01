@@ -51,14 +51,22 @@ export default function DashboardSummary({ summary, normalWorkDayMinutes = 540 }
           </p>
         </div>
         <div className="bg-white rounded-lg p-4 border border-gray-200">
-          <p className="text-gray-600 text-sm text-right">ניצול משקל</p>
-          <p className={`text-3xl font-bold text-right ${utilizationColor}`}>
+          <p className={`text-gray-600 text-sm ${isRTL ? 'text-right' : 'text-left'}`}>
+            {t('summary.weight_utilization', language)}
+          </p>
+          <p className={`text-3xl font-bold ${isRTL ? 'text-right' : 'text-left'} ${utilizationColor}`}>
             {summary.weightUtilization}%
           </p>
         </div>
         <div className="bg-white rounded-lg p-4 border border-gray-200">
-          <p className="text-gray-600 text-sm text-right">ניצול זמן (מ-{normalWorkDayMinutes === 300 ? '5' : '9'} שעות)</p>
-          <p className="text-3xl font-bold text-indigo-600 text-right">
+          <p className={`text-gray-600 text-sm ${isRTL ? 'text-right' : 'text-left'}`}>
+            {language === 'he'
+              ? `${t('summary.time_utilization', language)} (מ-${normalWorkDayMinutes === 300 ? '5' : '9'} ${t('summary.time_hours', language)})`
+              : language === 'es'
+              ? `${t('summary.time_utilization', language)} (de ${normalWorkDayMinutes === 300 ? '5' : '9'} ${t('summary.time_hours', language)})`
+              : `${t('summary.time_utilization', language)} (${normalWorkDayMinutes === 300 ? '5' : '9'} ${t('summary.time_hours', language)})`}
+          </p>
+          <p className={`text-3xl font-bold text-indigo-600 ${isRTL ? 'text-right' : 'text-left'}`}>
             {summary.timeUtilization}%
           </p>
         </div>
