@@ -1,18 +1,25 @@
+'use client';
+
 import { DashboardSummary as Summary } from '@/types';
 import { formatMinutesAsTime } from '@/lib/kpiCalculator';
+import { useLanguage } from '@/context/LanguageContext';
+import { t } from '@/i18n/translations';
 
 interface DashboardSummaryProps {
   summary: Summary;
   normalWorkDayMinutes?: number;
 }
 
-function formatTotalWorkTime(minutes: number): string {
+function formatTotalWorkTime(minutes: number, language: 'he' | 'en' | 'es'): string {
   const hours = Math.floor(minutes / 60);
   const mins = minutes % 60;
-  return `${hours} שעות, ${mins} דקות`;
+  if (language === 'he') return `${hours} שעות, ${mins} דקות`;
+  if (language === 'es') return `${hours} horas, ${mins} minutos`;
+  return `${hours} hours, ${mins} minutes`;
 }
 
 export default function DashboardSummary({ summary, normalWorkDayMinutes = 540 }: DashboardSummaryProps) {
+  const { language, isRTL } = useLanguage();
   const utilizationColor =
     summary.weightUtilization > 85
       ? 'text-orange-600'
@@ -22,18 +29,24 @@ export default function DashboardSummary({ summary, normalWorkDayMinutes = 540 }
 
   return (
     <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-lg p-6 mb-6">
-      <h2 className="text-2xl font-bold text-gray-900 mb-6 text-right">סיכום כללי</h2>
+      <h2 className={`text-2xl font-bold text-gray-900 mb-6 ${isRTL ? 'text-right' : 'text-left'}`}>
+        {t('summary.title', language)}
+      </h2>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
         <div className="bg-white rounded-lg p-4 border border-gray-200">
-          <p className="text-gray-600 text-sm text-right">סך מסלולים</p>
-          <p className="text-3xl font-bold text-blue-600 text-right">
+          <p className={`text-gray-600 text-sm ${isRTL ? 'text-right' : 'text-left'}`}>
+            {t('summary.total_routes', language)}
+          </p>
+          <p className={`text-3xl font-bold text-blue-600 ${isRTL ? 'text-right' : 'text-left'}`}>
             {summary.totalRoutes}
           </p>
         </div>
         <div className="bg-white rounded-lg p-4 border border-gray-200">
-          <p className="text-gray-600 text-sm text-right">סך תחנות</p>
-          <p className="text-3xl font-bold text-green-600 text-right">
+          <p className={`text-gray-600 text-sm ${isRTL ? 'text-right' : 'text-left'}`}>
+            {t('summary.total_stops', language)}
+          </p>
+          <p className={`text-3xl font-bold text-green-600 ${isRTL ? 'text-right' : 'text-left'}`}>
             {summary.totalStops}
           </p>
         </div>

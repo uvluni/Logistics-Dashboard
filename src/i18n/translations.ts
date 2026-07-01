@@ -25,6 +25,9 @@ export const translations: Record<Language, Record<string, string>> = {
     'summary.weight_utilization': 'ניצול משקל',
     'summary.time_utilization': 'ניצול זמן',
     'summary.time_hours': 'שעות',
+    'summary.overweight_routes': '⚠️ מסלולים חורגים',
+    'summary.planning_recommendation': '💡 חוות דעת על התכנון',
+    'summary.daily_conditions': '⛅ תנאים יומיים',
 
     // KPI Cards
     'kpi.title': 'מסלולים - KPIs',
@@ -37,6 +40,9 @@ export const translations: Record<Language, Record<string, string>> = {
     'kpi.stops': 'תחנות',
     'kpi.weight': 'משקל',
     'kpi.capacity': 'קיבולת',
+    'kpi.weight_utilization': 'ניצול משקל',
+    'kpi.time_utilization': 'ניצול זמן',
+    'kpi.rounds': 'סבבים',
     'kpi.no_routes': 'אין מסלולים עבור התאריך שנבחר',
 
     // Messages
@@ -67,6 +73,9 @@ export const translations: Record<Language, Record<string, string>> = {
     'summary.weight_utilization': 'Weight Utilization',
     'summary.time_utilization': 'Time Utilization',
     'summary.time_hours': 'hours',
+    'summary.overweight_routes': '⚠️ Overweight Routes',
+    'summary.planning_recommendation': '💡 Planning Recommendation',
+    'summary.daily_conditions': '⛅ Daily Conditions',
 
     // KPI Cards
     'kpi.title': 'Routes - KPIs',
@@ -79,6 +88,9 @@ export const translations: Record<Language, Record<string, string>> = {
     'kpi.stops': 'Stops',
     'kpi.weight': 'Weight',
     'kpi.capacity': 'Capacity',
+    'kpi.weight_utilization': 'Weight Utilization',
+    'kpi.time_utilization': 'Time Utilization',
+    'kpi.rounds': 'Rounds',
     'kpi.no_routes': 'No routes found for selected date',
 
     // Messages
@@ -109,6 +121,9 @@ export const translations: Record<Language, Record<string, string>> = {
     'summary.weight_utilization': 'Utilización de Peso',
     'summary.time_utilization': 'Utilización de Tiempo',
     'summary.time_hours': 'horas',
+    'summary.overweight_routes': '⚠️ Rutas Sobrecargadas',
+    'summary.planning_recommendation': '💡 Recomendación de Planificación',
+    'summary.daily_conditions': '⛅ Condiciones Diarias',
 
     // KPI Cards
     'kpi.title': 'Rutas - KPIs',
@@ -121,6 +136,9 @@ export const translations: Record<Language, Record<string, string>> = {
     'kpi.stops': 'Paradas',
     'kpi.weight': 'Peso',
     'kpi.capacity': 'Capacidad',
+    'kpi.weight_utilization': 'Utilización de Peso',
+    'kpi.time_utilization': 'Utilización de Tiempo',
+    'kpi.rounds': 'Rondas',
     'kpi.no_routes': 'No se encontraron rutas para la fecha seleccionada',
 
     // Messages
