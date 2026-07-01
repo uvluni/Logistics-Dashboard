@@ -14,7 +14,7 @@ export default function KPICard({ kpi }: KPICardProps) {
       <div className="flex justify-between items-center mb-4 pb-4 border-b">
         <div className="text-center flex-1">
           <p className={`text-gray-600 text-xs ${isRTL ? 'text-right' : 'text-left'}`}>{t('kpi.route', language)}</p>
-          <p className={`text-lg font-semibold text-gray-900 ${isRTL ? 'text-right' : 'text-left'}`}>{t('kpi.route', language)} {kpi.routeId}</p>
+          <p className={`text-lg font-semibold text-gray-900 ${isRTL ? 'text-right' : 'text-left'}`}>{kpi.routeId}</p>
         </div>
         <div className="text-center flex-1">
           <p className={`text-gray-600 text-xs ${isRTL ? 'text-right' : 'text-left'}`}>{t('kpi.driver', language)}</p>
@@ -179,8 +179,8 @@ export default function KPICard({ kpi }: KPICardProps) {
       <div className="space-y-1">
         <p className={`text-gray-600 text-xs font-semibold ${isRTL ? 'text-right' : 'text-left'}`}>{t('kpi.insights', language)}</p>
         {kpi.insights.map((insight, idx) => (
-          <p key={idx} className={`text-gray-700 text-sm flex items-start ${isRTL ? 'flex-row-reverse' : ''}`}>
-            <span className={isRTL ? 'ml-2' : 'mr-2'}>•</span>
+          <p key={idx} className={`text-gray-700 text-sm flex items-start ${isRTL ? 'flex-row-reverse text-right' : ''}`}>
+            <span className={isRTL ? 'ml-1' : 'mr-1'}>•</span>
             <span>{insight}</span>
           </p>
         ))}
