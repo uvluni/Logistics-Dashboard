@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import { LanguageProvider } from '@/context/LanguageContext';
-import LanguageInitializer from '@/components/LanguageInitializer';
+import LanguageInitializer from '@/components/LayoutClient';
 
 export const metadata: Metadata = {
   title: 'ROADNET',
