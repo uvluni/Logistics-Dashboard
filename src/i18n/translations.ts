@@ -13,6 +13,11 @@ export const translations: Record<Language, Record<string, string>> = {
     'auth.error': 'שגיאה בהתחברות. בדוק את הקרדנשיאלס.',
     'auth.connection_error': 'שגיאה בחיבור לשרת',
 
+    // Error Messages
+    'error.session_expired': 'התחברות פקעה. בחברו שוב.',
+    'error.load_data_failed': 'שגיאה בטעינת הנתונים',
+    'error.connection_failed': 'שגיאה בטעינה. בדוק את החיבור לשרת.',
+
     // Dashboard Header
     'dashboard.title': 'ROADNET - דוח תכנון הפצה',
     'dashboard.select_date': 'בחר תאריך',
@@ -143,6 +148,11 @@ export const translations: Record<Language, Record<string, string>> = {
     'auth.error': 'Login error. Check your credentials.',
     'auth.connection_error': 'Connection error with server',
 
+    // Error Messages
+    'error.session_expired': 'Session expired. Please login again.',
+    'error.load_data_failed': 'Error loading data',
+    'error.connection_failed': 'Loading error. Check your server connection.',
+
     // Dashboard Header
     'dashboard.title': 'ROADNET - Daily Distribution Planning Report',
     'dashboard.select_date': 'Select Date',
@@ -272,6 +282,11 @@ export const translations: Record<Language, Record<string, string>> = {
     'auth.connecting': 'Conectando...',
     'auth.error': 'Error de inicio de sesión. Verifique sus credenciales.',
     'auth.connection_error': 'Error de conexión con el servidor',
+
+    // Error Messages
+    'error.session_expired': 'Sesión expirada. Por favor inicie sesión nuevamente.',
+    'error.load_data_failed': 'Error al cargar los datos',
+    'error.connection_failed': 'Error de carga. Verifique su conexión al servidor.',
 
     // Dashboard Header
     'dashboard.title': 'ROADNET - Informe de Planificación de Distribución Diaria',

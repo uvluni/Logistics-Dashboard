@@ -60,14 +60,14 @@ export default function Home() {
 
       if (res.status === 401) {
         setIsLoggedIn(false);
-        setError('התחברות פקעה. בחברו שוב.');
+        setError(t('error.session_expired', language));
         return;
       }
 
       if (!res.ok) {
         const errorData = await res.json().catch(() => ({}));
         const details = errorData.details ? ` (routes: ${errorData.details.routesStatus}, equipment: ${errorData.details.equipmentStatus})` : '';
-        setError(`שגיאה בטעינת הנתונים${details}`);
+        setError(t('error.load_data_failed', language) + details);
         return;
       }
 
@@ -75,7 +75,7 @@ export default function Home() {
       setKpis(data.kpis || []);
       setSummary(data.summary || null);
     } catch (err) {
-      setError('שגיאה בטעינה. בדוק את החיבור לשרת.');
+      setError(t('error.connection_failed', language));
     } finally {
       setIsLoading(false);
     }
@@ -86,14 +86,25 @@ export default function Home() {
     setSelectedDate(getNextBusinessDay());
     setMounted(true);
     // Clear session on page load to return to login screen on refresh
-    const clearSession = async () => {
+    const initAuth = async () => {
       try {
         await fetch('/api/auth/logout', { method: 'POST', credentials: 'include' });
       } catch (err) {
         // Silently fail
       }
+      // Check auth after clearing session
+      try {
+        const res = await fetch('/api/auth/check', {
+          credentials: 'include',
+        });
+        if (res.ok) {
+          setIsLoggedIn(true);
+        }
+      } catch (err) {
+        setIsLoggedIn(false);
+      }
     };
-    clearSession();
+    initAuth();
   }, []);
 
   // Reset date to next business day when logged in
@@ -108,23 +119,6 @@ export default function Home() {
       loadRoutes();
     }
   }, [selectedDate, isLoggedIn, loadRoutes]);
-
-  // Check auth on mount
-  useEffect(() => {
-    async function checkAuth() {
-      try {
-        const res = await fetch('/api/auth/check', {
-          credentials: 'include',
-        });
-        if (res.ok) {
-          setIsLoggedIn(true);
-        }
-      } catch (err) {
-        setIsLoggedIn(false);
-      }
-    }
-    checkAuth();
-  }, []);
 
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
@@ -141,10 +135,10 @@ export default function Home() {
         setIsLoggedIn(true);
         loadRoutes();
       } else {
-        setError('שגיאה בהתחברות. בדוק את הקרדנשיאלס.');
+        setError(t('auth.error', language));
       }
     } catch (err) {
-      setError('שגיאה בחיבור לשרת');
+      setError(t('auth.connection_error', language));
     } finally {
       setIsLoading(false);
     }
