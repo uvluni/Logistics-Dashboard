@@ -170,12 +170,15 @@ export default function DashboardSummary({ summary, normalWorkDayMinutes = 540 }
             const trimmed = line.trim();
 
             // Check if this is a line with driver names
-            // Either: pure driver list (only Hebrew + commas) OR a line after a "נהגים" header
-            const isPureDriverList = /^[\s,א-ת]+$/.test(trimmed) && trimmed.length > 0 && !trimmed.includes(':');
+            // Either: pure driver list (only Hebrew + commas/digits) OR a line after a driver header
+            const isPureDriverList = /^[\s,א-ת\d\-]+$/.test(trimmed) && trimmed.length > 0 && !trimmed.includes(':');
 
-            // Check if previous line indicates driver names are coming
+            // Check if previous line indicates driver names are coming (support all languages)
             const prevLine = idx > 0 ? summary.recommendation.split('\n')[idx - 1] : '';
-            const isAfterDriverHeader = prevLine.includes('נהגים') || prevLine.includes('נהג');
+            const isAfterDriverHeader =
+              prevLine.includes('נהגים') || prevLine.includes('נהג') ||  // Hebrew
+              prevLine.includes('drivers') || prevLine.includes('driver') ||  // English
+              prevLine.includes('conductores') || prevLine.includes('conductor');  // Spanish
 
             if (isPureDriverList || (isAfterDriverHeader && trimmed.length > 0)) {
               const blurredLine = line.replace(/[א-ת]+(?:\s[א-ת]+)*/g, (match) => {
