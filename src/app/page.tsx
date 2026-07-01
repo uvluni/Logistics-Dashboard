@@ -6,6 +6,8 @@ import 'react-datepicker/dist/react-datepicker.css';
 import KPICard from '@/components/KPICard';
 import DashboardSummary from '@/components/DashboardSummary';
 import { RouteKPI, DashboardSummary as Summary } from '@/types';
+import { useLanguage } from '@/context/LanguageContext';
+import { t } from '@/i18n/translations';
 
 function getNextBusinessDay(): string {
   let date = new Date();
@@ -32,6 +34,7 @@ function formatDateForDisplay(isoDate: string): string {
 }
 
 export default function Home() {
+  const { language, setLanguage, isRTL } = useLanguage();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [kpis, setKpis] = useState<RouteKPI[]>([]);
@@ -143,15 +146,48 @@ export default function Home() {
   if (!isLoggedIn) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-600 to-indigo-700 flex items-center justify-center p-4">
+        <div className="absolute top-4 right-4 flex gap-2">
+          <button
+            onClick={() => setLanguage('he')}
+            className={`px-3 py-1 rounded font-semibold transition-colors ${
+              language === 'he'
+                ? 'bg-white text-blue-600'
+                : 'bg-blue-500 text-white hover:bg-blue-400'
+            }`}
+          >
+            עברית
+          </button>
+          <button
+            onClick={() => setLanguage('en')}
+            className={`px-3 py-1 rounded font-semibold transition-colors ${
+              language === 'en'
+                ? 'bg-white text-blue-600'
+                : 'bg-blue-500 text-white hover:bg-blue-400'
+            }`}
+          >
+            English
+          </button>
+          <button
+            onClick={() => setLanguage('es')}
+            className={`px-3 py-1 rounded font-semibold transition-colors ${
+              language === 'es'
+                ? 'bg-white text-blue-600'
+                : 'bg-blue-500 text-white hover:bg-blue-400'
+            }`}
+          >
+            Español
+          </button>
+        </div>
+
         <div className="bg-white rounded-lg shadow-xl max-w-md w-full p-8">
           <h1 className="text-3xl font-bold text-gray-900 text-center mb-2">
-            ROADNET
+            {t('app.title', language)}
           </h1>
           <p className="text-gray-600 text-center mb-8 text-sm">
-            דוח תכנון הפצה יומי
+            {t('app.subtitle', language)}
           </p>
 
-          <form onSubmit={handleLogin} className="space-y-4">
+          <form onSubmit={handleLogin} className={`space-y-4 ${isRTL ? 'text-right' : 'text-left'}`}>
             {error && (
               <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
                 {error}
@@ -159,25 +195,25 @@ export default function Home() {
             )}
 
             <div>
-              <label className="block text-gray-700 text-sm font-medium mb-2 text-right">
-                שם משתמש
+              <label className={`block text-gray-700 text-sm font-medium mb-2 ${isRTL ? 'text-right' : 'text-left'}`}>
+                {t('auth.email', language)}
               </label>
               <input
                 type="email"
                 defaultValue="yuval@rasner.co.il"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg text-right"
+                className={`w-full px-4 py-2 border border-gray-300 rounded-lg ${isRTL ? 'text-right' : 'text-left'}`}
                 disabled
               />
             </div>
 
             <div>
-              <label className="block text-gray-700 text-sm font-medium mb-2 text-right">
-                סיסמא
+              <label className={`block text-gray-700 text-sm font-medium mb-2 ${isRTL ? 'text-right' : 'text-left'}`}>
+                {t('auth.password', language)}
               </label>
               <input
                 type="password"
                 defaultValue="••••••••••••"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg text-right"
+                className={`w-full px-4 py-2 border border-gray-300 rounded-lg ${isRTL ? 'text-right' : 'text-left'}`}
                 disabled
               />
             </div>
@@ -187,7 +223,7 @@ export default function Home() {
               disabled={isLoading}
               className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-semibold py-3 rounded-lg transition-colors"
             >
-              {isLoading ? 'מתחבר...' : 'התחבר'}
+              {isLoading ? t('auth.connecting', language) : t('auth.login', language)}
             </button>
           </form>
         </div>
@@ -199,13 +235,45 @@ export default function Home() {
     <div className="min-h-screen bg-gray-50">
       <div className="sticky top-0 bg-white border-b border-gray-200 shadow-sm z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-gray-900">ROADNET - דוח תכנון הפצה</h1>
-          <button
-            onClick={handleLogout}
-            className="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors text-sm"
-          >
-            התנתק
-          </button>
+          <h1 className="text-2xl font-bold text-gray-900">{t('dashboard.title', language)}</h1>
+          <div className="flex gap-2 items-center">
+            <button
+              onClick={() => setLanguage('he')}
+              className={`px-2 py-1 rounded text-xs font-semibold transition-colors ${
+                language === 'he'
+                  ? 'bg-blue-600 text-white'
+                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+              }`}
+            >
+              עברית
+            </button>
+            <button
+              onClick={() => setLanguage('en')}
+              className={`px-2 py-1 rounded text-xs font-semibold transition-colors ${
+                language === 'en'
+                  ? 'bg-blue-600 text-white'
+                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+              }`}
+            >
+              EN
+            </button>
+            <button
+              onClick={() => setLanguage('es')}
+              className={`px-2 py-1 rounded text-xs font-semibold transition-colors ${
+                language === 'es'
+                  ? 'bg-blue-600 text-white'
+                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+              }`}
+            >
+              ES
+            </button>
+            <button
+              onClick={handleLogout}
+              className="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors text-sm"
+            >
+              {t('auth.logout', language)}
+            </button>
+          </div>
         </div>
       </div>
 
@@ -213,8 +281,8 @@ export default function Home() {
         <div className="bg-gradient-to-br from-blue-600 to-indigo-600 rounded-lg p-8 mb-8 shadow-md text-white">
           <h2 className="text-2xl font-bold mb-6 text-right">תכנון הפצה - {selectedDate ? formatDateForDisplay(selectedDate) : '...'}</h2>
           <div className="max-w-md">
-            <label className="block text-sm font-medium mb-3 text-right opacity-90">
-              בחר תאריך
+            <label className={`block text-sm font-medium mb-3 opacity-90 ${isRTL ? 'text-right' : 'text-left'}`}>
+              {t('dashboard.select_date', language)}
             </label>
             <div
               onClick={() => datePickerRef.current?.setOpen(true)}

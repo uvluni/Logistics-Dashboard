@@ -1,9 +1,11 @@
 import type { Metadata } from 'next';
 import './globals.css';
+import { LanguageProvider } from '@/context/LanguageContext';
+import LayoutClient from '@/components/LayoutClient';
 
 export const metadata: Metadata = {
-  title: 'ROADNET - דוח תכנון הפצה',
-  description: 'מערכת בקרה ממשית של תכנון מסלולי הפצה עם KPIs',
+  title: 'ROADNET',
+  description: 'Distribution Planning Report',
 };
 
 export default function RootLayout({
@@ -12,11 +14,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="he" dir="rtl" suppressHydrationWarning>
+    <html suppressHydrationWarning>
       <head>
         <meta charSet="utf-8" />
       </head>
-      <body className="bg-gray-50" suppressHydrationWarning>{children}</body>
+      <body className="bg-gray-50" suppressHydrationWarning>
+        <LanguageProvider>
+          <LayoutClient>{children}</LayoutClient>
+        </LanguageProvider>
+      </body>
     </html>
   );
 }

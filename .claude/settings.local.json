@@ -17,7 +17,12 @@
       "Bash(node --check \"C:\\\\\\\\Users\\\\\\\\yuval\\\\\\\\OneDrive - Aman Computers\\\\\\\\Claude\\\\\\\\Code\\\\\\\\routes-report\\\\\\\\src\\\\\\\\lib\\\\\\\\kpiCalculator.ts\")",
       "Skill(run)",
       "Skill(run:*)",
-      "Bash(curl -s http://localhost:3000/)"
+      "Bash(curl -s http://localhost:3000/)",
+      "mcp__Claude_in_Chrome__tabs_context_mcp",
+      "Bash(git commit -m ' *)",
+      "Bash(pkill -9 node)",
+      "PowerShell(Get-Process | Where-Object { $_.Name -match \"node|npm\" } | Select-Object Name, Id, ProcessName)",
+      "Bash(git tag *)"
     ]
   }
 }

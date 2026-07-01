@@ -1,0 +1,134 @@
+export type Language = 'he' | 'en' | 'es';
+
+export const translations: Record<Language, Record<string, string>> = {
+  he: {
+    // Header & Auth
+    'app.title': 'ROADNET',
+    'app.subtitle': 'דוח תכנון הפצה יומי',
+    'auth.email': 'שם משתמש',
+    'auth.password': 'סיסמא',
+    'auth.login': 'התחבר',
+    'auth.logout': 'התנתק',
+    'auth.connecting': 'מתחבר...',
+    'auth.error': 'שגיאה בהתחברות. בדוק את הקרדנשיאלס.',
+    'auth.connection_error': 'שגיאה בחיבור לשרת',
+
+    // Dashboard Header
+    'dashboard.title': 'ROADNET - דוח תכנון הפצה',
+    'dashboard.select_date': 'בחר תאריך',
+    'dashboard.loading': 'טוען מסלולים...',
+
+    // Summary Section
+    'summary.title': 'סיכום כללי',
+    'summary.total_routes': 'סך הכל מסלולים',
+    'summary.total_stops': 'סך הכל תחנות',
+    'summary.weight_utilization': 'ניצול משקל',
+    'summary.time_utilization': 'ניצול זמן',
+    'summary.time_hours': 'שעות',
+
+    // KPI Cards
+    'kpi.title': 'מסלולים - KPIs',
+    'kpi.route': 'מסלול',
+    'kpi.driver': 'נהג',
+    'kpi.vehicle': 'רכב',
+    'kpi.total_time': 'זמן כולל',
+    'kpi.travel_time': 'זמן נסיעה',
+    'kpi.service_time': 'זמן שירות',
+    'kpi.stops': 'תחנות',
+    'kpi.weight': 'משקל',
+    'kpi.capacity': 'קיבולת',
+    'kpi.no_routes': 'אין מסלולים עבור התאריך שנבחר',
+
+    // Messages
+    'message.loading': 'בתהליך טעינת מסלולים ל-',
+    'message.no_routes': 'אין מסלולים עבור התאריך שנבחר',
+  },
+  en: {
+    // Header & Auth
+    'app.title': 'ROADNET',
+    'app.subtitle': 'Daily Distribution Planning Report',
+    'auth.email': 'Username',
+    'auth.password': 'Password',
+    'auth.login': 'Login',
+    'auth.logout': 'Logout',
+    'auth.connecting': 'Connecting...',
+    'auth.error': 'Login error. Check your credentials.',
+    'auth.connection_error': 'Connection error with server',
+
+    // Dashboard Header
+    'dashboard.title': 'ROADNET - Daily Distribution Planning Report',
+    'dashboard.select_date': 'Select Date',
+    'dashboard.loading': 'Loading routes...',
+
+    // Summary Section
+    'summary.title': 'Summary',
+    'summary.total_routes': 'Total Routes',
+    'summary.total_stops': 'Total Stops',
+    'summary.weight_utilization': 'Weight Utilization',
+    'summary.time_utilization': 'Time Utilization',
+    'summary.time_hours': 'hours',
+
+    // KPI Cards
+    'kpi.title': 'Routes - KPIs',
+    'kpi.route': 'Route',
+    'kpi.driver': 'Driver',
+    'kpi.vehicle': 'Vehicle',
+    'kpi.total_time': 'Total Time',
+    'kpi.travel_time': 'Travel Time',
+    'kpi.service_time': 'Service Time',
+    'kpi.stops': 'Stops',
+    'kpi.weight': 'Weight',
+    'kpi.capacity': 'Capacity',
+    'kpi.no_routes': 'No routes found for selected date',
+
+    // Messages
+    'message.loading': 'Loading routes for ',
+    'message.no_routes': 'No routes found for selected date',
+  },
+  es: {
+    // Header & Auth
+    'app.title': 'ROADNET',
+    'app.subtitle': 'Informe de Planificación de Distribución Diaria',
+    'auth.email': 'Usuario',
+    'auth.password': 'Contraseña',
+    'auth.login': 'Iniciar sesión',
+    'auth.logout': 'Cerrar sesión',
+    'auth.connecting': 'Conectando...',
+    'auth.error': 'Error de inicio de sesión. Verifique sus credenciales.',
+    'auth.connection_error': 'Error de conexión con el servidor',
+
+    // Dashboard Header
+    'dashboard.title': 'ROADNET - Informe de Planificación de Distribución Diaria',
+    'dashboard.select_date': 'Seleccionar Fecha',
+    'dashboard.loading': 'Cargando rutas...',
+
+    // Summary Section
+    'summary.title': 'Resumen',
+    'summary.total_routes': 'Total de Rutas',
+    'summary.total_stops': 'Total de Paradas',
+    'summary.weight_utilization': 'Utilización de Peso',
+    'summary.time_utilization': 'Utilización de Tiempo',
+    'summary.time_hours': 'horas',
+
+    // KPI Cards
+    'kpi.title': 'Rutas - KPIs',
+    'kpi.route': 'Ruta',
+    'kpi.driver': 'Conductor',
+    'kpi.vehicle': 'Vehículo',
+    'kpi.total_time': 'Tiempo Total',
+    'kpi.travel_time': 'Tiempo de Viaje',
+    'kpi.service_time': 'Tiempo de Servicio',
+    'kpi.stops': 'Paradas',
+    'kpi.weight': 'Peso',
+    'kpi.capacity': 'Capacidad',
+    'kpi.no_routes': 'No se encontraron rutas para la fecha seleccionada',
+
+    // Messages
+    'message.loading': 'Cargando rutas para ',
+    'message.no_routes': 'No se encontraron rutas para la fecha seleccionada',
+  },
+};
+
+export function t(key: string, lang: Language): string {
+  return translations[lang][key] || key;
+}
