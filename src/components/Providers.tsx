@@ -1,9 +1,10 @@
 'use client';
 
+import { LanguageProvider } from '@/context/LanguageContext';
 import { useLanguage } from '@/context/LanguageContext';
 import { useEffect } from 'react';
 
-export default function LanguageInitializer() {
+function LanguageUpdater() {
   const { language, isRTL } = useLanguage();
 
   useEffect(() => {
@@ -13,4 +14,13 @@ export default function LanguageInitializer() {
   }, [language, isRTL]);
 
   return null;
+}
+
+export default function Providers({ children }: { children: React.ReactNode }) {
+  return (
+    <LanguageProvider>
+      <LanguageUpdater />
+      {children}
+    </LanguageProvider>
+  );
 }

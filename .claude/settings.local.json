@@ -22,7 +22,9 @@
       "Bash(git commit -m ' *)",
       "Bash(pkill -9 node)",
       "PowerShell(Get-Process | Where-Object { $_.Name -match \"node|npm\" } | Select-Object Name, Id, ProcessName)",
-      "Bash(git tag *)"
+      "Bash(git tag *)",
+      "Bash(git commit -m 'Fix language provider context error *)",
+      "Bash(git commit *)"
     ]
   }
 }

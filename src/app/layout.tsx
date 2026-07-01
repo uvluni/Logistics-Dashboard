@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
-import { LanguageProvider } from '@/context/LanguageContext';
-import LanguageInitializer from '@/components/LayoutClient';
+import Providers from '@/components/Providers';
 
 export const metadata: Metadata = {
   title: 'ROADNET',
@@ -14,15 +13,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="he" dir="rtl" suppressHydrationWarning>
+    <html suppressHydrationWarning>
       <head>
         <meta charSet="utf-8" />
       </head>
       <body className="bg-gray-50" suppressHydrationWarning>
-        <LanguageProvider>
-          <LanguageInitializer />
-          {children}
-        </LanguageProvider>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
