@@ -46,7 +46,8 @@
       "Bash(git commit -m 'Fix: Align Hebrew insights bullets to the right side properly *)",
       "Bash(git commit -m 'Fix: Position Hebrew insights bullets correctly on right side of text *)",
       "Bash(git commit -m 'Fix: Position Hebrew insights bullets on the right side of text *)",
-      "Bash(git commit -m 'Fix: Align Hebrew insights text to right edge of card with bullet on right *)"
+      "Bash(git commit -m 'Fix: Align Hebrew insights text to right edge of card with bullet on right *)",
+      "Bash(git commit -m 'Fix: Conditional bullet point positioning for Hebrew vs other languages *)"
     ]
   }
 }
