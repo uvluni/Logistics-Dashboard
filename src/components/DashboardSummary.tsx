@@ -155,9 +155,13 @@ export default function DashboardSummary({ summary, normalWorkDayMinutes = 540 }
         </p>
         <div
           className={`text-lg font-semibold whitespace-pre-line ${isRTL ? 'text-right' : 'text-left'} ${
-            summary.recommendation.includes('טוב')
+            (language === 'he' && summary.recommendation.includes('טוב')) ||
+            (language === 'en' && summary.recommendation.includes('balanced')) ||
+            (language === 'es' && summary.recommendation.includes('equilibrada'))
               ? 'text-green-700'
-              : summary.recommendation.includes('חורגים')
+              : (language === 'he' && summary.recommendation.includes('חורגים')) ||
+                (language === 'en' && summary.recommendation.includes('exceeding') || summary.recommendation.includes('overload')) ||
+                (language === 'es' && summary.recommendation.includes('excede') || summary.recommendation.includes('sobrecarga'))
                 ? 'text-red-700'
                 : 'text-orange-700'
           }`}

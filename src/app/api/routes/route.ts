@@ -1,9 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { calculateRouteKPI, calculateDashboardSummary } from '@/lib/kpiCalculator';
 import { Route, Equipment, RouteKPI, RouteRound } from '@/types';
+import { translations, Language } from '@/i18n/translations';
 
-function calculateTrafficInsights(kpis: RouteKPI[], isHoliday: boolean = false): any {
-  let trafficRisk = 'נמוך';
+// Helper function to translate text
+function t(key: string, lang: Language): string {
+  return translations[lang]?.[key] || key;
+}
+
+function calculateTrafficInsights(kpis: RouteKPI[], isHoliday: boolean = false, language: Language = 'he'): any {
+  let trafficRisk = t('traffic.low', language);
   let trafficNote = '';
 
   if (!kpis || kpis.length === 0) {
@@ -15,23 +21,23 @@ function calculateTrafficInsights(kpis: RouteKPI[], isHoliday: boolean = false):
   const maxDuration = Math.max(...kpis.map(k => k.totalDurationMinutes));
 
   if (maxDuration > 600) {
-    trafficRisk = 'בינוני-גבוה';
-    trafficNote = 'מסלולים ארוכים עלולים להיתקל בעומס תנועה בשעות הערב (16:00-19:00)';
+    trafficRisk = t('traffic.medium_high', language);
+    trafficNote = t('traffic.peak_hours', language);
     if (isHoliday) {
-      trafficNote += ' - חג יגביר את העומסים';
+      trafficNote += t('traffic.holiday_extra', language);
     }
   } else if (maxDuration > 360) {
     const hasEveningRisk = kpis.some(k => k.totalDurationMinutes > 360);
     if (hasEveningRisk) {
-      trafficRisk = 'בינוני';
-      trafficNote = 'סיכוי לעומס תנועה בשעות הערב';
+      trafficRisk = t('traffic.medium', language);
+      trafficNote = t('traffic.evening_risk', language);
       if (isHoliday) {
-        trafficNote += ' - חג יגביר את העומסים';
+        trafficNote += t('traffic.holiday_extra', language);
       }
     }
   } else if (isHoliday) {
-    trafficRisk = 'בינוני';
-    trafficNote = 'יום חג - עומסי תנועה גבוהים צפויים';
+    trafficRisk = t('traffic.medium', language);
+    trafficNote = t('traffic.holiday', language);
   }
 
   return { trafficRisk, trafficNote };
@@ -60,6 +66,13 @@ export async function GET(request: NextRequest) {
     const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
     const { searchParams } = new URL(request.url);
     const sessionDate = searchParams.get('sessionDate') || new Date().toISOString().split('T')[0];
+    const language = (searchParams.get('language') || 'he') as Language;
+    if (!['he', 'en', 'es'].includes(language)) {
+      return NextResponse.json(
+        { error: 'Invalid language parameter' },
+        { status: 400 }
+      );
+    }
 
     if (!baseUrl) {
       return NextResponse.json(
@@ -302,27 +315,32 @@ export async function GET(request: NextRequest) {
       const hasWeightOverage = rounds.some(r => r.weightUtilization > 100);
 
       const insights: string[] = [];
+      const localeString = language === 'he' ? 'he-IL' : language === 'es' ? 'es-ES' : 'en-US';
+
       if (rounds.length > 1) {
-        insights.push(`${rounds.length} סבבים, סך כל משקל ${totalWeight.toLocaleString('he-IL')} ק"ג`);
+        const roundsLabel = t('insight.rounds_weight', language);
+        const kg = language === 'he' ? 'ק"ג' : language === 'es' ? 'kg' : 'kg';
+        insights.push(`${rounds.length} ${roundsLabel} ${totalWeight.toLocaleString(localeString)} ${kg}`);
       } else {
-        insights.push(`${weightUtilization}% משקל, ${stopCount} תחנות`);
+        const weightLabel = language === 'he' ? '%' : '%';
+        const stopsLabel = t('kpi.stops', language);
+        const weightText = t('insight.single_round', language);
+        insights.push(`${weightUtilization}${weightLabel} ${weightText}, ${stopCount} ${stopsLabel}`);
       }
 
       if (timeUtilization > 100) {
-        insights.push('⚠️ חורג זמן - יותר מ-9 שעות');
+        insights.push(t('insight.overtime', language));
       } else if (timeUtilization < 70 && weightUtilization >= 50) {
-        // רק הצע להוסיף תחנות אם הזמן נמוך והמשקל לא נמוך
-        insights.push('יכול לכלול עוד תחנות');
+        insights.push(t('insight.add_more_stops', language));
       }
 
       if (hasWeightOverage) {
-        insights.push('⚠️ סבב חורג מקיבולת המשקל');
+        insights.push(t('insight.round_overweight', language));
       } else if (weightUtilization < 50 && timeUtilization < 80 && rounds.length === 1) {
-        // רק אמור על משקל נמוך אם הזמן גם לא גבוה ויש רק סבב אחד
-        insights.push('משקל נמוך - אפשר לשלב');
+        insights.push(t('insight.low_weight_combine', language));
       }
 
-      const driverName = route.workersInfo?.[0]?.name?.firstName || 'ללא נהג';
+      const driverName = route.workersInfo?.[0]?.name?.firstName || (language === 'he' ? 'ללא נהג' : language === 'es' ? 'Sin conductor' : 'No driver');
 
       return {
         routeId: route.identity?.identifier || `route-${index}`,
@@ -375,10 +393,10 @@ export async function GET(request: NextRequest) {
     }
 
     // Calculate traffic insights based on route times and holidays
-    const trafficInsights = calculateTrafficInsights(kpis, isHoliday);
+    const trafficInsights = calculateTrafficInsights(kpis, isHoliday, language);
 
     console.log('DEBUG - Before calculateDashboardSummary');
-    const summary = calculateDashboardSummary(kpis, normalWorkDayMinutes, sessionDate, weatherData, trafficInsights, isHoliday, holidayName);
+    const summary = calculateDashboardSummary(kpis, normalWorkDayMinutes, sessionDate, weatherData, trafficInsights, isHoliday, holidayName, language);
     console.log('DEBUG - After calculateDashboardSummary');
 
     return NextResponse.json({

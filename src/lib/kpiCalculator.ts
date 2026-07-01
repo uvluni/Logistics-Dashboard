@@ -1,4 +1,10 @@
 import { Route, RouteKPI, DashboardSummary, Equipment } from '@/types';
+import { translations, Language } from '@/i18n/translations';
+
+// Helper function to translate text
+function t(key: string, lang: Language): string {
+  return translations[lang]?.[key] || key;
+}
 
 export function calculateRouteKPI(
   route: Route,
@@ -19,7 +25,8 @@ export function calculateRouteKPI(
     normalWorkDayMinutes,
     serviceableStops.length,
     totalWeight,
-    vehicleCapacity
+    vehicleCapacity,
+    'he' // Default to Hebrew for backward compatibility
   );
 
   return {
@@ -44,30 +51,31 @@ function generateInsights(
   normalDay: number,
   stopCount: number,
   totalWeight: number,
-  capacity: number
+  capacity: number,
+  language: Language = 'he'
 ): string[] {
   const insights: string[] = [];
 
   if (utilization < 50 && capacity > 0) {
-    insights.push('ניצול משקל נמוך - אפשר לשלב מסלולים');
+    insights.push(t('insight.low_weight', language));
   } else if (utilization > 90) {
-    insights.push('משקל כמעט בקיבולת המירבית');
+    insights.push(t('insight.high_weight', language));
   }
 
   if (totalTime > normalDay * 1.1) {
-    insights.push('זמן עבודה ארוך יותר מיום עבודה רגיל');
+    insights.push(t('insight.long_hours', language));
   } else if (totalTime < normalDay * 0.7) {
-    insights.push('זמן עבודה קצר - יכול לכלול עוד תחנות');
+    insights.push(t('insight.short_hours', language));
   }
 
   if (stopCount === 0) {
-    insights.push('אין תחנות בזימון זה');
+    insights.push(t('insight.no_stops', language));
   } else if (stopCount > 20) {
-    insights.push('מספר גבוה של תחנות - תוקפנות בניתוב');
+    insights.push(t('insight.many_stops', language));
   }
 
   if (insights.length === 0) {
-    insights.push('מסלול מאוזן וטוב');
+    insights.push(t('insight.balanced_route', language));
   }
 
   return insights;
@@ -80,7 +88,8 @@ export function calculateDashboardSummary(
   weatherData?: any,
   trafficInsights?: any,
   isHoliday: boolean = false,
-  holidayName: string = ''
+  holidayName: string = '',
+  language: Language = 'he'
 ): DashboardSummary {
   if (kpis.length === 0) {
     return {
@@ -94,7 +103,7 @@ export function calculateDashboardSummary(
       underUtilizedRoutes: 0,
       overTimeRoutes: [],
       overWeightRoutes: [],
-      recommendation: 'אין נתונים להצגה',
+      recommendation: t('summary.no_data', language),
       weatherNote: '',
       trafficNote: '',
     };
@@ -134,29 +143,30 @@ export function calculateDashboardSummary(
     const maxTemp = Math.round(weatherData.daily.temperature_2m_max?.[0] || 0);
     const rainProbability = weatherData.daily.precipitation_probability_max?.[0] || 0;
 
-    let weatherDesc = 'בתנאים נורמליים';
-    let weatherImpact = 'אין השפעה צפויה על התכנון';
+    let weatherDesc = t('weather.normal', language);
+    let weatherImpact = t('weather.no_impact', language);
     let hasExtremeConditions = false;
 
     if (rainProbability > 50 || (weatherCode && weatherCode >= 80)) {
-      weatherDesc = 'עם סיכוי לגשם';
-      weatherImpact = 'צריך להתכונן לתנאים רטובים - זמנים עלולים להתארך בגלל החליקות ותנועה איטית';
+      weatherDesc = t('weather.rain', language);
+      weatherImpact = t('weather.rain_impact', language);
       hasExtremeConditions = true;
     } else if (maxTemp > 32) {
-      weatherDesc = 'בחום קיצוני';
-      weatherImpact = 'צריך להתכונן לחום קיצוני - זמנים עלולים להתארך בגלל עומסים במערכות קירור';
+      weatherDesc = t('weather.extreme_heat', language);
+      weatherImpact = t('weather.extreme_heat_impact', language);
       hasExtremeConditions = true;
     } else if (maxTemp > 30) {
-      weatherDesc = 'בחום גבוה';
-      weatherImpact = 'זמנים עלולים להתארך מעט בגלל חום';
+      weatherDesc = t('weather.high_heat', language);
+      weatherImpact = t('weather.high_heat_impact', language);
       hasExtremeConditions = true;
     } else if (maxTemp < 0) {
-      weatherDesc = 'בקור קיצוני';
-      weatherImpact = 'צריך להתכונן לקור קיצוני - זמנים עלולים להתארך בגלל תנאי דרך קשים';
+      weatherDesc = t('weather.extreme_cold', language);
+      weatherImpact = t('weather.extreme_cold_impact', language);
       hasExtremeConditions = true;
     }
 
-    weatherNote = `\n⛅ מזג אויר: ${weatherDesc} (${maxTemp}°C, גשם ${rainProbability}%) - ${weatherImpact}`;
+    const weatherCodeLabel = t('weather.code', language);
+    weatherNote = `\n${weatherCodeLabel}: ${weatherDesc} (${maxTemp}°C, ${language === 'he' ? 'גשם' : language === 'es' ? 'lluvia' : 'rain'} ${rainProbability}%) - ${weatherImpact}`;
   }
 
   // Build combined conditions note (weather + traffic + holidays)
@@ -165,7 +175,9 @@ export function calculateDashboardSummary(
   const parts = [];
 
   if (weatherNote) {
-    parts.push(weatherNote.replace('\n⛅ מזג אויר: ', ''));
+    const weatherCodeLabel = t('weather.code', language);
+    const prefix = `\n${weatherCodeLabel}: `;
+    parts.push(weatherNote.replace(prefix, ''));
   }
 
   if (trafficNote) {
@@ -195,45 +207,48 @@ export function calculateDashboardSummary(
   let recommendation = '';
 
   // Line 1: Average metrics
-  recommendation += `ניצול זמן ממוצע: ${Math.round(timeUtil)}%\n`;
-  recommendation += `ניצול משקל ממוצע: ${Math.round(averageWeightUtil)}%\n\n`;
+  recommendation += `${t('recommendation.avg_time_util', language)}: ${Math.round(timeUtil)}%\n`;
+  recommendation += `${t('recommendation.avg_weight_util', language)}: ${Math.round(averageWeightUtil)}%\n\n`;
 
   // Line 2: Underutilized drivers
   if (underweightShortHours.length > 0) {
-    const driverLabel = underweightShortHours.length === 1
-      ? `נהג ${underweightShortHours.length}`
-      : `${underweightShortHours.length} נהגים`;
-    recommendation += `${driverLabel} עם ניצול נמוך וזמן קצר (משקל קטן מ-80%, זמן קטן מ-8 שעות):\n`;
+    const driverLabelKey = underweightShortHours.length === 1
+      ? 'recommendation.driver_singular'
+      : 'recommendation.drivers_plural';
+    const driverLabel = `${underweightShortHours.length} ${t(driverLabelKey, language)}`;
+    recommendation += `${driverLabel} ${t('recommendation.low_weight_short_hours', language)}:\n`;
     recommendation += `${underweightShortHours.join(', ')}\n\n`;
   }
 
   // Line 3: Overutilized drivers (weight)
   if (overCapacityDrivers.length > 0) {
-    const driverLabel = overCapacityDrivers.length === 1
-      ? `נהג ${overCapacityDrivers.length}`
-      : `${overCapacityDrivers.length} נהגים`;
-    recommendation += `${driverLabel} עם חריגה מקיבולת משקל (סבב גדול מ-100%):\n`;
+    const driverLabelKey = overCapacityDrivers.length === 1
+      ? 'recommendation.driver_singular'
+      : 'recommendation.drivers_plural';
+    const driverLabel = `${overCapacityDrivers.length} ${t(driverLabelKey, language)}`;
+    recommendation += `${driverLabel} ${t('recommendation.weight_overload', language)}:\n`;
     recommendation += `${overCapacityDrivers.join(', ')}\n\n`;
   }
 
   // Line 4: Long hours drivers
   if (longHoursDrivers.length > 0) {
-    const driverLabel = longHoursDrivers.length === 1
-      ? `נהג ${longHoursDrivers.length}`
-      : `${longHoursDrivers.length} נהגים`;
-    recommendation += `${driverLabel} עם חריגה מזמן עבודה (גדול מ-10 שעות):\n`;
+    const driverLabelKey = longHoursDrivers.length === 1
+      ? 'recommendation.driver_singular'
+      : 'recommendation.drivers_plural';
+    const driverLabel = `${longHoursDrivers.length} ${t(driverLabelKey, language)}`;
+    recommendation += `${driverLabel} ${t('recommendation.overtime', language)}:\n`;
     recommendation += `${longHoursDrivers.join(', ')}\n\n`;
   }
 
   // Line 5: Recommendations
   if (underweightShortHours.length > 0 || overCapacityDrivers.length > 0 || longHoursDrivers.length > 0) {
-    recommendation += `דרוש התאמה בהקצאת המשימות.`;
+    recommendation += t('recommendation.task_adjustment', language);
   } else if (averageWeightUtil < 60) {
-    recommendation += `משקל ממוצע נמוך - שקול שילוב מסלולים או הוספת תחנות.`;
+    recommendation += t('recommendation.low_average_weight', language);
   } else if (timeUtil > 90) {
-    recommendation += `ניצול זמן גבוה - בחן הוספת רכב או חלוקה של מסלולים.`;
+    recommendation += t('recommendation.high_time_util', language);
   } else {
-    recommendation += `התכנון מאוזן וטוב.`;
+    recommendation += t('recommendation.balanced', language);
   }
 
   return {

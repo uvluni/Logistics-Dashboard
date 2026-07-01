@@ -108,6 +108,7 @@ export default function Home() {
     try {
       const params = new URLSearchParams({
         sessionDate: selectedDate,
+        language: language,
       });
 
       const res = await fetch(`/api/routes?${params}`, {
@@ -279,7 +280,7 @@ export default function Home() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="bg-gradient-to-br from-blue-600 to-indigo-600 rounded-lg p-8 mb-8 shadow-md text-white">
-          <h2 className="text-2xl font-bold mb-6 text-right">תכנון הפצה - {selectedDate ? formatDateForDisplay(selectedDate) : '...'}</h2>
+          <h2 className={`text-2xl font-bold mb-6 ${isRTL ? 'text-right' : 'text-left'}`}>{t('dashboard.planning_header', language)} - {selectedDate ? formatDateForDisplay(selectedDate) : '...'}</h2>
           <div className="max-w-md">
             <label className={`block text-sm font-medium mb-3 opacity-90 ${isRTL ? 'text-right' : 'text-left'}`}>
               {t('dashboard.select_date', language)}
@@ -315,7 +316,7 @@ export default function Home() {
             </div>
           </div>
           {isLoading && (
-            <p className="text-center mt-4 text-blue-100 text-sm">טוען מסלולים...</p>
+            <p className="text-center mt-4 text-blue-100 text-sm">{t('dashboard.loading_routes', language)}</p>
           )}
         </div>
 
@@ -330,8 +331,8 @@ export default function Home() {
             <DashboardSummary summary={summary} normalWorkDayMinutes={kpis[0]?.normalWorkDayMinutes} />
 
             <div className="mb-8">
-              <h2 className="text-2xl font-bold text-gray-900 mb-6 text-right">
-                מסלולים - KPIs
+              <h2 className={`text-2xl font-bold text-gray-900 mb-6 ${isRTL ? 'text-right' : 'text-left'}`}>
+                {t('kpi.title', language)}
               </h2>
 
               <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
@@ -345,14 +346,14 @@ export default function Home() {
 
         {summary && kpis.length === 0 && (
           <div className="bg-white border border-gray-200 rounded-lg p-12 text-center">
-            <p className="text-gray-600 text-lg">אין מסלולים עבור התאריך שנבחר</p>
+            <p className="text-gray-600 text-lg">{t('dashboard.no_routes_message', language)}</p>
           </div>
         )}
 
         {!summary && isLoggedIn && !error && !isLoading && (
           <div className="bg-white border border-gray-200 rounded-lg p-12 text-center">
-            <p className="text-gray-600 text-lg">
-              בתהליך טעינת מסלולים ל-{selectedDate}...
+            <p className={`text-gray-600 text-lg ${isRTL ? 'text-right' : 'text-left'}`}>
+              {t('dashboard.loading_message', language)}{selectedDate}...
             </p>
           </div>
         )}

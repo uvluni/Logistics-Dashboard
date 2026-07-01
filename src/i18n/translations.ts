@@ -63,6 +63,73 @@ export const translations: Record<Language, Record<string, string>> = {
     // Messages
     'message.loading': 'בתהליך טעינת מסלולים ל-',
     'message.no_routes': 'אין מסלולים עבור התאריך שנבחר',
+
+    // Page Header & Planning Distribution
+    'dashboard.planning_header': 'תכנון הפצה',
+    'dashboard.loading_routes': 'טוען מסלולים...',
+    'dashboard.no_routes_message': 'אין מסלולים עבור התאריך שנבחר',
+    'dashboard.loading_message': 'בתהליך טעינת מסלולים ל-',
+
+    // Insights - Weight Utilization
+    'insight.low_weight': 'ניצול משקל נמוך - אפשר לשלב מסלולים',
+    'insight.high_weight': 'משקל כמעט בקיבולת המירבית',
+
+    // Insights - Time Utilization
+    'insight.long_hours': 'זמן עבודה ארוך יותר מיום עבודה רגיל',
+    'insight.short_hours': 'זמן עבודה קצר - יכול לכלול עוד תחנות',
+
+    // Insights - Stops
+    'insight.no_stops': 'אין תחנות בזימון זה',
+    'insight.many_stops': 'מספר גבוה של תחנות - תוקפנות בניתוב',
+
+    // Insights - General
+    'insight.balanced_route': 'מסלול מאוזן וטוב',
+
+    // Insights - API Routes
+    'insight.rounds_weight': 'סבבים, סך כל משקל',
+    'insight.single_round': 'משקל, תחנות',
+    'insight.overtime': '⚠️ חורג זמן - יותר מ-9 שעות',
+    'insight.add_more_stops': 'יכול לכלול עוד תחנות',
+    'insight.round_overweight': '⚠️ סבב חורג מקיבולת המשקל',
+    'insight.low_weight_combine': 'משקל נמוך - אפשר לשלב',
+
+    // Dashboard Summary - No Data
+    'summary.no_data': 'אין נתונים להצגה',
+
+    // Weather & Conditions
+    'weather.normal': 'בתנאים נורמליים',
+    'weather.no_impact': 'אין השפעה צפויה על התכנון',
+    'weather.rain': 'עם סיכוי לגשם',
+    'weather.rain_impact': 'צריך להתכונן לתנאים רטובים - זמנים עלולים להתארך בגלל החליקות ותנועה איטית',
+    'weather.extreme_heat': 'בחום קיצוני',
+    'weather.extreme_heat_impact': 'צריך להתכונן לחום קיצוני - זמנים עלולים להתארך בגלל עומסים במערכות קירור',
+    'weather.high_heat': 'בחום גבוה',
+    'weather.high_heat_impact': 'זמנים עלולים להתארך מעט בגלל חום',
+    'weather.extreme_cold': 'בקור קיצוני',
+    'weather.extreme_cold_impact': 'צריך להתכונן לקור קיצוני - זמנים עלולים להתארך בגלל תנאי דרך קשים',
+    'weather.code': '⛅ מזג אויר',
+
+    // Traffic & Planning Recommendations
+    'traffic.low': 'נמוך',
+    'traffic.medium_high': 'בינוני-גבוה',
+    'traffic.medium': 'בינוני',
+    'traffic.peak_hours': 'מסלולים ארוכים עלולים להיתקל בעומס תנועה בשעות הערב (16:00-19:00)',
+    'traffic.holiday_extra': ' - חג יגביר את העומסים',
+    'traffic.evening_risk': 'סיכוי לעומס תנועה בשעות הערב',
+    'traffic.holiday': 'יום חג - עומסי תנועה גבוהים צפויים',
+
+    // Planning Recommendations - Average Metrics
+    'recommendation.avg_time_util': 'ניצול זמן ממוצע',
+    'recommendation.avg_weight_util': 'ניצול משקל ממוצע',
+    'recommendation.driver_singular': 'נהג',
+    'recommendation.drivers_plural': 'נהגים',
+    'recommendation.low_weight_short_hours': 'עם ניצול נמוך וזמן קצר (משקל קטן מ-80%, זמן קטן מ-8 שעות)',
+    'recommendation.weight_overload': 'עם חריגה מקיבולת משקל (סבב גדול מ-100%)',
+    'recommendation.overtime': 'עם חריגה מזמן עבודה (גדול מ-10 שעות)',
+    'recommendation.task_adjustment': 'דרוש התאמה בהקצאת המשימות.',
+    'recommendation.low_average_weight': 'משקל ממוצע נמוך - שקול שילוב מסלולים או הוספת תחנות.',
+    'recommendation.high_time_util': 'ניצול זמן גבוה - בחן הוספת רכב או חלוקה של מסלולים.',
+    'recommendation.balanced': 'התכנון מאוזן וטוב.',
   },
   en: {
     // Header & Auth
@@ -126,6 +193,73 @@ export const translations: Record<Language, Record<string, string>> = {
     // Messages
     'message.loading': 'Loading routes for ',
     'message.no_routes': 'No routes found for selected date',
+
+    // Page Header & Planning Distribution
+    'dashboard.planning_header': 'Planning Distribution',
+    'dashboard.loading_routes': 'Loading routes...',
+    'dashboard.no_routes_message': 'No routes found for selected date',
+    'dashboard.loading_message': 'Loading routes for ',
+
+    // Insights - Weight Utilization
+    'insight.low_weight': 'Low weight utilization - consider combining routes',
+    'insight.high_weight': 'Weight nearly at maximum capacity',
+
+    // Insights - Time Utilization
+    'insight.long_hours': 'Work time longer than regular work day',
+    'insight.short_hours': 'Short work time - could include more stops',
+
+    // Insights - Stops
+    'insight.no_stops': 'No stops in this assignment',
+    'insight.many_stops': 'High number of stops - aggressive routing',
+
+    // Insights - General
+    'insight.balanced_route': 'Balanced and good route',
+
+    // Insights - API Routes
+    'insight.rounds_weight': 'rounds, total weight',
+    'insight.single_round': 'weight, stops',
+    'insight.overtime': '⚠️ Overtime - more than 9 hours',
+    'insight.add_more_stops': 'Could include more stops',
+    'insight.round_overweight': '⚠️ Round exceeds weight capacity',
+    'insight.low_weight_combine': 'Low weight - consider combining',
+
+    // Dashboard Summary - No Data
+    'summary.no_data': 'No data to display',
+
+    // Weather & Conditions
+    'weather.normal': 'with normal conditions',
+    'weather.no_impact': 'No expected impact on planning',
+    'weather.rain': 'with chance of rain',
+    'weather.rain_impact': 'Prepare for wet conditions - travel times may increase due to slipping and slow traffic',
+    'weather.extreme_heat': 'with extreme heat',
+    'weather.extreme_heat_impact': 'Prepare for extreme heat - travel times may increase due to cooling system loads',
+    'weather.high_heat': 'with high heat',
+    'weather.high_heat_impact': 'Travel times may increase slightly due to heat',
+    'weather.extreme_cold': 'with extreme cold',
+    'weather.extreme_cold_impact': 'Prepare for extreme cold - travel times may increase due to difficult road conditions',
+    'weather.code': '⛅ Weather',
+
+    // Traffic & Planning Recommendations
+    'traffic.low': 'Low',
+    'traffic.medium_high': 'Medium-High',
+    'traffic.medium': 'Medium',
+    'traffic.peak_hours': 'Long routes may encounter heavy traffic during evening hours (4:00 PM - 7:00 PM)',
+    'traffic.holiday_extra': ' - Holiday will increase traffic congestion',
+    'traffic.evening_risk': 'Risk of heavy traffic during evening hours',
+    'traffic.holiday': 'Holiday - high traffic congestion expected',
+
+    // Planning Recommendations - Average Metrics
+    'recommendation.avg_time_util': 'Average time utilization',
+    'recommendation.avg_weight_util': 'Average weight utilization',
+    'recommendation.driver_singular': 'driver',
+    'recommendation.drivers_plural': 'drivers',
+    'recommendation.low_weight_short_hours': 'with low utilization and short hours (weight < 80%, time < 8 hours)',
+    'recommendation.weight_overload': 'with weight capacity overload (round > 100%)',
+    'recommendation.overtime': 'with overtime (> 10 hours)',
+    'recommendation.task_adjustment': 'Task allocation adjustment needed.',
+    'recommendation.low_average_weight': 'Low average weight - consider combining routes or adding stops.',
+    'recommendation.high_time_util': 'High time utilization - consider adding vehicle or splitting routes.',
+    'recommendation.balanced': 'Planning is balanced and good.',
   },
   es: {
     // Header & Auth
@@ -189,6 +323,73 @@ export const translations: Record<Language, Record<string, string>> = {
     // Messages
     'message.loading': 'Cargando rutas para ',
     'message.no_routes': 'No se encontraron rutas para la fecha seleccionada',
+
+    // Page Header & Planning Distribution
+    'dashboard.planning_header': 'Planificación de Distribución',
+    'dashboard.loading_routes': 'Cargando rutas...',
+    'dashboard.no_routes_message': 'No se encontraron rutas para la fecha seleccionada',
+    'dashboard.loading_message': 'Cargando rutas para ',
+
+    // Insights - Weight Utilization
+    'insight.low_weight': 'Baja utilización de peso - considere combinar rutas',
+    'insight.high_weight': 'Peso casi en capacidad máxima',
+
+    // Insights - Time Utilization
+    'insight.long_hours': 'Tiempo de trabajo más largo que el día laboral regular',
+    'insight.short_hours': 'Tiempo de trabajo corto - podría incluir más paradas',
+
+    // Insights - Stops
+    'insight.no_stops': 'Sin paradas en esta asignación',
+    'insight.many_stops': 'Alto número de paradas - enrutamiento agresivo',
+
+    // Insights - General
+    'insight.balanced_route': 'Ruta equilibrada y buena',
+
+    // Insights - API Routes
+    'insight.rounds_weight': 'rondas, peso total',
+    'insight.single_round': 'peso, paradas',
+    'insight.overtime': '⚠️ Tiempo extra - más de 9 horas',
+    'insight.add_more_stops': 'Podría incluir más paradas',
+    'insight.round_overweight': '⚠️ Ronda excede capacidad de peso',
+    'insight.low_weight_combine': 'Peso bajo - considere combinar',
+
+    // Dashboard Summary - No Data
+    'summary.no_data': 'Sin datos para mostrar',
+
+    // Weather & Conditions
+    'weather.normal': 'con condiciones normales',
+    'weather.no_impact': 'Sin impacto esperado en la planificación',
+    'weather.rain': 'con posibilidad de lluvia',
+    'weather.rain_impact': 'Prepárese para condiciones húmedas - los tiempos de viaje pueden aumentar debido a deslizamientos y tráfico lento',
+    'weather.extreme_heat': 'con calor extremo',
+    'weather.extreme_heat_impact': 'Prepárese para calor extremo - los tiempos de viaje pueden aumentar debido a cargas del sistema de refrigeración',
+    'weather.high_heat': 'con calor elevado',
+    'weather.high_heat_impact': 'Los tiempos de viaje pueden aumentar ligeramente debido al calor',
+    'weather.extreme_cold': 'con frío extremo',
+    'weather.extreme_cold_impact': 'Prepárese para frío extremo - los tiempos de viaje pueden aumentar debido a condiciones difíciles de la carretera',
+    'weather.code': '⛅ Clima',
+
+    // Traffic & Planning Recommendations
+    'traffic.low': 'Bajo',
+    'traffic.medium_high': 'Medio-Alto',
+    'traffic.medium': 'Medio',
+    'traffic.peak_hours': 'Las rutas largas pueden encontrar tráfico pesado durante las horas de la tarde (16:00-19:00)',
+    'traffic.holiday_extra': ' - El feriado aumentará la congestión de tráfico',
+    'traffic.evening_risk': 'Riesgo de tráfico pesado durante las horas de la tarde',
+    'traffic.holiday': 'Feriado - se espera alta congestión de tráfico',
+
+    // Planning Recommendations - Average Metrics
+    'recommendation.avg_time_util': 'Utilización promedio de tiempo',
+    'recommendation.avg_weight_util': 'Utilización promedio de peso',
+    'recommendation.driver_singular': 'conductor',
+    'recommendation.drivers_plural': 'conductores',
+    'recommendation.low_weight_short_hours': 'con baja utilización y horas cortas (peso < 80%, tiempo < 8 horas)',
+    'recommendation.weight_overload': 'con sobrecarga de capacidad de peso (ronda > 100%)',
+    'recommendation.overtime': 'con tiempo extra (> 10 horas)',
+    'recommendation.task_adjustment': 'Se necesita ajuste en la asignación de tareas.',
+    'recommendation.low_average_weight': 'Peso promedio bajo - considere combinar rutas o agregar paradas.',
+    'recommendation.high_time_util': 'Alta utilización de tiempo - considere agregar vehículo o dividir rutas.',
+    'recommendation.balanced': 'La planificación es equilibrada y buena.',
   },
 };
 
