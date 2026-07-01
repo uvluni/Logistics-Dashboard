@@ -1,56 +1,59 @@
 import { formatMinutesAsTime } from '@/lib/kpiCalculator';
 import { RouteKPI } from '@/types';
+import { useLanguage } from '@/context/LanguageContext';
+import { t } from '@/i18n/translations';
 
 interface KPICardProps {
   kpi: RouteKPI;
 }
 
 export default function KPICard({ kpi }: KPICardProps) {
+  const { language, isRTL } = useLanguage();
   return (
     <div className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow">
       <div className="flex justify-between items-center mb-4 pb-4 border-b">
         <div className="text-center flex-1">
-          <p className="text-gray-600 text-xs">מסלול</p>
-          <p className="text-lg font-semibold text-gray-900">RT{kpi.routeId}</p>
+          <p className={`text-gray-600 text-xs ${isRTL ? 'text-right' : 'text-left'}`}>{t('kpi.route', language)}</p>
+          <p className={`text-lg font-semibold text-gray-900 ${isRTL ? 'text-right' : 'text-left'}`}>{t('kpi.route', language)} {kpi.routeId}</p>
         </div>
         <div className="text-center flex-1">
-          <p className="text-gray-600 text-xs">נהג</p>
-          <p className="text-lg font-semibold text-gray-900 blur-sm">{kpi.driverName}</p>
+          <p className={`text-gray-600 text-xs ${isRTL ? 'text-right' : 'text-left'}`}>{t('kpi.driver', language)}</p>
+          <p className={`text-lg font-semibold text-gray-900 blur-sm ${isRTL ? 'text-right' : 'text-left'}`}>{kpi.driverName}</p>
         </div>
         <div className="text-center flex-1">
-          <p className="text-gray-600 text-xs">סוג רכב</p>
-          <p className="text-lg font-semibold text-gray-900">{kpi.vehicleType}</p>
+          <p className={`text-gray-600 text-xs ${isRTL ? 'text-right' : 'text-left'}`}>{t('kpi.vehicle_type', language)}</p>
+          <p className={`text-lg font-semibold text-gray-900 ${isRTL ? 'text-right' : 'text-left'}`}>{kpi.vehicleType}</p>
         </div>
       </div>
 
       <div className="grid grid-cols-5 gap-2 mb-4 pb-4 border-b">
         <div className="bg-blue-50 rounded p-2">
-          <p className="text-gray-600 text-xs">זמן כולל</p>
-          <p className="text-sm font-semibold text-blue-700">
+          <p className={`text-gray-600 text-xs ${isRTL ? 'text-right' : 'text-left'}`}>{t('kpi.total_time', language)}</p>
+          <p className={`text-sm font-semibold text-blue-700 ${isRTL ? 'text-right' : 'text-left'}`}>
             {formatMinutesAsTime(kpi.totalDurationMinutes)}
           </p>
         </div>
         <div className="bg-green-50 rounded p-2">
-          <p className="text-gray-600 text-xs">נסיעה</p>
-          <p className="text-sm font-semibold text-green-700">
+          <p className={`text-gray-600 text-xs ${isRTL ? 'text-right' : 'text-left'}`}>{t('kpi.travel_time', language)}</p>
+          <p className={`text-sm font-semibold text-green-700 ${isRTL ? 'text-right' : 'text-left'}`}>
             {formatMinutesAsTime(kpi.travelTimeMinutes)}
           </p>
         </div>
         <div className="bg-purple-50 rounded p-2">
-          <p className="text-gray-600 text-xs">שירות</p>
-          <p className="text-sm font-semibold text-purple-700">
+          <p className={`text-gray-600 text-xs ${isRTL ? 'text-right' : 'text-left'}`}>{t('kpi.service_time', language)}</p>
+          <p className={`text-sm font-semibold text-purple-700 ${isRTL ? 'text-right' : 'text-left'}`}>
             {formatMinutesAsTime(kpi.serviceTimeMinutes)}
           </p>
         </div>
         <div className="bg-indigo-50 rounded p-2">
-          <p className="text-gray-600 text-xs">ניצול זמן ({(kpi.normalWorkDayMinutes || 540) === 300 ? '5' : '9'} שעות)</p>
-          <p className="text-sm font-semibold text-indigo-700">
+          <p className={`text-gray-600 text-xs ${isRTL ? 'text-right' : 'text-left'}`}>{t('kpi.time_utilization', language)} ({(kpi.normalWorkDayMinutes || 540) === 300 ? '5' : '9'} {t('summary.time_hours', language)})</p>
+          <p className={`text-sm font-semibold text-indigo-700 ${isRTL ? 'text-right' : 'text-left'}`}>
             {kpi.timeUtilization}%
           </p>
         </div>
         <div className="bg-amber-50 rounded p-2">
-          <p className="text-gray-600 text-xs">ניצול משקל כללי</p>
-          <p className="text-sm font-semibold text-amber-700">
+          <p className={`text-gray-600 text-xs ${isRTL ? 'text-right' : 'text-left'}`}>{t('kpi.weight_utilization', language)}</p>
+          <p className={`text-sm font-semibold text-amber-700 ${isRTL ? 'text-right' : 'text-left'}`}>
             {kpi.weightUtilization}%
           </p>
         </div>
@@ -58,27 +61,27 @@ export default function KPICard({ kpi }: KPICardProps) {
 
       <div className="grid grid-cols-3 gap-2 mb-4">
         <div>
-          <p className="text-gray-600 text-xs">תחנות</p>
-          <p className="text-lg font-semibold text-gray-900">{kpi.stopCount}</p>
+          <p className={`text-gray-600 text-xs ${isRTL ? 'text-right' : 'text-left'}`}>{t('kpi.stops', language)}</p>
+          <p className={`text-lg font-semibold text-gray-900 ${isRTL ? 'text-right' : 'text-left'}`}>{kpi.stopCount}</p>
         </div>
         <div>
-          <p className="text-gray-600 text-xs">משקל</p>
-          <p className="text-lg font-semibold text-gray-900">{kpi.totalWeight.toLocaleString('he-IL')} ק&quot;ג</p>
+          <p className={`text-gray-600 text-xs ${isRTL ? 'text-right' : 'text-left'}`}>{t('kpi.weight', language)}</p>
+          <p className={`text-lg font-semibold text-gray-900 ${isRTL ? 'text-right' : 'text-left'}`}>{kpi.totalWeight.toLocaleString(language === 'he' ? 'he-IL' : language === 'es' ? 'es-ES' : 'en-US')} {t('kpi.kg', language)}</p>
         </div>
         <div>
-          <p className="text-gray-600 text-xs">קיבולה</p>
-          <p className="text-lg font-semibold text-gray-900">{kpi.vehicleCapacity.toLocaleString('he-IL')} ק&quot;ג</p>
+          <p className={`text-gray-600 text-xs ${isRTL ? 'text-right' : 'text-left'}`}>{t('kpi.capacity', language)}</p>
+          <p className={`text-lg font-semibold text-gray-900 ${isRTL ? 'text-right' : 'text-left'}`}>{kpi.vehicleCapacity.toLocaleString(language === 'he' ? 'he-IL' : language === 'es' ? 'es-ES' : 'en-US')} {t('kpi.kg', language)}</p>
         </div>
       </div>
 
       {kpi.rounds && kpi.rounds.length > 1 ? (
         <div className="mb-4">
-          <p className="text-gray-600 text-sm font-semibold mb-3">ניצול משקל סבבים:</p>
+          <p className={`text-gray-600 text-sm font-semibold mb-3 ${isRTL ? 'text-right' : 'text-left'}`}>{t('kpi.weight_utilization_rounds', language)}</p>
           <div className="space-y-3">
             {kpi.rounds.map((round, idx) => (
               <div key={idx}>
                 <div className="flex justify-between items-center mb-1">
-                  <p className="text-gray-600 text-xs">סבב {round.roundNumber} - {round.weight.toLocaleString('he-IL')} ק&quot;ג | {round.stopCount} תחנות</p>
+                  <p className={`text-gray-600 text-xs ${isRTL ? 'text-right' : 'text-left'}`}>{t('kpi.round', language)} {round.roundNumber} - {round.weight.toLocaleString(language === 'he' ? 'he-IL' : language === 'es' ? 'es-ES' : 'en-US')} {t('kpi.kg', language)} | {round.stopCount} {t('kpi.stops', language)}</p>
                   <p
                     className={`text-xs font-semibold ${
                       round.weightUtilization > 100
@@ -112,7 +115,7 @@ export default function KPICard({ kpi }: KPICardProps) {
       ) : (
         <div className="mb-4">
           <div className="flex justify-between items-center mb-1">
-            <p className="text-gray-600 text-sm">ניצול משקל סבב {kpi.totalWeight.toLocaleString('he-IL')} ק&quot;ג</p>
+            <p className={`text-gray-600 text-sm ${isRTL ? 'text-right' : 'text-left'}`}>{t('kpi.weight_utilization_round', language)} {kpi.totalWeight.toLocaleString(language === 'he' ? 'he-IL' : language === 'es' ? 'es-ES' : 'en-US')} {t('kpi.kg', language)}</p>
             <p
               className={`text-sm font-semibold ${
                 kpi.weightUtilization > 100
@@ -144,7 +147,7 @@ export default function KPICard({ kpi }: KPICardProps) {
 
       <div className="mb-4">
         <div className="flex justify-between items-center mb-1">
-          <p className="text-gray-600 text-sm">ניצול זמן (מ-{(kpi.normalWorkDayMinutes || 540) === 300 ? '5' : '9'} שעות) {formatMinutesAsTime(kpi.totalDurationMinutes)}</p>
+          <p className={`text-gray-600 text-sm ${isRTL ? 'text-right' : 'text-left'}`}>{t('kpi.time_utilization_label', language)} {language === 'he' ? `(מ-${(kpi.normalWorkDayMinutes || 540) === 300 ? '5' : '9'} ${t('summary.time_hours', language)})` : language === 'es' ? `(de ${(kpi.normalWorkDayMinutes || 540) === 300 ? '5' : '9'} ${t('summary.time_hours', language)})` : `(${(kpi.normalWorkDayMinutes || 540) === 300 ? '5' : '9'} ${t('summary.time_hours', language)})`} {formatMinutesAsTime(kpi.totalDurationMinutes)}</p>
           <p
             className={`text-sm font-semibold ${
               kpi.timeUtilization > 100
@@ -174,10 +177,10 @@ export default function KPICard({ kpi }: KPICardProps) {
       </div>
 
       <div className="space-y-1">
-        <p className="text-gray-600 text-xs font-semibold">תובנות:</p>
+        <p className={`text-gray-600 text-xs font-semibold ${isRTL ? 'text-right' : 'text-left'}`}>{t('kpi.insights', language)}</p>
         {kpi.insights.map((insight, idx) => (
-          <p key={idx} className="text-gray-700 text-sm flex items-start">
-            <span className="mr-2">•</span>
+          <p key={idx} className={`text-gray-700 text-sm flex items-start ${isRTL ? 'flex-row-reverse' : ''}`}>
+            <span className={isRTL ? 'ml-2' : 'mr-2'}>•</span>
             <span>{insight}</span>
           </p>
         ))}

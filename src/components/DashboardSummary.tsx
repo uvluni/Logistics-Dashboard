@@ -13,9 +13,9 @@ interface DashboardSummaryProps {
 function formatTotalWorkTime(minutes: number, language: 'he' | 'en' | 'es'): string {
   const hours = Math.floor(minutes / 60);
   const mins = minutes % 60;
-  if (language === 'he') return `${hours} שעות, ${mins} דקות`;
-  if (language === 'es') return `${hours} horas, ${mins} minutos`;
-  return `${hours} hours, ${mins} minutes`;
+  if (language === 'he') return `${hours} ${t('summary.time_hours', language)}, ${mins} ${t('summary.minutes', language)}`;
+  if (language === 'es') return `${hours} ${t('summary.time_hours', language)}, ${mins} ${t('summary.minutes', language)}`;
+  return `${hours} ${t('summary.time_hours', language)}, ${mins} ${t('summary.minutes', language)}`;
 }
 
 export default function DashboardSummary({ summary, normalWorkDayMinutes = 540 }: DashboardSummaryProps) {
@@ -74,51 +74,51 @@ export default function DashboardSummary({ summary, normalWorkDayMinutes = 540 }
 
       <div className="grid grid-cols-2 gap-4 mb-6 md:hidden">
         <div className="bg-white rounded-lg p-4 border border-gray-200">
-          <p className="text-gray-600 text-sm text-right">סך זמן עבודה</p>
-          <p className="text-3xl font-bold text-purple-600 text-right">
-            {formatTotalWorkTime(summary.totalWorkMinutes)}
+          <p className={`text-gray-600 text-sm ${isRTL ? 'text-right' : 'text-left'}`}>{t('summary.total_work_time', language)}</p>
+          <p className={`text-3xl font-bold text-purple-600 ${isRTL ? 'text-right' : 'text-left'}`}>
+            {formatTotalWorkTime(summary.totalWorkMinutes, language)}
           </p>
         </div>
         <div className="bg-white rounded-lg p-4 border border-gray-200">
-          <p className="text-gray-600 text-sm text-right">זמן ממוצע למסלול</p>
-          <p className="text-3xl font-bold text-blue-600 text-right">
-            {formatTotalWorkTime(Math.round(summary.totalWorkMinutes / summary.totalRoutes))}
+          <p className={`text-gray-600 text-sm ${isRTL ? 'text-right' : 'text-left'}`}>{t('summary.avg_time_per_route', language)}</p>
+          <p className={`text-3xl font-bold text-blue-600 ${isRTL ? 'text-right' : 'text-left'}`}>
+            {formatTotalWorkTime(Math.round(summary.totalWorkMinutes / summary.totalRoutes), language)}
           </p>
         </div>
       </div>
 
       <div className="hidden md:grid grid-cols-2 gap-4 mb-6">
         <div className="bg-white rounded-lg p-4 border border-gray-200">
-          <p className="text-gray-600 text-sm text-right">סך זמן עבודה</p>
-          <p className="text-3xl font-bold text-purple-600 text-right">
-            {formatTotalWorkTime(summary.totalWorkMinutes)}
+          <p className={`text-gray-600 text-sm ${isRTL ? 'text-right' : 'text-left'}`}>{t('summary.total_work_time', language)}</p>
+          <p className={`text-3xl font-bold text-purple-600 ${isRTL ? 'text-right' : 'text-left'}`}>
+            {formatTotalWorkTime(summary.totalWorkMinutes, language)}
           </p>
         </div>
         <div className="bg-white rounded-lg p-4 border border-gray-200">
-          <p className="text-gray-600 text-sm text-right">זמן ממוצע למסלול</p>
-          <p className="text-3xl font-bold text-blue-600 text-right">
-            {formatTotalWorkTime(Math.round(summary.totalWorkMinutes / summary.totalRoutes))}
+          <p className={`text-gray-600 text-sm ${isRTL ? 'text-right' : 'text-left'}`}>{t('summary.avg_time_per_route', language)}</p>
+          <p className={`text-3xl font-bold text-blue-600 ${isRTL ? 'text-right' : 'text-left'}`}>
+            {formatTotalWorkTime(Math.round(summary.totalWorkMinutes / summary.totalRoutes), language)}
           </p>
         </div>
       </div>
 
       <div className="bg-white rounded-lg p-4 border border-gray-200 mb-6">
         <div className="grid grid-cols-3 gap-4">
-          <div className="text-center">
-            <p className="text-gray-600 text-sm text-right">מסלולים שמשקלם 85%-100%</p>
-            <p className="text-2xl font-bold text-orange-600 text-right">
+          <div className={`text-center ${isRTL ? '' : ''}`}>
+            <p className={`text-gray-600 text-sm ${isRTL ? 'text-right' : 'text-left'}`}>{t('summary.routes_85_100', language)}</p>
+            <p className={`text-2xl font-bold text-orange-600 ${isRTL ? 'text-right' : 'text-left'}`}>
               {summary.overUtilizedRoutes}
             </p>
           </div>
-          <div className="text-center border-r border-l border-gray-200 px-4">
-            <p className="text-gray-600 text-sm text-right">מסלולים שמשקלם קטן מ-50%</p>
-            <p className="text-2xl font-bold text-red-600 text-right">
+          <div className={`text-center border-r border-l border-gray-200 px-4 ${isRTL ? '' : ''}`}>
+            <p className={`text-gray-600 text-sm ${isRTL ? 'text-right' : 'text-left'}`}>{t('summary.routes_under_50', language)}</p>
+            <p className={`text-2xl font-bold text-red-600 ${isRTL ? 'text-right' : 'text-left'}`}>
               {summary.underUtilizedRoutes}
             </p>
           </div>
-          <div className="text-center">
-            <p className="text-gray-600 text-sm text-right">מסלולים שחורגים מקיבולת המשקל</p>
-            <p className="text-2xl font-bold text-red-700 text-right">
+          <div className={`text-center ${isRTL ? '' : ''}`}>
+            <p className={`text-gray-600 text-sm ${isRTL ? 'text-right' : 'text-left'}`}>{t('summary.overweight_routes_count', language)}</p>
+            <p className={`text-2xl font-bold text-red-700 ${isRTL ? 'text-right' : 'text-left'}`}>
               {summary.overWeightRoutes.length}
             </p>
           </div>
@@ -127,21 +127,21 @@ export default function DashboardSummary({ summary, normalWorkDayMinutes = 540 }
 
       {(summary.overWeightRoutes.length > 0 || summary.overTimeRoutes.length > 0) && (
         <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-4">
-          <p className="text-red-800 font-semibold text-right">
-            ⚠️ מסלולים חורגים:
+          <p className={`text-red-800 font-semibold ${isRTL ? 'text-right' : 'text-left'}`}>
+            {t('summary.overweight_routes', language)}
           </p>
           {summary.overWeightRoutes.length > 0 && (
-            <div className="text-right mt-3">
+            <div className={`mt-3 ${isRTL ? 'text-right' : 'text-left'}`}>
               <p className="text-red-700">
-                <span className="font-semibold">חורגים משקל:</span>{' '}
+                <span className="font-semibold">{t('summary.overweight_label', language)}</span>{' '}
                 <span className="blur-sm">{summary.overWeightRoutes.join(', ')}</span>
               </p>
             </div>
           )}
           {summary.overTimeRoutes.length > 0 && (
-            <div className="text-right mt-3">
+            <div className={`mt-3 ${isRTL ? 'text-right' : 'text-left'}`}>
               <p className="text-red-700">
-                <span className="font-semibold">חורגים זמן (מ-{normalWorkDayMinutes === 300 ? '5' : '9'} שעות):</span>{' '}
+                <span className="font-semibold">{t('summary.overtime_label', language)}</span> {language === 'he' ? `(מ-${normalWorkDayMinutes === 300 ? '5' : '9'} ${t('summary.time_hours', language)}):` : language === 'es' ? `(de ${normalWorkDayMinutes === 300 ? '5' : '9'} ${t('summary.time_hours', language)}):` : `(${normalWorkDayMinutes === 300 ? '5' : '9'} ${t('summary.time_hours', language)}):`}{' '}
                 <span className="blur-sm">{summary.overTimeRoutes.join(', ')}</span>
               </p>
             </div>
@@ -150,11 +150,11 @@ export default function DashboardSummary({ summary, normalWorkDayMinutes = 540 }
       )}
 
       <div className="bg-white rounded-lg p-4 border border-gray-200 mb-4">
-        <p className="text-gray-600 text-sm text-right font-semibold mb-3">
-          💡 חוות דעת על התכנון:
+        <p className={`text-gray-600 text-sm font-semibold mb-3 ${isRTL ? 'text-right' : 'text-left'}`}>
+          {t('summary.planning_recommendation', language)}
         </p>
         <div
-          className={`text-lg font-semibold text-right whitespace-pre-line ${
+          className={`text-lg font-semibold whitespace-pre-line ${isRTL ? 'text-right' : 'text-left'} ${
             summary.recommendation.includes('טוב')
               ? 'text-green-700'
               : summary.recommendation.includes('חורגים')
@@ -191,10 +191,10 @@ export default function DashboardSummary({ summary, normalWorkDayMinutes = 540 }
 
       {summary.weatherNote && (
         <div className="bg-white rounded-lg p-4 border border-gray-200">
-          <p className="text-gray-600 text-sm text-right font-semibold mb-3">
-            ⛅ תנאים יומיים:
+          <p className={`text-gray-600 text-sm font-semibold mb-3 ${isRTL ? 'text-right' : 'text-left'}`}>
+            {t('summary.daily_conditions', language)}
           </p>
-          <p className="text-gray-700 text-right font-medium whitespace-pre-line">
+          <p className={`text-gray-700 font-medium whitespace-pre-line ${isRTL ? 'text-right' : 'text-left'}`}>
             {summary.weatherNote}
           </p>
         </div>
