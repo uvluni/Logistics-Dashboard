@@ -39,7 +39,11 @@
       "Bash(git commit -m 'UI: Use language code abbreviations for switcher buttons *)",
       "Bash(curl -s http://localhost:3000)",
       "Bash(git commit -m 'Fix: Reorganize loadRoutes hook and useEffect dependencies *)",
-      "Bash(git commit -m 'Fix: Clear session on page load and fix Hebrew bullet alignment *)"
+      "Bash(git commit -m 'Fix: Clear session on page load and fix Hebrew bullet alignment *)",
+      "Bash(netstat -ano)",
+      "Bash(findstr :3000)",
+      "Bash(taskkill /PID 33116 /F)",
+      "Bash(git commit -m 'Fix: Align Hebrew insights bullets to the right side properly *)"
     ]
   }
 }
