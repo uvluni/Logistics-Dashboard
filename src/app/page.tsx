@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import KPICard from '@/components/KPICard';
@@ -61,7 +61,7 @@ export default function Home() {
     if (isLoggedIn && selectedDate) {
       loadRoutes();
     }
-  }, [selectedDate, isLoggedIn, language]);
+  }, [selectedDate, isLoggedIn, loadRoutes]);
 
   async function checkAuth() {
     try {
@@ -101,7 +101,7 @@ export default function Home() {
     }
   }
 
-  async function loadRoutes() {
+  const loadRoutes = useCallback(async () => {
     setIsLoading(true);
     setError('');
 
@@ -136,7 +136,7 @@ export default function Home() {
     } finally {
       setIsLoading(false);
     }
-  }
+  }, [selectedDate, language, setIsLoading, setError, setIsLoggedIn, setKpis, setSummary]);
 
   async function handleLogout() {
     setIsLoggedIn(false);
