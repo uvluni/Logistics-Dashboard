@@ -38,7 +38,8 @@
       "Bash(git commit -m 'UI: Unify language switcher buttons across login and dashboard *)",
       "Bash(git commit -m 'UI: Use language code abbreviations for switcher buttons *)",
       "Bash(curl -s http://localhost:3000)",
-      "Bash(git commit -m 'Fix: Reorganize loadRoutes hook and useEffect dependencies *)"
+      "Bash(git commit -m 'Fix: Reorganize loadRoutes hook and useEffect dependencies *)",
+      "Bash(git commit -m 'Fix: Clear session on page load and fix Hebrew bullet alignment *)"
     ]
   }
 }

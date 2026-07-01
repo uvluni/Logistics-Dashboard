@@ -85,6 +85,15 @@ export default function Home() {
   useEffect(() => {
     setSelectedDate(getNextBusinessDay());
     setMounted(true);
+    // Clear session on page load to return to login screen on refresh
+    const clearSession = async () => {
+      try {
+        await fetch('/api/auth/logout', { method: 'POST', credentials: 'include' });
+      } catch (err) {
+        // Silently fail
+      }
+    };
+    clearSession();
   }, []);
 
   // Reset date to next business day when logged in
