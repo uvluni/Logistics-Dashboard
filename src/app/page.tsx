@@ -156,7 +156,7 @@ export default function Home() {
                 : 'bg-blue-500 text-white hover:bg-blue-400'
             }`}
           >
-            עברית
+            עב
           </button>
           <button
             onClick={() => setLanguage('en')}
@@ -166,7 +166,7 @@ export default function Home() {
                 : 'bg-blue-500 text-white hover:bg-blue-400'
             }`}
           >
-            English
+            EN
           </button>
           <button
             onClick={() => setLanguage('es')}
@@ -176,7 +176,7 @@ export default function Home() {
                 : 'bg-blue-500 text-white hover:bg-blue-400'
             }`}
           >
-            Español
+            ES
           </button>
         </div>
 
@@ -246,7 +246,7 @@ export default function Home() {
                   : 'bg-blue-500 text-white hover:bg-blue-400'
               }`}
             >
-              עברית
+              עב
             </button>
             <button
               onClick={() => setLanguage('en')}
@@ -256,7 +256,7 @@ export default function Home() {
                   : 'bg-blue-500 text-white hover:bg-blue-400'
               }`}
             >
-              English
+              EN
             </button>
             <button
               onClick={() => setLanguage('es')}
@@ -266,7 +266,7 @@ export default function Home() {
                   : 'bg-blue-500 text-white hover:bg-blue-400'
               }`}
             >
-              Español
+              ES
             </button>
             <button
               onClick={handleLogout}
