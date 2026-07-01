@@ -251,6 +251,12 @@ export function calculateDashboardSummary(
     recommendation += t('recommendation.balanced', language);
   }
 
+  // Capitalize first letter for English and Spanish
+  let finalWeatherNote = conditionsNote.trim();
+  if ((language === 'en' || language === 'es') && finalWeatherNote.length > 0) {
+    finalWeatherNote = finalWeatherNote.charAt(0).toUpperCase() + finalWeatherNote.slice(1);
+  }
+
   return {
     totalRoutes: kpis.length,
     totalStops,
@@ -263,7 +269,7 @@ export function calculateDashboardSummary(
     overTimeRoutes,
     overWeightRoutes,
     recommendation,
-    weatherNote: conditionsNote.trim(),
+    weatherNote: finalWeatherNote,
     trafficNote: '',
   };
 }
