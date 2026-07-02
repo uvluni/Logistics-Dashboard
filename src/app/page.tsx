@@ -275,6 +275,7 @@ export default function Home() {
       // Extract stops data from ROADNET API response
       const routes = data.items || data.routes || data.data || [];
       const stopsData: any[] = [];
+      let globalStopNumber = 0;
 
       routes.forEach((route: any) => {
         const routeId = route.identity?.identifier || '';
@@ -286,11 +287,13 @@ export default function Home() {
           route.stops.forEach((stop: any) => {
             // Only include ServiceableStop, not DEPOT or MidrouteDepotStop
             if (stop.stopType === 'ServiceableStop') {
+              globalStopNumber++;
               const ssi = stop.serviceableStopInfo || {};
               const locationInfo = ssi.locationInfo || {};
               const address = locationInfo.address || {};
 
               stopsData.push({
+                'Stop Number': globalStopNumber,
                 'Route ID': routeId,
                 'Session Date': selectedDate,
                 'Worker First Name': workerFirstName,
@@ -316,6 +319,7 @@ export default function Home() {
 
       // Set column widths
       const colWidths = [
+        { wch: 12 }, // Stop Number
         { wch: 15 }, // Route ID
         { wch: 13 }, // Session Date
         { wch: 15 }, // Worker First Name
