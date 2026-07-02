@@ -293,18 +293,17 @@ export default function Home() {
               const address = locationInfo.address || {};
 
               stopsData.push({
-                'Stop Number': routeStopNumber,
                 'Route ID': routeId,
                 'Session Date': selectedDate,
                 'Worker First Name': workerFirstName,
                 'Equipment Identifier': equipmentIdentifier,
-                'Stop Description': ssi.specialInstructions || locationInfo.description || '',
-                'Arrival Timestamp': ssi.arrivalTimestamp || '',
-                'Departure Timestamp': ssi.departureTimestamp || '',
                 'Location Identifier': locationInfo.identity?.identifier || '',
                 'Location Description': locationInfo.description || '',
                 'Address Line 1': address.addressLine1 || '',
                 'State Or Province': address.stateOrProvince || '',
+                'Stop Number': routeStopNumber,
+                'Arrival Timestamp': ssi.arrivalTimestamp || '',
+                'Departure Timestamp': ssi.departureTimestamp || '',
                 'Total Delivery Quantities': ssi.totalDeliveryQuantities?.[0] || 0,
               });
             }
@@ -319,18 +318,17 @@ export default function Home() {
 
       // Set column widths
       const colWidths = [
-        { wch: 12 }, // Stop Number
         { wch: 15 }, // Route ID
         { wch: 13 }, // Session Date
         { wch: 15 }, // Worker First Name
         { wch: 18 }, // Equipment Identifier
-        { wch: 20 }, // Stop Description
-        { wch: 20 }, // Arrival Timestamp
-        { wch: 20 }, // Departure Timestamp
         { wch: 18 }, // Location Identifier
         { wch: 20 }, // Location Description
         { wch: 18 }, // Address Line 1
         { wch: 16 }, // State Or Province
+        { wch: 12 }, // Stop Number
+        { wch: 20 }, // Arrival Timestamp
+        { wch: 20 }, // Departure Timestamp
         { wch: 14 }, // Total Delivery Quantities
       ];
       worksheet['!cols'] = colWidths;
