@@ -640,7 +640,8 @@ export default function Home() {
                   e.stopPropagation();
                   handleDownloadReport();
                 }}
-                className="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 rounded-lg transition-colors text-sm whitespace-nowrap"
+                className="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 rounded-lg transition-colors text-sm whitespace-nowrap cursor-pointer"
+                style={{ pointerEvents: 'auto' }}
               >
                 דוח מסלולים
               </button>
@@ -649,7 +650,8 @@ export default function Home() {
                   e.stopPropagation();
                   handleDownloadStopsReport();
                 }}
-                className="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 rounded-lg transition-colors text-sm whitespace-nowrap"
+                className="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 rounded-lg transition-colors text-sm whitespace-nowrap cursor-pointer"
+                style={{ pointerEvents: 'auto' }}
               >
                 דוח תחנות
               </button>
@@ -658,7 +660,8 @@ export default function Home() {
                   e.stopPropagation();
                   handleDownloadOrdersReport();
                 }}
-                className="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 rounded-lg transition-colors text-sm whitespace-nowrap"
+                className="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 rounded-lg transition-colors text-sm whitespace-nowrap cursor-pointer"
+                style={{ pointerEvents: 'auto' }}
               >
                 דוח הזמנות
               </button>
