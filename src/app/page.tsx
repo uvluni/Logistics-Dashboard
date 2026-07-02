@@ -272,6 +272,19 @@ export default function Home() {
 
       const data = await res.json();
 
+      // Helper functions for formatting
+      const formatAddress = (address: string) => {
+        // Replace multiple consecutive spaces with single space
+        return (address || '').replace(/\s+/g, ' ').trim();
+      };
+
+      const formatTime = (timestamp: string) => {
+        // Extract time in HH:MM format from ISO timestamp like "2026-07-02T06:35:47.191"
+        if (!timestamp) return '';
+        const match = timestamp.match(/T(\d{2}):(\d{2})/);
+        return match ? `${match[1]}:${match[2]}` : '';
+      };
+
       // Extract stops data from ROADNET API response
       const routes = data.items || data.routes || data.data || [];
       const stopsData: any[] = [];
@@ -299,11 +312,11 @@ export default function Home() {
                 'Equipment Identifier': equipmentIdentifier,
                 'Location Identifier': locationInfo.identity?.identifier || '',
                 'Location Description': locationInfo.description || '',
-                'Address Line 1': address.addressLine1 || '',
+                'Address Line 1': formatAddress(address.addressLine1),
                 'State Or Province': address.stateOrProvince || '',
                 'Stop Number': routeStopNumber,
-                'Arrival Timestamp': ssi.arrivalTimestamp || '',
-                'Departure Timestamp': ssi.departureTimestamp || '',
+                'Arrival Timestamp': formatTime(ssi.arrivalTimestamp),
+                'Departure Timestamp': formatTime(ssi.departureTimestamp),
                 'Total Delivery Quantities': ssi.totalDeliveryQuantities?.[0] || 0,
               });
             }
