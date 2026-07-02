@@ -18,13 +18,14 @@ export function sanitizeString(input: string | null | undefined, maxLength: numb
 
 export function sanitizeDriverName(name: string | null | undefined): string {
   if (!name) return '';
-  
-  // Driver names should only contain letters, numbers, spaces, and basic punctuation
+
+  // Allow Unicode letters (Hebrew, English, Arabic, etc.), numbers, spaces, hyphens, apostrophes
+  // Using Unicode property escapes to support multiple languages
   const sanitized = String(name)
     .trim()
-    .replace(/[^a-zA-Z0-9\s\-']/g, '') // Keep only safe chars
+    .replace(/[^\p{L}\p{N}\s\-']/gu, '') // Keep Unicode letters, numbers, spaces, safe punctuation
     .substring(0, 100);
-  
+
   return sanitized || 'Unknown';
 }
 
