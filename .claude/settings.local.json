@@ -58,7 +58,8 @@
       "Bash(curl -s http://localhost:3000/api/stops?sessionDate=2026-07-02 -H 'Cookie: roadnet_token=mock_token')",
       "Bash(curl -s http://localhost:3000/api/stops?sessionDate=2026-07-02 -H 'Cookie: roadnet_token=dummy_token')",
       "Bash(git commit -m 'Fix: Correct ROADNET stop data mapping from nested serviceableStopInfo *)",
-      "Bash(git commit -m 'Fix: Format Address and Timestamp data in stops report *)"
+      "Bash(git commit -m 'Fix: Format Address and Timestamp data in stops report *)",
+      "Bash(git commit -m 'Feature: Add Orders Report export *)"
     ]
   }
 }

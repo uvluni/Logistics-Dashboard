@@ -353,6 +353,82 @@ export default function Home() {
     }
   }
 
+  async function handleDownloadOrdersReport() {
+    if (!selectedDate) {
+      setError(t('error.select_date_first', language));
+      return;
+    }
+
+    try {
+      const params = new URLSearchParams({
+        sessionDate: selectedDate,
+      });
+
+      const res = await fetch(`/api/stops?${params}`, {
+        credentials: 'include',
+      });
+
+      if (res.status === 401) {
+        setError(t('error.session_expired', language));
+        setIsLoggedIn(false);
+        return;
+      }
+
+      if (!res.ok) {
+        setError(t('error.download_failed', language));
+        return;
+      }
+
+      const data = await res.json();
+
+      // Extract orders data from ROADNET API response
+      const routes = data.items || data.routes || data.data || [];
+      const ordersData: any[] = [];
+
+      routes.forEach((route: any) => {
+        const routeId = route.identity?.identifier || '';
+        const sessionDate = selectedDate;
+
+        if (route.stops && Array.isArray(route.stops)) {
+          route.stops.forEach((stop: any) => {
+            if (stop.stopType === 'ServiceableStop') {
+              const ssi = stop.serviceableStopInfo || {};
+              const orders = ssi.orders || [];
+
+              orders.forEach((order: any) => {
+                ordersData.push({
+                  'Route ID': routeId,
+                  'Session Date': sessionDate,
+                  'Order Identifier': order.identity?.identifier || '',
+                  'Total Delivery Quantities': order.totalDeliveryQuantities?.[0] || 0,
+                });
+              });
+            }
+          });
+        }
+      });
+
+      // Create Excel workbook
+      const worksheet = XLSX.utils.json_to_sheet(ordersData);
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, 'Orders');
+
+      // Set column widths
+      const colWidths = [
+        { wch: 15 }, // Route ID
+        { wch: 13 }, // Session Date
+        { wch: 18 }, // Order Identifier
+        { wch: 14 }, // Total Delivery Quantities
+      ];
+      worksheet['!cols'] = colWidths;
+
+      // Download file
+      XLSX.writeFile(workbook, `orders-report-${selectedDate}.xlsx`);
+    } catch (err) {
+      setError(t('error.download_failed', language));
+    }
+  }
+
   if (!isLoggedIn) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-600 to-indigo-700 flex items-center justify-center p-4">
@@ -535,6 +611,12 @@ export default function Home() {
                 className="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors text-sm whitespace-nowrap"
               >
                 דוח תחנות
+              </button>
+              <button
+                onClick={handleDownloadOrdersReport}
+                className="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors text-sm whitespace-nowrap"
+              >
+                דוח הזמנות
               </button>
             </div>
           </div>
