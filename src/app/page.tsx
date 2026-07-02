@@ -272,17 +272,60 @@ export default function Home() {
 
       const data = await res.json();
 
-      // Download raw JSON from ROADNET API
-      const jsonString = JSON.stringify(data, null, 2);
-      const blob = new Blob([jsonString], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = `stops-report-${selectedDate}.json`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      URL.revokeObjectURL(url);
+      // Extract stops data from ROADNET API response
+      const routes = data.items || data.routes || data.data || [];
+      const stopsData: any[] = [];
+
+      routes.forEach((route: any) => {
+        const routeId = route.identity?.identifier || '';
+        const workerFirstName = route.workersInfo?.[0]?.name?.firstName || '';
+        const equipmentIdentifier = route.equipmentInfo?.[0]?.specificEquipmentInfo?.identity?.identifier || '';
+
+        // Process each stop in the route
+        if (route.stops && Array.isArray(route.stops)) {
+          route.stops.forEach((stop: any) => {
+            stopsData.push({
+              'Route ID': routeId,
+              'Session Date': selectedDate,
+              'Worker First Name': workerFirstName,
+              'Equipment Identifier': equipmentIdentifier,
+              'Stop Description': stop.description || '',
+              'Arrival Timestamp': stop.arrivalTimestamp || '',
+              'Departure Timestamp': stop.departureTimestamp || '',
+              'Location Identifier': stop.location?.identity?.identifier || '',
+              'Location Description': stop.location?.description || '',
+              'Address Line 1': stop.address?.addressLine1 || '',
+              'State Or Province': stop.address?.stateOrProvince || '',
+              'Total Delivery Quantities': stop.totalDeliveryQuantities?.[0] || 0,
+            });
+          });
+        }
+      });
+
+      // Create Excel workbook
+      const worksheet = XLSX.utils.json_to_sheet(stopsData);
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, 'Stops');
+
+      // Set column widths
+      const colWidths = [
+        { wch: 15 }, // Route ID
+        { wch: 13 }, // Session Date
+        { wch: 15 }, // Worker First Name
+        { wch: 18 }, // Equipment Identifier
+        { wch: 20 }, // Stop Description
+        { wch: 20 }, // Arrival Timestamp
+        { wch: 20 }, // Departure Timestamp
+        { wch: 18 }, // Location Identifier
+        { wch: 20 }, // Location Description
+        { wch: 18 }, // Address Line 1
+        { wch: 16 }, // State Or Province
+        { wch: 14 }, // Total Delivery Quantities
+      ];
+      worksheet['!cols'] = colWidths;
+
+      // Download file
+      XLSX.writeFile(workbook, `stops-report-${selectedDate}.xlsx`);
     } catch (err) {
       setError(t('error.download_failed', language));
     }
