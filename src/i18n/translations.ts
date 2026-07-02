@@ -24,6 +24,9 @@ export const translations: Record<Language, Record<string, string>> = {
     'dashboard.title': 'ROADNET - דוח תכנון הפצה',
     'dashboard.select_date': 'בחר תאריך',
     'dashboard.loading': 'טוען מסלולים...',
+    'dashboard.report_routes': 'דוח מסלולים',
+    'dashboard.report_stops': 'דוח תחנות',
+    'dashboard.report_orders': 'דוח הזמנות',
 
     // Summary Section
     'summary.title': 'סיכום כללי',
@@ -161,6 +164,9 @@ export const translations: Record<Language, Record<string, string>> = {
     'dashboard.title': 'ROADNET - Daily Distribution Planning Report',
     'dashboard.select_date': 'Select Date',
     'dashboard.loading': 'Loading routes...',
+    'dashboard.report_routes': 'Routes Report',
+    'dashboard.report_stops': 'Stops Report',
+    'dashboard.report_orders': 'Orders Report',
 
     // Summary Section
     'summary.title': 'Summary',
@@ -298,6 +304,9 @@ export const translations: Record<Language, Record<string, string>> = {
     'dashboard.title': 'ROADNET - Informe de Planificación de Distribución Diaria',
     'dashboard.select_date': 'Seleccionar Fecha',
     'dashboard.loading': 'Cargando rutas...',
+    'dashboard.report_routes': 'Informe de Rutas',
+    'dashboard.report_stops': 'Informe de Paradas',
+    'dashboard.report_orders': 'Informe de Órdenes',
 
     // Summary Section
     'summary.title': 'Resumen',
