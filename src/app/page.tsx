@@ -286,21 +286,23 @@ export default function Home() {
           route.stops.forEach((stop: any) => {
             // Only include ServiceableStop, not DEPOT or MidrouteDepotStop
             if (stop.stopType === 'ServiceableStop') {
-              const serviceableStopInfo = stop.serviceableStopInfo || {};
+              const ssi = stop.serviceableStopInfo || {};
+              const locationInfo = ssi.locationInfo || {};
+              const address = locationInfo.address || {};
 
               stopsData.push({
                 'Route ID': routeId,
                 'Session Date': selectedDate,
                 'Worker First Name': workerFirstName,
                 'Equipment Identifier': equipmentIdentifier,
-                'Stop Description': serviceableStopInfo.description || stop.description || '',
-                'Arrival Timestamp': serviceableStopInfo.arrivalTime || stop.arrivalTimestamp || '',
-                'Departure Timestamp': serviceableStopInfo.departureTime || stop.departureTimestamp || '',
-                'Location Identifier': serviceableStopInfo.location?.identity?.identifier || stop.location?.identity?.identifier || '',
-                'Location Description': serviceableStopInfo.location?.description || stop.location?.description || '',
-                'Address Line 1': serviceableStopInfo.address?.addressLine1 || stop.address?.addressLine1 || '',
-                'State Or Province': serviceableStopInfo.address?.stateOrProvince || stop.address?.stateOrProvince || '',
-                'Total Delivery Quantities': serviceableStopInfo.totalDeliveryQuantities?.[0] || stop.totalDeliveryQuantities?.[0] || 0,
+                'Stop Description': ssi.specialInstructions || locationInfo.description || '',
+                'Arrival Timestamp': ssi.arrivalTimestamp || '',
+                'Departure Timestamp': ssi.departureTimestamp || '',
+                'Location Identifier': locationInfo.identity?.identifier || '',
+                'Location Description': locationInfo.description || '',
+                'Address Line 1': address.addressLine1 || '',
+                'State Or Province': address.stateOrProvince || '',
+                'Total Delivery Quantities': ssi.totalDeliveryQuantities?.[0] || 0,
               });
             }
           });
