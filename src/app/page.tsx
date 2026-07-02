@@ -604,7 +604,7 @@ export default function Home() {
             <label className={`block text-sm font-medium mb-3 opacity-90 ${isRTL ? 'text-right' : 'text-left'}`}>
               {t('dashboard.select_date', language)}
             </label>
-            <div className="flex gap-2 items-center flex-wrap">
+            <div className="flex gap-2 items-stretch">
               <div
                 onClick={() => datePickerRef.current?.setOpen(true)}
                 className="bg-white hover:bg-gray-50 cursor-pointer rounded-lg px-2 py-2 flex items-center gap-2 transition-colors focus-within:ring-2 focus-within:ring-blue-300 focus-within:ring-offset-2 flex-1 min-w-40"
@@ -636,19 +636,19 @@ export default function Home() {
               </div>
               <button
                 onClick={handleDownloadReport}
-                className="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors text-sm whitespace-nowrap"
+                className="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 rounded-lg transition-colors text-sm whitespace-nowrap"
               >
                 דוח מסלולים
               </button>
               <button
                 onClick={handleDownloadStopsReport}
-                className="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors text-sm whitespace-nowrap"
+                className="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 rounded-lg transition-colors text-sm whitespace-nowrap"
               >
                 דוח תחנות
               </button>
               <button
                 onClick={handleDownloadOrdersReport}
-                className="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors text-sm whitespace-nowrap"
+                className="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 rounded-lg transition-colors text-sm whitespace-nowrap"
               >
                 דוח הזמנות
               </button>

@@ -60,7 +60,8 @@
       "Bash(git commit -m 'Fix: Correct ROADNET stop data mapping from nested serviceableStopInfo *)",
       "Bash(git commit -m 'Fix: Format Address and Timestamp data in stops report *)",
       "Bash(git commit -m 'Feature: Add Orders Report export *)",
-      "Bash(git commit -m 'Fix: Orders Report now includes all Stops Report columns *)"
+      "Bash(git commit -m 'Fix: Orders Report now includes all Stops Report columns *)",
+      "Bash(git commit -m 'Fix: Align report buttons height with date picker *)"
     ]
   }
 }
