@@ -170,6 +170,45 @@ export default function Home() {
     setSummary(null);
   }
 
+  async function handleDownloadReport() {
+    if (!selectedDate) {
+      setError(t('error.select_date_first', language));
+      return;
+    }
+
+    try {
+      const params = new URLSearchParams({
+        sessionDate: selectedDate,
+        language: language,
+      });
+
+      const res = await fetch(`/api/routes?${params}`, {
+        credentials: 'include',
+      });
+
+      if (!res.ok) {
+        setError(t('error.download_failed', language));
+        return;
+      }
+
+      const data = await res.json();
+
+      // Create JSON file
+      const jsonString = JSON.stringify(data, null, 2);
+      const blob = new Blob([jsonString], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `routes-report-${selectedDate}.json`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      setError(t('error.download_failed', language));
+    }
+  }
+
   if (!isLoggedIn) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-600 to-indigo-700 flex items-center justify-center p-4">
@@ -311,34 +350,42 @@ export default function Home() {
             <label className={`block text-sm font-medium mb-3 opacity-90 ${isRTL ? 'text-right' : 'text-left'}`}>
               {t('dashboard.select_date', language)}
             </label>
-            <div
-              onClick={() => datePickerRef.current?.setOpen(true)}
-              className="bg-white hover:bg-gray-50 cursor-pointer rounded-lg px-2 py-2 flex items-center gap-2 transition-colors focus-within:ring-2 focus-within:ring-blue-300 focus-within:ring-offset-2 w-fit"
-              suppressHydrationWarning
-            >
-              <span className="text-2xl">📅</span>
-              {selectedDate && (
-                <DatePicker
-                  ref={datePickerRef}
-                  selected={new Date(selectedDate + 'T00:00:00')}
-                  onChange={(date: Date | null) => {
-                    if (date) {
-                      const year = date.getFullYear();
-                      const month = String(date.getMonth() + 1).padStart(2, '0');
-                      const day = String(date.getDate()).padStart(2, '0');
-                      setSelectedDate(`${year}-${month}-${day}`);
-                    }
-                  }}
-                  onSelect={() => {
-                    setTimeout(() => {
-                      datePickerRef.current?.setOpen(false);
-                    }, 0);
-                  }}
-                  dateFormat="dd/MM/yy"
-                  className="flex-1 border-0 bg-transparent text-gray-900 font-semibold text-lg focus:outline-none"
-                  wrapperClassName="flex-1"
-                />
-              )}
+            <div className="flex gap-2 items-center">
+              <div
+                onClick={() => datePickerRef.current?.setOpen(true)}
+                className="bg-white hover:bg-gray-50 cursor-pointer rounded-lg px-2 py-2 flex items-center gap-2 transition-colors focus-within:ring-2 focus-within:ring-blue-300 focus-within:ring-offset-2 flex-1"
+                suppressHydrationWarning
+              >
+                <span className="text-2xl">📅</span>
+                {selectedDate && (
+                  <DatePicker
+                    ref={datePickerRef}
+                    selected={new Date(selectedDate + 'T00:00:00')}
+                    onChange={(date: Date | null) => {
+                      if (date) {
+                        const year = date.getFullYear();
+                        const month = String(date.getMonth() + 1).padStart(2, '0');
+                        const day = String(date.getDate()).padStart(2, '0');
+                        setSelectedDate(`${year}-${month}-${day}`);
+                      }
+                    }}
+                    onSelect={() => {
+                      setTimeout(() => {
+                        datePickerRef.current?.setOpen(false);
+                      }, 0);
+                    }}
+                    dateFormat="dd/MM/yy"
+                    className="flex-1 border-0 bg-transparent text-gray-900 font-semibold text-lg focus:outline-none"
+                    wrapperClassName="flex-1"
+                  />
+                )}
+              </div>
+              <button
+                onClick={handleDownloadReport}
+                className="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors text-sm whitespace-nowrap"
+              >
+                דוח מסלולים
+              </button>
             </div>
           </div>
           {isLoading && (

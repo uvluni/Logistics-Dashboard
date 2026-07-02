@@ -17,6 +17,8 @@ export const translations: Record<Language, Record<string, string>> = {
     'error.session_expired': 'התחברות פקעה. בחברו שוב.',
     'error.load_data_failed': 'שגיאה בטעינת הנתונים',
     'error.connection_failed': 'שגיאה בטעינה. בדוק את החיבור לשרת.',
+    'error.select_date_first': 'בחר תאריך קודם הורדת הדוח',
+    'error.download_failed': 'שגיאה בהורדת הדוח',
 
     // Dashboard Header
     'dashboard.title': 'ROADNET - דוח תכנון הפצה',
@@ -152,6 +154,8 @@ export const translations: Record<Language, Record<string, string>> = {
     'error.session_expired': 'Session expired. Please login again.',
     'error.load_data_failed': 'Error loading data',
     'error.connection_failed': 'Loading error. Check your server connection.',
+    'error.select_date_first': 'Please select a date before downloading the report',
+    'error.download_failed': 'Error downloading the report',
 
     // Dashboard Header
     'dashboard.title': 'ROADNET - Daily Distribution Planning Report',
@@ -287,6 +291,8 @@ export const translations: Record<Language, Record<string, string>> = {
     'error.session_expired': 'Sesión expirada. Por favor inicie sesión nuevamente.',
     'error.load_data_failed': 'Error al cargar los datos',
     'error.connection_failed': 'Error de carga. Verifique su conexión al servidor.',
+    'error.select_date_first': 'Seleccione una fecha antes de descargar el informe',
+    'error.download_failed': 'Error al descargar el informe',
 
     // Dashboard Header
     'dashboard.title': 'ROADNET - Informe de Planificación de Distribución Diaria',
