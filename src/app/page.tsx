@@ -275,25 +275,25 @@ export default function Home() {
       // Extract stops data from ROADNET API response
       const routes = data.items || data.routes || data.data || [];
       const stopsData: any[] = [];
-      let globalStopNumber = 0;
 
       routes.forEach((route: any) => {
         const routeId = route.identity?.identifier || '';
         const workerFirstName = route.workersInfo?.[0]?.name?.firstName || '';
         const equipmentIdentifier = route.equipmentInfo?.[0]?.specificEquipmentInfo?.identity?.identifier || '';
+        let routeStopNumber = 0;
 
         // Process each ServiceableStop in the route (excluding depot stops)
         if (route.stops && Array.isArray(route.stops)) {
           route.stops.forEach((stop: any) => {
             // Only include ServiceableStop, not DEPOT or MidrouteDepotStop
             if (stop.stopType === 'ServiceableStop') {
-              globalStopNumber++;
+              routeStopNumber++;
               const ssi = stop.serviceableStopInfo || {};
               const locationInfo = ssi.locationInfo || {};
               const address = locationInfo.address || {};
 
               stopsData.push({
-                'Stop Number': globalStopNumber,
+                'Stop Number': routeStopNumber,
                 'Route ID': routeId,
                 'Session Date': selectedDate,
                 'Worker First Name': workerFirstName,
