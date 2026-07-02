@@ -50,7 +50,8 @@
       "Bash(git commit -m 'Fix: Conditional bullet point positioning for Hebrew vs other languages *)",
       "Bash(python3 -c ' *)",
       "Bash(git restore *)",
-      "Bash(git tag -a v3.0.0 -m 'Production Release v3.0.0 - ROADNET Distribution Planning Dashboard *)"
+      "Bash(git tag -a v3.0.0 -m 'Production Release v3.0.0 - ROADNET Distribution Planning Dashboard *)",
+      "Bash(npm install *)"
     ]
   }
 }

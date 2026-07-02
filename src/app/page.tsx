@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import * as XLSX from 'xlsx';
 import KPICard from '@/components/KPICard';
 import DashboardSummary from '@/components/DashboardSummary';
 import { RouteKPI, DashboardSummary as Summary } from '@/types';
@@ -193,17 +194,51 @@ export default function Home() {
 
       const data = await res.json();
 
-      // Create JSON file
-      const jsonString = JSON.stringify(data, null, 2);
-      const blob = new Blob([jsonString], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = `routes-report-${selectedDate}.json`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      URL.revokeObjectURL(url);
+      // Create Excel file from KPI data
+      const kpis = data.kpis || [];
+
+      // Prepare data for Excel
+      const excelData = kpis.map(kpi => ({
+        'Route ID': kpi.routeId,
+        'Driver Name': kpi.driverName,
+        'Vehicle Type': kpi.vehicleType,
+        'Total Duration (min)': kpi.totalDurationMinutes,
+        'Travel Time (min)': kpi.travelTimeMinutes,
+        'Service Time (min)': kpi.serviceTimeMinutes,
+        'Stops': kpi.stopCount,
+        'Total Weight (kg)': kpi.totalWeight,
+        'Vehicle Capacity (kg)': kpi.vehicleCapacity,
+        'Weight Utilization (%)': kpi.weightUtilization,
+        'Time Utilization (%)': kpi.timeUtilization,
+        'Insights': kpi.insights?.join('; ') || '',
+        'Rounds': kpi.rounds?.length || 0,
+      }));
+
+      // Create workbook and worksheet
+      const worksheet = XLSX.utils.json_to_sheet(excelData);
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, 'Routes');
+
+      // Set column widths
+      const colWidths = [
+        { wch: 12 }, // Route ID
+        { wch: 15 }, // Driver Name
+        { wch: 15 }, // Vehicle Type
+        { wch: 16 }, // Total Duration
+        { wch: 14 }, // Travel Time
+        { wch: 14 }, // Service Time
+        { wch: 8 },  // Stops
+        { wch: 14 }, // Total Weight
+        { wch: 16 }, // Vehicle Capacity
+        { wch: 16 }, // Weight Utilization
+        { wch: 14 }, // Time Utilization
+        { wch: 40 }, // Insights
+        { wch: 8 },  // Rounds
+      ];
+      worksheet['!cols'] = colWidths;
+
+      // Download file
+      XLSX.writeFile(workbook, `routes-report-${selectedDate}.xlsx`);
     } catch (err) {
       setError(t('error.download_failed', language));
     }
