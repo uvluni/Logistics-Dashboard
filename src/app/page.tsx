@@ -609,6 +609,13 @@ export default function Home() {
                 onClick={() => datePickerRef.current?.setOpen(true)}
                 className="bg-white hover:bg-gray-50 cursor-pointer rounded-lg px-2 py-2 flex items-center gap-2 transition-colors focus-within:ring-2 focus-within:ring-blue-300 focus-within:ring-offset-2 flex-1 min-w-40"
                 suppressHydrationWarning
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    datePickerRef.current?.setOpen(true);
+                  }
+                }}
+                role="button"
+                tabIndex={0}
               >
                 <span className="text-2xl">📅</span>
                 {selectedDate && (
