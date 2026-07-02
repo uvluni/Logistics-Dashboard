@@ -54,7 +54,8 @@
       "Bash(npm install *)",
       "Bash(curl -s http://localhost:3000/api/stops)",
       "Bash(curl -s -w \"\\\\n%{http_code}\\\\n\" http://localhost:3000/api/stops)",
-      "Bash(cat > *)"
+      "Bash(cat > *)",
+      "Bash(curl -s http://localhost:3000/api/stops?sessionDate=2026-07-02 -H 'Cookie: roadnet_token=mock_token')"
     ]
   }
 }

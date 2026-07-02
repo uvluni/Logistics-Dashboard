@@ -286,19 +286,21 @@ export default function Home() {
           route.stops.forEach((stop: any) => {
             // Only include ServiceableStop, not DEPOT or MidrouteDepotStop
             if (stop.stopType === 'ServiceableStop') {
+              const serviceableStopInfo = stop.serviceableStopInfo || {};
+
               stopsData.push({
                 'Route ID': routeId,
                 'Session Date': selectedDate,
                 'Worker First Name': workerFirstName,
                 'Equipment Identifier': equipmentIdentifier,
-                'Stop Description': stop.description || '',
-                'Arrival Timestamp': stop.arrivalTimestamp || '',
-                'Departure Timestamp': stop.departureTimestamp || '',
-                'Location Identifier': stop.location?.identity?.identifier || '',
-                'Location Description': stop.location?.description || '',
-                'Address Line 1': stop.address?.addressLine1 || '',
-                'State Or Province': stop.address?.stateOrProvince || '',
-                'Total Delivery Quantities': stop.totalDeliveryQuantities?.[0] || 0,
+                'Stop Description': serviceableStopInfo.description || stop.description || '',
+                'Arrival Timestamp': serviceableStopInfo.arrivalTime || stop.arrivalTimestamp || '',
+                'Departure Timestamp': serviceableStopInfo.departureTime || stop.departureTimestamp || '',
+                'Location Identifier': serviceableStopInfo.location?.identity?.identifier || stop.location?.identity?.identifier || '',
+                'Location Description': serviceableStopInfo.location?.description || stop.location?.description || '',
+                'Address Line 1': serviceableStopInfo.address?.addressLine1 || stop.address?.addressLine1 || '',
+                'State Or Province': serviceableStopInfo.address?.stateOrProvince || stop.address?.stateOrProvince || '',
+                'Total Delivery Quantities': serviceableStopInfo.totalDeliveryQuantities?.[0] || stop.totalDeliveryQuantities?.[0] || 0,
               });
             }
           });
