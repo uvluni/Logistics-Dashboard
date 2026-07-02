@@ -206,12 +206,12 @@ export default function Home() {
         'Travel Time (min)': kpi.travelTimeMinutes,
         'Service Time (min)': kpi.serviceTimeMinutes,
         'Stops': kpi.stopCount,
+        'Rounds': kpi.rounds?.length || 0,
         'Total Weight (kg)': kpi.totalWeight,
         'Vehicle Capacity (kg)': kpi.vehicleCapacity,
         'Weight Utilization (%)': kpi.weightUtilization,
         'Time Utilization (%)': kpi.timeUtilization,
         'Insights': kpi.insights?.join('; ') || '',
-        'Rounds': kpi.rounds?.length || 0,
       }));
 
       // Create workbook and worksheet
