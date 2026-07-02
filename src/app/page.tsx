@@ -251,20 +251,19 @@ export default function Home() {
     }
 
     try {
-      // Fetch raw ROADNET API data (same endpoint as /api/routes uses internally)
-      const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
-      if (!baseUrl) {
-        setError(t('error.download_failed', language));
+      const params = new URLSearchParams({
+        sessionDate: selectedDate,
+      });
+
+      const res = await fetch(`/api/stops?${params}`, {
+        credentials: 'include',
+      });
+
+      if (res.status === 401) {
+        setError(t('error.session_expired', language));
+        setIsLoggedIn(false);
         return;
       }
-
-      const res = await fetch(`${baseUrl}/v1/dailyplan/routes?expand=All&sessionDate=${selectedDate}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${getCookie('roadnet_token')}`,
-        },
-      });
 
       if (!res.ok) {
         setError(t('error.download_failed', language));
@@ -287,14 +286,6 @@ export default function Home() {
     } catch (err) {
       setError(t('error.download_failed', language));
     }
-  }
-
-  // Helper function to get cookie value
-  function getCookie(name: string): string {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) return parts.pop()?.split(';').shift() || '';
-    return '';
   }
 
   if (!isLoggedIn) {

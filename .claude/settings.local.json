@@ -51,7 +51,9 @@
       "Bash(python3 -c ' *)",
       "Bash(git restore *)",
       "Bash(git tag -a v3.0.0 -m 'Production Release v3.0.0 - ROADNET Distribution Planning Dashboard *)",
-      "Bash(npm install *)"
+      "Bash(npm install *)",
+      "Bash(curl -s http://localhost:3000/api/stops)",
+      "Bash(curl -s -w \"\\\\n%{http_code}\\\\n\" http://localhost:3000/api/stops)"
     ]
   }
 }
