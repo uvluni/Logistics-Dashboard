@@ -244,6 +244,59 @@ export default function Home() {
     }
   }
 
+  async function handleDownloadStopsReport() {
+    if (!selectedDate) {
+      setError(t('error.select_date_first', language));
+      return;
+    }
+
+    try {
+      // Fetch raw ROADNET API data (same endpoint as /api/routes uses internally)
+      const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+      if (!baseUrl) {
+        setError(t('error.download_failed', language));
+        return;
+      }
+
+      const res = await fetch(`${baseUrl}/v1/dailyplan/routes?expand=All&sessionDate=${selectedDate}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${getCookie('roadnet_token')}`,
+        },
+      });
+
+      if (!res.ok) {
+        setError(t('error.download_failed', language));
+        return;
+      }
+
+      const data = await res.json();
+
+      // Download raw JSON from ROADNET API
+      const jsonString = JSON.stringify(data, null, 2);
+      const blob = new Blob([jsonString], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `stops-report-${selectedDate}.json`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      setError(t('error.download_failed', language));
+    }
+  }
+
+  // Helper function to get cookie value
+  function getCookie(name: string): string {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop()?.split(';').shift() || '';
+    return '';
+  }
+
   if (!isLoggedIn) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-600 to-indigo-700 flex items-center justify-center p-4">
@@ -385,10 +438,10 @@ export default function Home() {
             <label className={`block text-sm font-medium mb-3 opacity-90 ${isRTL ? 'text-right' : 'text-left'}`}>
               {t('dashboard.select_date', language)}
             </label>
-            <div className="flex gap-2 items-center">
+            <div className="flex gap-2 items-center flex-wrap">
               <div
                 onClick={() => datePickerRef.current?.setOpen(true)}
-                className="bg-white hover:bg-gray-50 cursor-pointer rounded-lg px-2 py-2 flex items-center gap-2 transition-colors focus-within:ring-2 focus-within:ring-blue-300 focus-within:ring-offset-2 flex-1"
+                className="bg-white hover:bg-gray-50 cursor-pointer rounded-lg px-2 py-2 flex items-center gap-2 transition-colors focus-within:ring-2 focus-within:ring-blue-300 focus-within:ring-offset-2 flex-1 min-w-40"
                 suppressHydrationWarning
               >
                 <span className="text-2xl">📅</span>
@@ -420,6 +473,12 @@ export default function Home() {
                 className="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors text-sm whitespace-nowrap"
               >
                 דוח מסלולים
+              </button>
+              <button
+                onClick={handleDownloadStopsReport}
+                className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors text-sm whitespace-nowrap"
+              >
+                דוח תחנות
               </button>
             </div>
           </div>
