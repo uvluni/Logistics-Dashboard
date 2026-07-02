@@ -65,7 +65,8 @@
       "Bash(git commit -m 'Fix: Prevent date picker from opening when clicking report buttons *)",
       "Bash(git commit -m 'Fix: Prevent event bubbling from opening date picker on button clicks *)",
       "Bash(git commit -m 'Fix: Add stopPropagation to report button handlers *)",
-      "Bash(git commit -m 'Fix: Ensure button text is clickable with cursor-pointer *)"
+      "Bash(git commit -m 'Fix: Ensure button text is clickable with cursor-pointer *)",
+      "Bash(git commit -m 'Fix: Move report buttons to separate row below date picker *)"
     ]
   }
 }
