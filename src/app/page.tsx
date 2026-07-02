@@ -9,6 +9,11 @@ import { RouteKPI, DashboardSummary as Summary } from '@/types';
 import { useLanguage } from '@/context/LanguageContext';
 import { t } from '@/i18n/translations';
 
+function getTodayDate(): string {
+  const date = new Date();
+  return date.toISOString().split('T')[0];
+}
+
 function getNextBusinessDay(): string {
   let date = new Date();
   const today = date.getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
@@ -83,7 +88,7 @@ export default function Home() {
 
   // Initialize date on client only to avoid hydration mismatch
   useEffect(() => {
-    setSelectedDate(getNextBusinessDay());
+    setSelectedDate(getTodayDate());
     setMounted(true);
     // Clear session on page load to return to login screen on refresh
     const initAuth = async () => {
@@ -107,10 +112,10 @@ export default function Home() {
     initAuth();
   }, []);
 
-  // Reset date to next business day when logged in
+  // Reset date to today when logged in
   useEffect(() => {
     if (isLoggedIn) {
-      setSelectedDate(getNextBusinessDay());
+      setSelectedDate(getTodayDate());
     }
   }, [isLoggedIn]);
 
