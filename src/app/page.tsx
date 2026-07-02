@@ -281,23 +281,26 @@ export default function Home() {
         const workerFirstName = route.workersInfo?.[0]?.name?.firstName || '';
         const equipmentIdentifier = route.equipmentInfo?.[0]?.specificEquipmentInfo?.identity?.identifier || '';
 
-        // Process each stop in the route
+        // Process each ServiceableStop in the route (excluding depot stops)
         if (route.stops && Array.isArray(route.stops)) {
           route.stops.forEach((stop: any) => {
-            stopsData.push({
-              'Route ID': routeId,
-              'Session Date': selectedDate,
-              'Worker First Name': workerFirstName,
-              'Equipment Identifier': equipmentIdentifier,
-              'Stop Description': stop.description || '',
-              'Arrival Timestamp': stop.arrivalTimestamp || '',
-              'Departure Timestamp': stop.departureTimestamp || '',
-              'Location Identifier': stop.location?.identity?.identifier || '',
-              'Location Description': stop.location?.description || '',
-              'Address Line 1': stop.address?.addressLine1 || '',
-              'State Or Province': stop.address?.stateOrProvince || '',
-              'Total Delivery Quantities': stop.totalDeliveryQuantities?.[0] || 0,
-            });
+            // Only include ServiceableStop, not DEPOT or MidrouteDepotStop
+            if (stop.stopType === 'ServiceableStop') {
+              stopsData.push({
+                'Route ID': routeId,
+                'Session Date': selectedDate,
+                'Worker First Name': workerFirstName,
+                'Equipment Identifier': equipmentIdentifier,
+                'Stop Description': stop.description || '',
+                'Arrival Timestamp': stop.arrivalTimestamp || '',
+                'Departure Timestamp': stop.departureTimestamp || '',
+                'Location Identifier': stop.location?.identity?.identifier || '',
+                'Location Description': stop.location?.description || '',
+                'Address Line 1': stop.address?.addressLine1 || '',
+                'State Or Province': stop.address?.stateOrProvince || '',
+                'Total Delivery Quantities': stop.totalDeliveryQuantities?.[0] || 0,
+              });
+            }
           });
         }
       });
