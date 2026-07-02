@@ -63,24 +63,24 @@ export function getRateLimitStatus(
 
 // Cleanup old entries periodically (every 5 minutes)
 // Production: use Redis TTL instead
-if (typeof globalThis !== 'undefined' && globalThis.setInterval) {
-  const cleanupInterval = setInterval(() => {
-    const now = Date.now();
-    let deletedCount = 0;
+const cleanupInterval = setInterval(() => {
+  const now = Date.now();
+  let deletedCount = 0;
 
-    for (const [key, value] of requestCounts.entries()) {
-      if (now >= value.resetTime) {
-        requestCounts.delete(key);
-        deletedCount++;
-      }
+  for (const [key, value] of requestCounts.entries()) {
+    if (now >= value.resetTime) {
+      requestCounts.delete(key);
+      deletedCount++;
     }
+  }
 
-    // Log cleanup in non-production
-    if (process.env.NODE_ENV !== 'production' && deletedCount > 0) {
-      console.debug(`[Rate Limit] Cleaned up ${deletedCount} expired entries`);
-    }
-  }, 300000); // 5 minutes
+  // Log cleanup in non-production
+  if (process.env.NODE_ENV !== 'production' && deletedCount > 0) {
+    console.debug(`[Rate Limit] Cleaned up ${deletedCount} expired entries`);
+  }
+}, 300000); // 5 minutes
 
-  // Allow process to exit even if this interval is active
-  cleanupInterval.unref?.();
+// Allow process to exit even if this interval is active
+if (cleanupInterval.unref) {
+  cleanupInterval.unref();
 }
