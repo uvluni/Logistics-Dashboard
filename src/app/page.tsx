@@ -606,13 +606,10 @@ export default function Home() {
             </label>
             <div className="flex gap-2 items-stretch">
               <div
-                onClick={(e) => {
-                  if (e.target === e.currentTarget) {
-                    datePickerRef.current?.setOpen(true);
-                  }
-                }}
+                onClick={() => datePickerRef.current?.setOpen(true)}
                 className="bg-white hover:bg-gray-50 cursor-pointer rounded-lg px-2 py-2 flex items-center gap-2 transition-colors focus-within:ring-2 focus-within:ring-blue-300 focus-within:ring-offset-2 flex-1 min-w-40"
                 suppressHydrationWarning
+                style={{ pointerEvents: 'auto' }}
               >
                 <span className="text-2xl">📅</span>
                 {selectedDate && (
@@ -639,19 +636,28 @@ export default function Home() {
                 )}
               </div>
               <button
-                onClick={handleDownloadReport}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleDownloadReport();
+                }}
                 className="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 rounded-lg transition-colors text-sm whitespace-nowrap"
               >
                 דוח מסלולים
               </button>
               <button
-                onClick={handleDownloadStopsReport}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleDownloadStopsReport();
+                }}
                 className="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 rounded-lg transition-colors text-sm whitespace-nowrap"
               >
                 דוח תחנות
               </button>
               <button
-                onClick={handleDownloadOrdersReport}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleDownloadOrdersReport();
+                }}
                 className="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 rounded-lg transition-colors text-sm whitespace-nowrap"
               >
                 דוח הזמנות
