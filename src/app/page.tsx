@@ -381,24 +381,49 @@ export default function Home() {
 
       const data = await res.json();
 
+      // Helper functions for formatting
+      const formatAddress = (address: string) => {
+        return (address || '').replace(/\s+/g, ' ').trim();
+      };
+
+      const formatTime = (timestamp: string) => {
+        if (!timestamp) return '';
+        const match = timestamp.match(/T(\d{2}):(\d{2})/);
+        return match ? `${match[1]}:${match[2]}` : '';
+      };
+
       // Extract orders data from ROADNET API response
       const routes = data.items || data.routes || data.data || [];
       const ordersData: any[] = [];
 
       routes.forEach((route: any) => {
         const routeId = route.identity?.identifier || '';
-        const sessionDate = selectedDate;
+        const workerFirstName = route.workersInfo?.[0]?.name?.firstName || '';
+        const equipmentIdentifier = route.equipmentInfo?.[0]?.specificEquipmentInfo?.identity?.identifier || '';
 
         if (route.stops && Array.isArray(route.stops)) {
+          let routeStopNumber = 0;
           route.stops.forEach((stop: any) => {
             if (stop.stopType === 'ServiceableStop') {
+              routeStopNumber++;
               const ssi = stop.serviceableStopInfo || {};
+              const locationInfo = ssi.locationInfo || {};
+              const address = locationInfo.address || {};
               const orders = ssi.orders || [];
 
               orders.forEach((order: any) => {
                 ordersData.push({
                   'Route ID': routeId,
-                  'Session Date': sessionDate,
+                  'Session Date': selectedDate,
+                  'Worker First Name': workerFirstName,
+                  'Equipment Identifier': equipmentIdentifier,
+                  'Location Identifier': locationInfo.identity?.identifier || '',
+                  'Location Description': locationInfo.description || '',
+                  'Address Line 1': formatAddress(address.addressLine1),
+                  'State Or Province': address.stateOrProvince || '',
+                  'Stop Number': routeStopNumber,
+                  'Arrival Timestamp': formatTime(ssi.arrivalTimestamp),
+                  'Departure Timestamp': formatTime(ssi.departureTimestamp),
                   'Order Identifier': order.identity?.identifier || '',
                   'Total Delivery Quantities': order.totalDeliveryQuantities?.[0] || 0,
                 });
@@ -417,6 +442,15 @@ export default function Home() {
       const colWidths = [
         { wch: 15 }, // Route ID
         { wch: 13 }, // Session Date
+        { wch: 15 }, // Worker First Name
+        { wch: 18 }, // Equipment Identifier
+        { wch: 18 }, // Location Identifier
+        { wch: 20 }, // Location Description
+        { wch: 18 }, // Address Line 1
+        { wch: 16 }, // State Or Province
+        { wch: 12 }, // Stop Number
+        { wch: 20 }, // Arrival Timestamp
+        { wch: 20 }, // Departure Timestamp
         { wch: 18 }, // Order Identifier
         { wch: 14 }, // Total Delivery Quantities
       ];
