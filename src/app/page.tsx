@@ -718,12 +718,10 @@ export default function Home() {
               >
                 {t('dashboard.report_orders', language)}
               </button>
-            </div>
-            <div className="mt-4 flex gap-2">
               <button
                 onClick={handleGenerateInsights}
                 disabled={generatingInsights || kpis.length === 0}
-                className="bg-purple-600 hover:bg-purple-700 disabled:bg-gray-400 text-white font-semibold px-4 py-2 rounded-lg transition-colors text-sm whitespace-nowrap"
+                className="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-semibold px-4 py-2 rounded-lg transition-colors text-sm whitespace-nowrap"
               >
                 {generatingInsights ? t('dashboard.generating_insights', language) : t('dashboard.ai_insights', language)}
               </button>

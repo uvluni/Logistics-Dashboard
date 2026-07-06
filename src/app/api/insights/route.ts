@@ -149,7 +149,12 @@ function generateLocalInsights(routesData: any[], language: string): string {
 • שקול לשלב מסלולים עם ניצול נמוך כדי לשפר יעילות
 • בדוק אם ניתן להוסיף עוד תחנות למסלולים קטנים
 • אם זמן העבודה חורג מ-9 שעות, קחו בחשבון חלוקה לשני מסלולים
-• הקפד על הפרוצדורות של חברה בתכנון`;
+• הקפד על הפרוצדורות של חברה בתכנון
+
+🔬 שיטת החישוב:
+• ניצול משקל = סכום ניצול משקל כל מסלול / מספר המסלולים
+• בעיות זוהו על סמך סף של 50% ו-85% ניצול
+• זמן עבודה ממוצע חושב מהעמודה "Total Duration (min)" בדוח`;
   }
 
   return `📊 Distribution Planning Analysis - ${new Date().toLocaleDateString('en-US')}
@@ -169,7 +174,12 @@ function generateLocalInsights(routesData: any[], language: string): string {
 • Check if additional stops can be added to smaller routes
 • If work time exceeds 9 hours, consider splitting into two routes
 • Review company procedures for route planning
-• Monitor driver feedback on route efficiency`;
+• Monitor driver feedback on route efficiency
+
+🔬 Calculation Method:
+• Weight utilization = sum of all routes' weight utilization / number of routes
+• Issues identified based on thresholds: < 50% (low) and > 85% (high)
+• Average work time calculated from "Total Duration (min)" column in report`;
 }
 
 function generatePrompt(routesData: any[], language: string): string {
