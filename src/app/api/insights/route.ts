@@ -21,7 +21,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { routesData, language = 'en' } = body;
+    const { routesData, language = 'en', stopsData } = body;
 
     if (!routesData || !Array.isArray(routesData)) {
       return NextResponse.json(
@@ -30,8 +30,14 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Analyze stops data if provided
+    let stopsAnalysis = '';
+    if (stopsData && Array.isArray(stopsData)) {
+      stopsAnalysis = generateStopsAnalysis(stopsData, language);
+    }
+
     // Prepare prompt for Claude API
-    const prompt = generatePrompt(routesData, language);
+    const prompt = generatePrompt(routesData, language, stopsAnalysis);
 
     // Call Claude API
     const apiKey = process.env.ANTHROPIC_API_KEY;
@@ -103,7 +109,51 @@ export async function POST(request: NextRequest) {
   }
 }
 
-function generateLocalInsights(routesData: any[], language: string): string {
+function generateStopsAnalysis(stopsData: any[], language: string): string {
+  if (!stopsData || stopsData.length === 0) {
+    return '';
+  }
+
+  const isHebrew = language === 'he';
+
+  // Analyze stops data
+  let totalStops = 0;
+  let emptyStops = 0;
+  let avgArrivalTime = 0;
+  let maxStopsPerRoute = 0;
+  const routeStops: Record<string, number> = {};
+
+  stopsData.forEach((stop) => {
+    totalStops++;
+    const routeId = stop['Route ID'] || 'Unknown';
+    routeStops[routeId] = (routeStops[routeId] || 0) + 1;
+
+    if (!stop['Total Delivery Quantities'] || stop['Total Delivery Quantities'] === 0) {
+      emptyStops++;
+    }
+  });
+
+  maxStopsPerRoute = Math.max(...Object.values(routeStops));
+  const minStopsPerRoute = Math.min(...Object.values(routeStops));
+
+  if (isHebrew) {
+    return `📍 ניתוח תחנות:
+• סך הכל תחנות: ${totalStops}
+• תחנות ריקות (ללא הזמנות): ${emptyStops}
+• מקסימום תחנות למסלול: ${maxStopsPerRoute}
+• מינימום תחנות למסלול: ${minStopsPerRoute}
+• ממוצע תחנות למסלול: ${(totalStops / Object.keys(routeStops).length).toFixed(1)}`;
+  }
+
+  return `📍 Stops Analysis:
+• Total stops: ${totalStops}
+• Empty stops (no orders): ${emptyStops}
+• Max stops per route: ${maxStopsPerRoute}
+• Min stops per route: ${minStopsPerRoute}
+• Avg stops per route: ${(totalStops / Object.keys(routeStops).length).toFixed(1)}`;
+}
+
+function generateLocalInsights(routesData: any[], language: string, stopsAnalysis: string = ''): string {
   if (!routesData || routesData.length === 0) {
     return language === 'he' ? 'אין נתונים לניתוח' : 'No data to analyze';
   }
@@ -151,6 +201,8 @@ function generateLocalInsights(routesData: any[], language: string): string {
 • אם זמן העבודה חורג מ-9 שעות, קחו בחשבון חלוקה לשני מסלולים
 • הקפד על הפרוצדורות של חברה בתכנון
 
+${stopsAnalysis}
+
 🔬 שיטת החישוב:
 • ניצול משקל = סכום ניצול משקל כל מסלול / מספר המסלולים
 • בעיות זוהו על סמך סף של 50% ו-85% ניצול
@@ -175,6 +227,8 @@ function generateLocalInsights(routesData: any[], language: string): string {
 • If work time exceeds 9 hours, consider splitting into two routes
 • Review company procedures for route planning
 • Monitor driver feedback on route efficiency
+
+${stopsAnalysis}
 
 🔬 Calculation Method:
 • Weight utilization = sum of all routes' weight utilization / number of routes

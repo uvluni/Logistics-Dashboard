@@ -497,12 +497,44 @@ export default function Home() {
         'Time Utilization (%)': kpi.timeUtilization,
       }));
 
+      // Fetch stops data for additional insights
+      let stopsData: any[] = [];
+      try {
+        const stopsRes = await fetch(`/api/stops?sessionDate=${selectedDate}`, {
+          credentials: 'include',
+        });
+        if (stopsRes.ok) {
+          const stopsRawData = await stopsRes.json();
+          const routes = stopsRawData.items || stopsRawData.routes || [];
+          routes.forEach((route: any) => {
+            const routeId = route.identity?.identifier || '';
+            if (route.stops && Array.isArray(route.stops)) {
+              let stopNumber = 0;
+              route.stops.forEach((stop: any) => {
+                if (stop.stopType === 'ServiceableStop') {
+                  stopNumber++;
+                  const ssi = stop.serviceableStopInfo || {};
+                  stopsData.push({
+                    'Route ID': routeId,
+                    'Stop Number': stopNumber,
+                    'Total Delivery Quantities': ssi.totalDeliveryQuantities?.[0] || 0,
+                  });
+                }
+              });
+            }
+          });
+        }
+      } catch (err) {
+        // Continue without stops data if fetch fails
+      }
+
       const res = await fetch('/api/insights', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
         body: JSON.stringify({
           routesData,
+          stopsData: stopsData.length > 0 ? stopsData : undefined,
           language,
         }),
       });
@@ -721,7 +753,7 @@ export default function Home() {
               <button
                 onClick={handleGenerateInsights}
                 disabled={generatingInsights || kpis.length === 0}
-                className="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-semibold px-4 py-2 rounded-lg transition-colors text-sm whitespace-nowrap"
+                className="bg-red-900 hover:bg-red-800 disabled:bg-gray-400 text-white font-semibold px-4 py-2 rounded-lg transition-colors text-sm whitespace-nowrap"
               >
                 {generatingInsights ? t('dashboard.generating_insights', language) : t('dashboard.ai_insights', language)}
               </button>
