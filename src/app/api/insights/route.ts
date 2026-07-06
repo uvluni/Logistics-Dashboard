@@ -43,7 +43,7 @@ export async function POST(request: NextRequest) {
     const apiKey = process.env.ANTHROPIC_API_KEY;
     if (!apiKey) {
       // Fallback: Generate insights locally
-      const insights = generateLocalInsights(routesData, language);
+      const insights = generateLocalInsights(routesData, language, stopsAnalysis);
       return NextResponse.json({
         success: true,
         insights: insights,
