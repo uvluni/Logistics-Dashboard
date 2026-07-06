@@ -119,38 +119,80 @@ function generateStopsAnalysis(stopsData: any[], language: string): string {
   // Analyze stops data
   let totalStops = 0;
   let emptyStops = 0;
-  let avgArrivalTime = 0;
-  let maxStopsPerRoute = 0;
+  let lowDeliveryStops = 0; // stops with qty < 5
+  let highDeliveryStops = 0; // stops with qty >= 20
   const routeStops: Record<string, number> = {};
+  const routeEmptyStops: Record<string, number> = {};
+  const routeDeliveryQty: Record<string, number> = {};
 
   stopsData.forEach((stop) => {
     totalStops++;
     const routeId = stop['Route ID'] || 'Unknown';
-    routeStops[routeId] = (routeStops[routeId] || 0) + 1;
+    const qty = stop['Total Delivery Quantities'] || 0;
 
-    if (!stop['Total Delivery Quantities'] || stop['Total Delivery Quantities'] === 0) {
+    routeStops[routeId] = (routeStops[routeId] || 0) + 1;
+    routeDeliveryQty[routeId] = (routeDeliveryQty[routeId] || 0) + qty;
+
+    if (!qty || qty === 0) {
       emptyStops++;
+      routeEmptyStops[routeId] = (routeEmptyStops[routeId] || 0) + 1;
+    } else if (qty < 5) {
+      lowDeliveryStops++;
+    } else if (qty >= 20) {
+      highDeliveryStops++;
     }
   });
 
-  maxStopsPerRoute = Math.max(...Object.values(routeStops));
+  const maxStopsPerRoute = Math.max(...Object.values(routeStops));
   const minStopsPerRoute = Math.min(...Object.values(routeStops));
+  const avgQtyPerStop = (Object.values(routeDeliveryQty).reduce((a, b) => a + b, 0) / totalStops).toFixed(1);
+
+  // Find problematic routes
+  const routesWithManyEmptyStops = Object.entries(routeEmptyStops)
+    .filter(([_, count]) => count >= 2)
+    .length;
+
+  const unbalancedRoutes = Object.values(routeStops).filter(count => count === 1).length;
 
   if (isHebrew) {
-    return `📍 ניתוח תחנות:
+    return `📍 תובנות נוספות מניתוח דו"ח התחנות:
+
+🚨 בעיות שזוהו:
+• ${emptyStops} תחנות ללא הזמנות (עלות עודפת!)
+• ${routesWithManyEmptyStops} מסלולים עם 2+ תחנות ריקות
+• ${unbalancedRoutes} מסלולים עם תחנה בודדת בלבד (סכנת איזון)
+• ${lowDeliveryStops} תחנות עם מעט הזמנות (< 5)
+
+📊 סטטיסטיקות התחנות:
 • סך הכל תחנות: ${totalStops}
-• תחנות ריקות (ללא הזמנות): ${emptyStops}
+• ממוצע הזמנות לתחנה: ${avgQtyPerStop}
 • מקסימום תחנות למסלול: ${maxStopsPerRoute}
 • מינימום תחנות למסלול: ${minStopsPerRoute}
-• ממוצע תחנות למסלול: ${(totalStops / Object.keys(routeStops).length).toFixed(1)}`;
+
+💡 המלצות מהתחנות:
+• בדוק תחנות ריקות - האם צריך להסיר אותן מהמסלול?
+• בצע בדיקה של מסלולים עם תחנה בודדת - האם אפשר לצרף לאחר?
+• תחנות עם מעט הזמנות - שקול לאחד עם תחנה קרובה`;
   }
 
-  return `📍 Stops Analysis:
+  return `📍 New Insights from Stops Report Analysis:
+
+🚨 Issues Identified:
+• ${emptyStops} stops with no orders (wasted cost!)
+• ${routesWithManyEmptyStops} routes with 2+ empty stops
+• ${unbalancedRoutes} routes with only 1 stop (balance risk)
+• ${lowDeliveryStops} stops with low orders (< 5 units)
+
+📊 Stops Statistics:
 • Total stops: ${totalStops}
-• Empty stops (no orders): ${emptyStops}
+• Avg orders per stop: ${avgQtyPerStop}
 • Max stops per route: ${maxStopsPerRoute}
 • Min stops per route: ${minStopsPerRoute}
-• Avg stops per route: ${(totalStops / Object.keys(routeStops).length).toFixed(1)}`;
+
+💡 Recommendations from Stops Analysis:
+• Review empty stops - should they be removed from routes?
+• Check single-stop routes - can they be merged with others?
+• Low-delivery stops - consider consolidating with nearby locations`;
 }
 
 function generateLocalInsights(routesData: any[], language: string, stopsAnalysis: string = ''): string {
