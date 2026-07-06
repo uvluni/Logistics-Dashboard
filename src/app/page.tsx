@@ -48,6 +48,8 @@ export default function Home() {
   const [selectedDate, setSelectedDate] = useState('');
   const [error, setError] = useState('');
   const [mounted, setMounted] = useState(false);
+  const [insights, setInsights] = useState('');
+  const [generatingInsights, setGeneratingInsights] = useState(false);
   const datePickerRef = useRef<DatePicker>(null);
 
   const loadRoutes = useCallback(async () => {
@@ -463,6 +465,69 @@ export default function Home() {
     }
   }
 
+  async function handleGenerateInsights() {
+    if (!selectedDate) {
+      setError(t('error.select_date_first', language));
+      return;
+    }
+
+    if (kpis.length === 0) {
+      setError(t('dashboard.no_routes_message', language));
+      return;
+    }
+
+    setGeneratingInsights(true);
+    setError('');
+    setInsights('');
+
+    try {
+      // Prepare routes data as Excel format
+      const routesData = kpis.map(kpi => ({
+        'Route ID': kpi.routeId,
+        'Driver Name': kpi.driverName,
+        'Vehicle Type': kpi.vehicleType,
+        'Total Duration (min)': kpi.totalDurationMinutes,
+        'Travel Time (min)': kpi.travelTimeMinutes,
+        'Service Time (min)': kpi.serviceTimeMinutes,
+        'Stops': kpi.stopCount,
+        'Rounds': kpi.rounds?.length || 0,
+        'Total Weight (kg)': kpi.totalWeight,
+        'Vehicle Capacity (kg)': kpi.vehicleCapacity,
+        'Weight Utilization (%)': kpi.weightUtilization,
+        'Time Utilization (%)': kpi.timeUtilization,
+      }));
+
+      const res = await fetch('/api/insights', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({
+          routesData,
+          language,
+        }),
+      });
+
+      if (res.status === 401) {
+        setIsLoggedIn(false);
+        setError(t('error.session_expired', language));
+        return;
+      }
+
+      if (!res.ok) {
+        const errorData = await res.json().catch(() => ({}));
+        setError(errorData.error || t('dashboard.insights_error', language));
+        return;
+      }
+
+      const data = await res.json();
+      setInsights(data.insights || '');
+    } catch (err) {
+      setError(t('dashboard.insights_error', language));
+    } finally {
+      setGeneratingInsights(false);
+    }
+  }
+
   if (!isLoggedIn) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-600 to-indigo-700 flex items-center justify-center p-4">
@@ -654,6 +719,15 @@ export default function Home() {
                 {t('dashboard.report_orders', language)}
               </button>
             </div>
+            <div className="mt-4 flex gap-2">
+              <button
+                onClick={handleGenerateInsights}
+                disabled={generatingInsights || kpis.length === 0}
+                className="bg-purple-600 hover:bg-purple-700 disabled:bg-gray-400 text-white font-semibold px-4 py-2 rounded-lg transition-colors text-sm whitespace-nowrap"
+              >
+                {generatingInsights ? t('dashboard.generating_insights', language) : t('dashboard.ai_insights', language)}
+              </button>
+            </div>
           </div>
           {isLoading && (
             <p className="text-center mt-4 text-blue-100 text-sm">{t('dashboard.loading_routes', language)}</p>
@@ -669,6 +743,18 @@ export default function Home() {
         {summary && kpis.length > 0 && (
           <>
             <DashboardSummary summary={summary} normalWorkDayMinutes={kpis[0]?.normalWorkDayMinutes} />
+
+            {insights && (
+              <div className={`bg-gradient-to-br from-purple-50 to-indigo-50 border border-purple-200 rounded-lg p-6 mb-8 ${isRTL ? 'text-right' : 'text-left'}`}>
+                <h3 className="text-xl font-bold text-purple-900 mb-4 flex items-center gap-2">
+                  <span>🤖</span>
+                  {t('dashboard.insights_title', language)}
+                </h3>
+                <div className={`text-gray-700 whitespace-pre-wrap leading-relaxed text-sm ${isRTL ? 'text-right' : 'text-left'}`}>
+                  {insights}
+                </div>
+              </div>
+            )}
 
             <div className="mb-8">
               <h2 className={`text-2xl font-bold text-gray-900 mb-6 ${isRTL ? 'text-right' : 'text-left'}`}>

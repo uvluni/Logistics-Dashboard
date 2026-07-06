@@ -67,7 +67,10 @@
       "Bash(git commit -m 'Fix: Add stopPropagation to report button handlers *)",
       "Bash(git commit -m 'Fix: Ensure button text is clickable with cursor-pointer *)",
       "Bash(git commit -m 'Fix: Move report buttons to separate row below date picker *)",
-      "Bash(git commit -m 'Feature: Add multilingual button labels and realign with date picker *)"
+      "Bash(git commit -m 'Feature: Add multilingual button labels and realign with date picker *)",
+      "Bash(git commit -m 'Release v4.0.0: Complete multilingual export dashboard *)",
+      "PowerShell($url = \"https://ollama.ai/download/OllamaSetup.exe\"; $output = \"$env:TEMP\\\\OllamaSetup.exe\"; Write-Host \"Downloading Ollama...\"; \\(New-Object System.Net.ServicePointManager\\)::SecurityProtocol = [System.Net.SecurityProtocolType]::Tls12; Invoke-WebRequest -Uri $url -OutFile $output -UseBasicParsing; Write-Host \"Downloaded to: $output\"; Write-Host \"Opening installer...\"; Start-Process $output; Write-Host \"Installer launched! Follow the wizard to complete installation.\")",
+      "PowerShell(Start-Process \"C:\\\\Users\\\\yuval\\\\AppData\\\\Local\\\\Temp\\\\OllamaSetup.exe\" -Wait -Verb RunAs -ErrorAction SilentlyContinue; Start-Sleep -Seconds 3; if \\(Get-Command ollama -ErrorAction SilentlyContinue\\) { Write-Host \"✓ Ollama installed successfully!\" } else { Write-Host \"Still installing or requires manual interaction...\" })"
     ]
   }
 }

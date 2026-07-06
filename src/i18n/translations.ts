@@ -27,6 +27,10 @@ export const translations: Record<Language, Record<string, string>> = {
     'dashboard.report_routes': 'דוח מסלולים',
     'dashboard.report_stops': 'דוח תחנות',
     'dashboard.report_orders': 'דוח הזמנות',
+    'dashboard.ai_insights': 'תובנות AI',
+    'dashboard.generating_insights': 'יוצר תובנות...',
+    'dashboard.insights_error': 'שגיאה ביצירת התובנות',
+    'dashboard.insights_title': 'תובנות AI על התכנון',
 
     // Summary Section
     'summary.title': 'סיכום כללי',
@@ -167,6 +171,10 @@ export const translations: Record<Language, Record<string, string>> = {
     'dashboard.report_routes': 'Routes Report',
     'dashboard.report_stops': 'Stops Report',
     'dashboard.report_orders': 'Orders Report',
+    'dashboard.ai_insights': 'AI Insights',
+    'dashboard.generating_insights': 'Generating insights...',
+    'dashboard.insights_error': 'Error generating insights',
+    'dashboard.insights_title': 'AI Planning Insights',
 
     // Summary Section
     'summary.title': 'Summary',
@@ -307,6 +315,10 @@ export const translations: Record<Language, Record<string, string>> = {
     'dashboard.report_routes': 'Informe de Rutas',
     'dashboard.report_stops': 'Informe de Paradas',
     'dashboard.report_orders': 'Informe de Órdenes',
+    'dashboard.ai_insights': 'Perspectivas de IA',
+    'dashboard.generating_insights': 'Generando perspectivas...',
+    'dashboard.insights_error': 'Error al generar perspectivas',
+    'dashboard.insights_title': 'Perspectivas de IA sobre la Planificación',
 
     // Summary Section
     'summary.title': 'Resumen',
