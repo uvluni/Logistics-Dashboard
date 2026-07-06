@@ -116,83 +116,149 @@ function generateStopsAnalysis(stopsData: any[], language: string): string {
 
   const isHebrew = language === 'he';
 
-  // Analyze stops data
+  // Analyze stops data with geographic insights
   let totalStops = 0;
   let emptyStops = 0;
-  let lowDeliveryStops = 0; // stops with qty < 5
-  let highDeliveryStops = 0; // stops with qty >= 20
-  const routeStops: Record<string, number> = {};
+  let lowDeliveryStops: any[] = [];
+  let highDeliveryStops: any[] = [];
+  const routeStops: Record<string, any[]> = {};
   const routeEmptyStops: Record<string, number> = {};
   const routeDeliveryQty: Record<string, number> = {};
+  const cityStops: Record<string, any[]> = {};
+  const singleStopRoutes: any[] = [];
 
   stopsData.forEach((stop) => {
     totalStops++;
     const routeId = stop['Route ID'] || 'Unknown';
     const qty = stop['Total Delivery Quantities'] || 0;
+    const city = stop['City'] || stop['Address'] || 'Unknown';
+    const description = stop['Location Description'] || '';
 
-    routeStops[routeId] = (routeStops[routeId] || 0) + 1;
+    // Track by route
+    if (!routeStops[routeId]) routeStops[routeId] = [];
+    routeStops[routeId].push(stop);
+
     routeDeliveryQty[routeId] = (routeDeliveryQty[routeId] || 0) + qty;
+
+    // Track by city
+    if (!cityStops[city]) cityStops[city] = [];
+    cityStops[city].push({ routeId, qty, description });
 
     if (!qty || qty === 0) {
       emptyStops++;
       routeEmptyStops[routeId] = (routeEmptyStops[routeId] || 0) + 1;
     } else if (qty < 5) {
-      lowDeliveryStops++;
+      lowDeliveryStops.push({ routeId, qty, city, description });
     } else if (qty >= 20) {
-      highDeliveryStops++;
+      highDeliveryStops.push({ routeId, qty, city, description });
     }
   });
 
-  const maxStopsPerRoute = Math.max(...Object.values(routeStops));
-  const minStopsPerRoute = Math.min(...Object.values(routeStops));
+  // Find single-stop routes
+  Object.entries(routeStops).forEach(([routeId, stops]) => {
+    if (stops.length === 1) {
+      singleStopRoutes.push({
+        routeId,
+        city: stops[0]['City'] || stops[0]['Address'],
+        qty: stops[0]['Total Delivery Quantities'],
+      });
+    }
+  });
+
+  const maxStopsPerRoute = Math.max(...Object.values(routeStops).map(r => r.length));
+  const minStopsPerRoute = Math.min(...Object.values(routeStops).map(r => r.length));
   const avgQtyPerStop = (Object.values(routeDeliveryQty).reduce((a, b) => a + b, 0) / totalStops).toFixed(1);
 
-  // Find problematic routes
+  // Find cities with multiple stops that could be consolidated
+  const citiesWithMultipleStops = Object.entries(cityStops)
+    .filter(([city, stops]) => stops.length > 1 && city !== 'Unknown')
+    .map(([city, stops]) => ({
+      city,
+      stopCount: stops.length,
+      routeIds: [...new Set(stops.map(s => s.routeId))],
+      totalQty: stops.reduce((sum, s) => sum + s.qty, 0),
+    }))
+    .sort((a, b) => b.stopCount - a.stopCount)
+    .slice(0, 3);
+
+  // Find optimization opportunities
+  const optimizations: string[] = [];
+  if (singleStopRoutes.length > 2) {
+    const sameCityRoutes = singleStopRoutes.filter(r => r.city === singleStopRoutes[0].city);
+    if (sameCityRoutes.length > 1) {
+      optimizations.push(
+        isHebrew
+          ? `${sameCityRoutes.length} מסלולים בודדים בעיר "${singleStopRoutes[0].city}" - שקול לצרפם למסלול אחד`
+          : `${sameCityRoutes.length} single-stop routes in "${singleStopRoutes[0].city}" - consider consolidating`
+      );
+    }
+  }
+
+  if (citiesWithMultipleStops.length > 0) {
+    citiesWithMultipleStops.forEach(cityInfo => {
+      if (cityInfo.routeIds.length > 1) {
+        optimizations.push(
+          isHebrew
+            ? `עיר "${cityInfo.city}": ${cityInfo.stopCount} תחנות בחלוקה בין ${cityInfo.routeIds.length} מסלולים - בדוק אפשרות לאחוד`
+            : `City "${cityInfo.city}": ${cityInfo.stopCount} stops spread across ${cityInfo.routeIds.length} routes - check consolidation`
+        );
+      }
+    });
+  }
+
   const routesWithManyEmptyStops = Object.entries(routeEmptyStops)
     .filter(([_, count]) => count >= 2)
     .length;
 
-  const unbalancedRoutes = Object.values(routeStops).filter(count => count === 1).length;
-
   if (isHebrew) {
     return `📍 תובנות נוספות מניתוח דו"ח התחנות:
 
-🚨 בעיות שזוהו:
-• ${emptyStops} תחנות ללא הזמנות (עלות עודפת!)
+🚨 בעיות וסיכויי שיפור:
+• ${emptyStops} תחנות ללא הזמנות (עלות עודפת - סה"כ ${(emptyStops * 100 / totalStops).toFixed(1)}%)
+• ${singleStopRoutes.length} מסלולים עם תחנה בודדת בלבד (סיכוי לאחוד)
 • ${routesWithManyEmptyStops} מסלולים עם 2+ תחנות ריקות
-• ${unbalancedRoutes} מסלולים עם תחנה בודדת בלבד (סכנת איזון)
-• ${lowDeliveryStops} תחנות עם מעט הזמנות (< 5)
+• ${lowDeliveryStops.length} תחנות עם < 5 יחידות הזמנה (ניתן לאחד)
 
-📊 סטטיסטיקות התחנות:
+📊 סטטיסטיקות ניתוח:
 • סך הכל תחנות: ${totalStops}
-• ממוצע הזמנות לתחנה: ${avgQtyPerStop}
-• מקסימום תחנות למסלול: ${maxStopsPerRoute}
-• מינימום תחנות למסלול: ${minStopsPerRoute}
+• ממוצע הזמנות לתחנה: ${avgQtyPerStop} יחידות
+• טווח תחנות למסלול: ${minStopsPerRoute}-${maxStopsPerRoute}
 
-💡 המלצות מהתחנות:
-• בדוק תחנות ריקות - האם צריך להסיר אותן מהמסלול?
-• בצע בדיקה של מסלולים עם תחנה בודדת - האם אפשר לצרף לאחר?
-• תחנות עם מעט הזמנות - שקול לאחד עם תחנה קרובה`;
+🎯 הזדמנויות לשיפור בתכנון:
+${optimizations.length > 0
+  ? optimizations.map(o => `• ${o}`).join('\n')
+  : '• אין בעיות ברורות - התכנון נראה אופטימלי'
+}
+
+💡 המלצות כללי:
+• הזמנות קטנות: שקול לאחד ${lowDeliveryStops.length} תחנות עם הזמנות < 5 יחידות למסלולים סמוכים
+• תחנות ריקות: בדוק ${emptyStops} תחנות ללא הזמנות - האם הן צריכות להיות בתכנון?
+• מסלולים בודדים: ${singleStopRoutes.length} מסלולים עם תחנה בודדת - אפשר לתוספת מ"ל סמוכות`;
   }
 
-  return `📍 New Insights from Stops Report Analysis:
+  return `📍 Geographic & Optimization Insights from Stops Analysis:
 
-🚨 Issues Identified:
-• ${emptyStops} stops with no orders (wasted cost!)
+🚨 Issues & Consolidation Opportunities:
+• ${emptyStops} stops with no orders (wasted cost - ${(emptyStops * 100 / totalStops).toFixed(1)}% of total)
+• ${singleStopRoutes.length} single-stop routes (consolidation potential)
 • ${routesWithManyEmptyStops} routes with 2+ empty stops
-• ${unbalancedRoutes} routes with only 1 stop (balance risk)
-• ${lowDeliveryStops} stops with low orders (< 5 units)
+• ${lowDeliveryStops.length} stops with < 5 units (can be merged)
 
-📊 Stops Statistics:
+📊 Analysis Statistics:
 • Total stops: ${totalStops}
-• Avg orders per stop: ${avgQtyPerStop}
-• Max stops per route: ${maxStopsPerRoute}
-• Min stops per route: ${minStopsPerRoute}
+• Average orders per stop: ${avgQtyPerStop} units
+• Route stops range: ${minStopsPerRoute}-${maxStopsPerRoute}
 
-💡 Recommendations from Stops Analysis:
-• Review empty stops - should they be removed from routes?
-• Check single-stop routes - can they be merged with others?
-• Low-delivery stops - consider consolidating with nearby locations`;
+🎯 Optimization Opportunities:
+${optimizations.length > 0
+  ? optimizations.map(o => `• ${o}`).join('\n')
+  : '• No major consolidation issues - planning appears optimized'
+}
+
+💡 General Recommendations:
+• Low-qty stops: Consolidate ${lowDeliveryStops.length} stops with < 5 units into nearby routes
+• Empty stops: Review ${emptyStops} stops with no orders - should they be in the plan?
+• Single-stop routes: ${singleStopRoutes.length} routes with 1 stop - add nearby customers`;
 }
 
 function generateLocalInsights(routesData: any[], language: string, stopsAnalysis: string = ''): string {

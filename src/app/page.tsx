@@ -514,9 +514,14 @@ export default function Home() {
                 if (stop.stopType === 'ServiceableStop') {
                   stopNumber++;
                   const ssi = stop.serviceableStopInfo || {};
+                  const locationInfo = ssi.locationInfo || {};
+                  const address = locationInfo.address || {};
                   stopsData.push({
                     'Route ID': routeId,
                     'Stop Number': stopNumber,
+                    'Location Description': locationInfo.description || '',
+                    'Address': address.addressLine1 || '',
+                    'City': address.stateOrProvince || '',
                     'Total Delivery Quantities': ssi.totalDeliveryQuantities?.[0] || 0,
                   });
                 }
