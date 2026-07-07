@@ -899,9 +899,6 @@ export default function Home() {
               </button>
             </div>
           </div>
-          {isLoading && (
-            <p className="text-center mt-4 text-blue-100 text-sm">{t('dashboard.loading_routes', language)}</p>
-          )}
         </div>
 
         {showAirtable && airtableRecords.length > 0 && (
