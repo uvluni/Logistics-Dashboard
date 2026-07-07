@@ -902,7 +902,7 @@ export default function Home() {
         </div>
 
         {showAirtable && airtableRecords.length > 0 && (
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
             <div className={`bg-white border border-orange-200 rounded-lg p-6 mb-8 ${isRTL ? 'text-right' : 'text-left'}`}>
               <div className="flex justify-between items-center mb-6">
                 <h3 className="text-2xl font-bold text-gray-900">
