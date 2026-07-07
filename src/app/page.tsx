@@ -50,6 +50,9 @@ export default function Home() {
   const [mounted, setMounted] = useState(false);
   const [insights, setInsights] = useState('');
   const [generatingInsights, setGeneratingInsights] = useState(false);
+  const [airtableRecords, setAirtableRecords] = useState<any[]>([]);
+  const [showAirtable, setShowAirtable] = useState(false);
+  const [loadingAirtable, setLoadingAirtable] = useState(false);
   const datePickerRef = useRef<DatePicker>(null);
 
   const loadRoutes = useCallback(async () => {
@@ -565,6 +568,36 @@ export default function Home() {
     }
   }
 
+  async function handleLoadAirtable() {
+    setLoadingAirtable(true);
+    setError('');
+
+    try {
+      const res = await fetch('/api/airtable', {
+        credentials: 'include',
+      });
+
+      if (res.status === 401) {
+        setIsLoggedIn(false);
+        setError(t('error.session_expired', language));
+        return;
+      }
+
+      if (!res.ok) {
+        setError('Failed to load Airtable data');
+        return;
+      }
+
+      const data = await res.json();
+      setAirtableRecords(data.records || []);
+      setShowAirtable(true);
+    } catch (err) {
+      setError('Error loading Airtable data');
+    } finally {
+      setLoadingAirtable(false);
+    }
+  }
+
   if (!isLoggedIn) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-600 to-indigo-700 flex items-center justify-center p-4">
@@ -762,6 +795,13 @@ export default function Home() {
               >
                 {generatingInsights ? t('dashboard.generating_insights', language) : t('dashboard.ai_insights', language)}
               </button>
+              <button
+                onClick={handleLoadAirtable}
+                disabled={loadingAirtable}
+                className="bg-orange-600 hover:bg-orange-700 disabled:bg-gray-400 text-white font-semibold px-4 py-2 rounded-lg transition-colors text-sm whitespace-nowrap"
+              >
+                {loadingAirtable ? 'טוען...' : 'New Customer'}
+              </button>
             </div>
           </div>
           {isLoading && (
@@ -803,6 +843,47 @@ export default function Home() {
               </div>
             </div>
           </>
+        )}
+
+        {showAirtable && airtableRecords.length > 0 && (
+          <div className={`bg-gradient-to-br from-orange-50 to-yellow-50 border border-orange-200 rounded-lg p-6 mb-8 ${isRTL ? 'text-right' : 'text-left'}`}>
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-2xl font-bold text-orange-900 flex items-center gap-2">
+                <span>📋</span>
+                New Customer ({airtableRecords.length})
+              </h3>
+              <button
+                onClick={() => setShowAirtable(false)}
+                className="text-orange-700 hover:text-orange-900 font-bold text-lg"
+              >
+                ✕
+              </button>
+            </div>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm border-collapse">
+                <thead>
+                  <tr className="bg-orange-200 border border-orange-300">
+                    {airtableRecords.length > 0 && Object.keys(airtableRecords[0].fields || {}).slice(0, 8).map((field) => (
+                      <th key={field} className="border border-orange-300 px-4 py-2 font-semibold text-orange-900">
+                        {field}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {airtableRecords.map((record, idx) => (
+                    <tr key={record.id} className={idx % 2 === 0 ? 'bg-white' : 'bg-orange-50'}>
+                      {Object.values(record.fields || {}).slice(0, 8).map((value: any, colIdx: number) => (
+                        <td key={colIdx} className="border border-orange-200 px-4 py-2 text-gray-700">
+                          {typeof value === 'object' ? JSON.stringify(value) : String(value || '-')}
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
         )}
 
         {summary && kpis.length === 0 && (
