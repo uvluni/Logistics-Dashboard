@@ -901,7 +901,7 @@ export default function Home() {
           </div>
         </div>
 
-        {showAirtable && airtableRecords.length > 0 && (
+        <div className={`overflow-hidden transition-all duration-300 ${showAirtable && airtableRecords.length > 0 ? 'max-h-[2000px] opacity-100' : 'max-h-0 opacity-0'}`}>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 airtable-entrance">
             <div className={`bg-white border border-orange-200 rounded-lg p-6 mb-8 ${isRTL ? 'text-right' : 'text-left'}`}>
               <div className="flex justify-between items-center mb-6">
@@ -1004,7 +1004,7 @@ export default function Home() {
               </div>
             </div>
           </div>
-        )}
+        </div>
 
         {error && (
           <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-8">
