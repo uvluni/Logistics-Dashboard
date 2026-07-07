@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState, lazy, Suspense } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import * as XLSX from 'xlsx';
@@ -1028,17 +1028,19 @@ export default function Home() {
               </div>
             )}
 
-            <div className="mb-8">
-              <h2 className={`text-2xl font-bold text-gray-900 mb-6 ${isRTL ? 'text-right' : 'text-left'}`}>
-                {t('kpi.title', language)}
-              </h2>
+            <Suspense fallback={<div className="text-center text-gray-500">{t('dashboard.loading_routes', language)}</div>}>
+              <div className="mb-8">
+                <h2 className={`text-2xl font-bold text-gray-900 mb-6 ${isRTL ? 'text-right' : 'text-left'}`}>
+                  {t('kpi.title', language)}
+                </h2>
 
-              <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-                {kpis.map((kpi) => (
-                  <KPICard key={kpi.routeId} kpi={kpi} />
-                ))}
+                <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+                  {kpis.map((kpi) => (
+                    <KPICard key={kpi.routeId} kpi={kpi} />
+                  ))}
+                </div>
               </div>
-            </div>
+            </Suspense>
           </>
         )}
 
