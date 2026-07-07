@@ -41,7 +41,7 @@ export async function PATCH(request: NextRequest) {
       },
       body: JSON.stringify({
         fields: {
-          'Validated': true,
+          'Choose Google coordinates': true,
         },
       }),
     });

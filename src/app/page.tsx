@@ -900,7 +900,7 @@ export default function Home() {
           <div className={`bg-white border border-orange-200 rounded-lg p-6 mb-8 ${isRTL ? 'text-right' : 'text-left'}`}>
             <div className="flex justify-between items-center mb-6">
               <h3 className="text-2xl font-bold text-gray-900">
-                📍 {t('dashboard.address_verification', language)} ({airtableRecords.filter(r => !r.fields?.['Validated']).length})
+                📍 {t('dashboard.address_verification', language)} ({airtableRecords.filter(r => !r.fields?.['Choose Google coordinates']).length})
               </h3>
               <button
                 onClick={() => setShowAirtable(false)}
@@ -927,7 +927,7 @@ export default function Home() {
                 </thead>
                 <tbody>
                   {airtableRecords
-                    .filter(record => !record.fields?.['Validated'])
+                    .filter(record => !record.fields?.['Choose Google coordinates'])
                     .map((record) => {
                       const fields = record.fields || {};
                       const recommendation = fields['Geocode Recommendation'];
