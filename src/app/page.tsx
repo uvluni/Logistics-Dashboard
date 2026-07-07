@@ -96,9 +96,11 @@ export default function Home() {
 
   // Update HTML dir and lang based on language
   useEffect(() => {
-    const htmlElement = document.documentElement;
-    htmlElement.dir = language === 'he' ? 'rtl' : 'ltr';
-    htmlElement.lang = language;
+    if (typeof document !== 'undefined') {
+      const htmlElement = document.documentElement;
+      htmlElement.dir = language === 'he' ? 'rtl' : 'ltr';
+      htmlElement.lang = language;
+    }
   }, [language]);
 
   // Initialize date on client only to avoid hydration mismatch
