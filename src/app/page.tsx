@@ -664,7 +664,7 @@ export default function Home() {
       const res = await fetch('/api/airtable', {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ recordId, field: 'Rodnet Coordinates' }),
+        body: JSON.stringify({ recordId, field: 'Choose Roadnet coordinates' }),
         credentials: 'include',
       });
 
@@ -676,7 +676,7 @@ export default function Home() {
       // Remove the validated record from display if both fields are true
       setAirtableRecords(prev => prev.map(r =>
         r.id === recordId
-          ? { ...r, fields: { ...r.fields, 'Rodnet Coordinates': true } }
+          ? { ...r, fields: { ...r.fields, 'Choose Roadnet coordinates': true } }
           : r
       ));
 
@@ -944,7 +944,7 @@ export default function Home() {
           <div className={`bg-white border border-orange-200 rounded-lg p-6 mb-8 ${isRTL ? 'text-right' : 'text-left'}`}>
             <div className="flex justify-between items-center mb-6">
               <h3 className="text-2xl font-bold text-gray-900">
-                📍 {t('dashboard.address_verification', language)} ({airtableRecords.filter(r => !r.fields?.['Choose Google coordinates'] && !r.fields?.['Validated Rodnet']).length})
+                📍 {t('dashboard.address_verification', language)} ({airtableRecords.filter(r => !r.fields?.['Choose Google coordinates'] && !r.fields?.['Choose Roadnet coordinates']).length})
               </h3>
               <button
                 onClick={() => setShowAirtable(false)}
