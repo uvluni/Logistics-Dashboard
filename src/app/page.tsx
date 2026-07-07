@@ -621,7 +621,8 @@ export default function Home() {
       setAirtableRecords(prev => prev.filter(r => r.id !== recordId));
 
       // Show success message
-      setValidationMessage(`✓ הקואורדינטה "${address}" עודכנה בהצלחה בבסיס הנתונים`);
+      const successMsg = t('validation.success', language).replace('{address}', address);
+      setValidationMessage(successMsg);
 
       // Auto-clear message after 3 seconds
       setTimeout(() => setValidationMessage(''), 3000);
@@ -901,11 +902,11 @@ export default function Home() {
               <table className="w-full text-sm">
                 <thead>
                   <tr className="border-b-2 border-gray-200">
-                    <th className="px-4 py-3 font-semibold text-gray-900 text-right">עיר</th>
-                    <th className="px-4 py-3 font-semibold text-gray-900 text-right">רחוב</th>
-                    <th className="px-4 py-3 font-semibold text-gray-900 text-center">ציון</th>
-                    <th className="px-4 py-3 font-semibold text-gray-900 text-right">הסבר</th>
-                    <th className="px-4 py-3 font-semibold text-gray-900 text-center">אישור</th>
+                    <th className="px-4 py-3 font-semibold text-gray-900 text-right">{t('table.city', language)}</th>
+                    <th className="px-4 py-3 font-semibold text-gray-900 text-right">{t('table.street', language)}</th>
+                    <th className="px-4 py-3 font-semibold text-gray-900 text-center">{t('table.score', language)}</th>
+                    <th className="px-4 py-3 font-semibold text-gray-900 text-right">{t('table.reason', language)}</th>
+                    <th className="px-4 py-3 font-semibold text-gray-900 text-center">{t('table.validation', language)}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -933,18 +934,18 @@ export default function Home() {
                       let bgColor = 'bg-green-50';
                       let scoreBg = 'bg-green-100';
                       let scoreText = 'text-green-900';
-                      let scoreLabel = '✓ תקין';
+                      let scoreLabel = t('score.valid', language);
 
                       if (recommendation === '3') {
                         bgColor = 'bg-red-50';
                         scoreBg = 'bg-red-100';
                         scoreText = 'text-red-900';
-                        scoreLabel = '🔴 לתקן';
+                        scoreLabel = t('score.needs_fixing', language);
                       } else if (recommendation === '2') {
                         bgColor = 'bg-yellow-50';
                         scoreBg = 'bg-yellow-100';
                         scoreText = 'text-yellow-900';
-                        scoreLabel = '🟡 שקול';
+                        scoreLabel = t('score.consider', language);
                       }
 
                       return (
@@ -963,7 +964,7 @@ export default function Home() {
                               disabled={validatingRecordId === record.id}
                               className="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-semibold px-3 py-1 rounded transition-colors text-sm"
                             >
-                              {validatingRecordId === record.id ? 'שומר...' : 'אישור'}
+                              {validatingRecordId === record.id ? t('validation.saving', language) : t('validation.button', language)}
                             </button>
                           </td>
                         </tr>

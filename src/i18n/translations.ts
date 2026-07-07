@@ -34,6 +34,19 @@ export const translations: Record<Language, Record<string, string>> = {
     'dashboard.address_verification': 'טיוב כתובות',
     'dashboard.loading_addresses': 'טוען כתובות...',
 
+    // Address Verification Table
+    'table.city': 'עיר',
+    'table.street': 'רחוב',
+    'table.score': 'ציון',
+    'table.reason': 'הסבר',
+    'table.validation': 'אישור',
+    'score.needs_fixing': '🔴 לתקן',
+    'score.consider': '🟡 שקול',
+    'score.valid': '✓ תקין',
+    'validation.button': 'אישור',
+    'validation.saving': 'שומר...',
+    'validation.success': '✓ הקואורדינטה "{address}" עודכנה בהצלחה בבסיס הנתונים',
+
     // Summary Section
     'summary.title': 'סיכום כללי',
     'summary.total_routes': 'סך הכל מסלולים',
@@ -180,6 +193,19 @@ export const translations: Record<Language, Record<string, string>> = {
     'dashboard.address_verification': 'Address Verification',
     'dashboard.loading_addresses': 'Loading addresses...',
 
+    // Address Verification Table
+    'table.city': 'City',
+    'table.street': 'Street',
+    'table.score': 'Score',
+    'table.reason': 'Reason',
+    'table.validation': 'Confirm',
+    'score.needs_fixing': '🔴 Needs Fixing',
+    'score.consider': '🟡 Consider',
+    'score.valid': '✓ Valid',
+    'validation.button': 'Confirm',
+    'validation.saving': 'Saving...',
+    'validation.success': '✓ Address "{address}" successfully updated in database',
+
     // Summary Section
     'summary.title': 'Summary',
     'summary.total_routes': 'Total Routes',
@@ -325,6 +351,19 @@ export const translations: Record<Language, Record<string, string>> = {
     'dashboard.insights_title': 'Perspectivas de IA sobre la Planificación',
     'dashboard.address_verification': 'Verificación de Dirección',
     'dashboard.loading_addresses': 'Cargando direcciones...',
+
+    // Address Verification Table
+    'table.city': 'Ciudad',
+    'table.street': 'Calle',
+    'table.score': 'Puntuación',
+    'table.reason': 'Motivo',
+    'table.validation': 'Confirmar',
+    'score.needs_fixing': '🔴 Necesita Corrección',
+    'score.consider': '🟡 Considerar',
+    'score.valid': '✓ Válido',
+    'validation.button': 'Confirmar',
+    'validation.saving': 'Guardando...',
+    'validation.success': '✓ Dirección "{address}" actualizada exitosamente en base de datos',
 
     // Summary Section
     'summary.title': 'Resumen',
