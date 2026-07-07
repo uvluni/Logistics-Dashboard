@@ -800,7 +800,7 @@ export default function Home() {
                 disabled={loadingAirtable}
                 className="bg-orange-600 hover:bg-orange-700 disabled:bg-gray-400 text-white font-semibold px-4 py-2 rounded-lg transition-colors text-sm whitespace-nowrap"
               >
-                {loadingAirtable ? 'טוען...' : 'New Customer'}
+                {loadingAirtable ? 'טוען...' : 'טיוב כתובות'}
               </button>
             </div>
           </div>

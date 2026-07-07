@@ -15,7 +15,18 @@ export async function GET(request: NextRequest) {
     const tableId = process.env.AIRTABLE_TABLE_ID;
     const airtableToken = process.env.AIRTABLE_TOKEN;
 
+    console.log('[Airtable] Config check:', {
+      baseId: baseId ? '✓' : '✗',
+      tableId: tableId ? '✓' : '✗',
+      airtableToken: airtableToken ? '✓' : '✗',
+    });
+
     if (!baseId || !tableId || !airtableToken) {
+      console.error('[Airtable] Missing config:', {
+        baseId: !!baseId,
+        tableId: !!tableId,
+        airtableToken: !!airtableToken,
+      });
       return NextResponse.json(
         { error: 'Airtable configuration missing' },
         { status: 500 }
@@ -24,6 +35,7 @@ export async function GET(request: NextRequest) {
 
     // Fetch records from Airtable
     const url = `https://api.airtable.com/v0/${baseId}/${tableId}`;
+    console.log('[Airtable] Fetching from:', url);
 
     const response = await fetch(url, {
       method: 'GET',
@@ -33,16 +45,19 @@ export async function GET(request: NextRequest) {
       },
     });
 
+    console.log('[Airtable] Response status:', response.status);
+
     if (!response.ok) {
       const errorText = await response.text();
-      console.error('[Airtable] Error:', response.status, errorText);
+      console.error('[Airtable] API Error:', response.status, errorText);
       return NextResponse.json(
-        { error: `Airtable API error: ${response.status}` },
+        { error: `Airtable API error: ${response.status} - ${errorText}` },
         { status: response.status }
       );
     }
 
     const data = await response.json();
+    console.log('[Airtable] Success! Records count:', data.records?.length || 0);
 
     return NextResponse.json({
       success: true,
@@ -50,9 +65,9 @@ export async function GET(request: NextRequest) {
       totalRecords: data.records?.length || 0,
     });
   } catch (error) {
-    console.error('Airtable fetch error:', error);
+    console.error('[Airtable] Fetch error:', error instanceof Error ? error.message : String(error));
     return NextResponse.json(
-      { error: 'Failed to fetch from Airtable' },
+      { error: 'Failed to fetch from Airtable: ' + (error instanceof Error ? error.message : 'Unknown error') },
       { status: 500 }
     );
   }
