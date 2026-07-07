@@ -77,7 +77,9 @@
       "Bash(curl -v http://localhost:3000/api/airtable -H \"Cookie: roadnet_token=test\")",
       "Bash(tail -30 /tmp/server.log 2>/dev/null | head -20)",
       "Bash(fuser -k 3000/tcp)",
-      "Bash(pkill -9 -f node)"
+      "Bash(pkill -9 -f node)",
+      "Bash(curl -s -H 'Authorization: Bearer patoeYYG0ekMkYKZv.cc9d28903dda6296f832fe36cc494be8c1c9d99414907b806d8acf2c3843db3a' https://api.airtable.com/v0/appMSRfvLIYGZXsQE/tblMB0BHHwUsf9c2s)",
+      "Bash(git commit -m 'Update: Airtable token with correct permissions *)"
     ]
   }
 }
