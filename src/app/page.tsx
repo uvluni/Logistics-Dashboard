@@ -157,6 +157,13 @@ export default function Home() {
     }
   }, [isLoggedIn, selectedDate]);
 
+  // Auto-generate AI insights when KPIs are loaded
+  useEffect(() => {
+    if (kpis.length > 0 && !insights) {
+      handleGenerateInsights();
+    }
+  }, [kpis]);
+
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
     setIsLoading(true);
