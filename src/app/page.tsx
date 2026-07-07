@@ -94,6 +94,13 @@ export default function Home() {
     }
   }, [selectedDate, language, setIsLoading, setError, setIsLoggedIn, setKpis, setSummary]);
 
+  // Update HTML dir and lang based on language
+  useEffect(() => {
+    const htmlElement = document.documentElement;
+    htmlElement.dir = language === 'he' ? 'rtl' : 'ltr';
+    htmlElement.lang = language;
+  }, [language]);
+
   // Initialize date on client only to avoid hydration mismatch
   useEffect(() => {
     setSelectedDate(getTodayDate());
