@@ -150,6 +150,13 @@ export default function Home() {
     }
   }, [language]);
 
+  // Auto-load Airtable verification table on login
+  useEffect(() => {
+    if (isLoggedIn && selectedDate) {
+      handleLoadAirtable();
+    }
+  }, [isLoggedIn, selectedDate]);
+
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
     setIsLoading(true);
