@@ -55,6 +55,7 @@ export default function Home() {
   const [loadingAirtable, setLoadingAirtable] = useState(false);
   const [validatingRecordId, setValidatingRecordId] = useState<string | null>(null);
   const [validationMessage, setValidationMessage] = useState('');
+  const [validationType, setValidationType] = useState<'google' | 'rodnet' | null>(null);
   const datePickerRef = useRef<DatePicker>(null);
 
   const loadRoutes = useCallback(async () => {
@@ -616,15 +617,16 @@ export default function Home() {
     }
   }
 
-  async function handleValidateRecord(recordId: string, address: string) {
+  async function handleAcceptGoogle(recordId: string, address: string) {
     setValidatingRecordId(recordId);
+    setValidationType('google');
     setValidationMessage('');
 
     try {
       const res = await fetch('/api/airtable', {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ recordId }),
+        body: JSON.stringify({ recordId, field: 'Choose Google coordinates' }),
         credentials: 'include',
       });
 
@@ -633,12 +635,15 @@ export default function Home() {
         return;
       }
 
-      // Remove the validated record from display
-      setAirtableRecords(prev => prev.filter(r => r.id !== recordId));
+      // Remove the validated record from display if both fields are true
+      setAirtableRecords(prev => prev.map(r =>
+        r.id === recordId
+          ? { ...r, fields: { ...r.fields, 'Choose Google coordinates': true } }
+          : r
+      ));
 
       // Show success message
-      const successMsg = t('validation.success', language).replace('{address}', address);
-      setValidationMessage(successMsg);
+      setValidationMessage('קואורדינטות גוגל עודכנו ברודנט');
 
       // Auto-clear message after 3 seconds
       setTimeout(() => setValidationMessage(''), 3000);
@@ -646,6 +651,45 @@ export default function Home() {
       setValidationMessage('שגיאה בעדכון הרשומה');
     } finally {
       setValidatingRecordId(null);
+      setValidationType(null);
+    }
+  }
+
+  async function handleAcceptRodnet(recordId: string, address: string) {
+    setValidatingRecordId(recordId);
+    setValidationType('rodnet');
+    setValidationMessage('');
+
+    try {
+      const res = await fetch('/api/airtable', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ recordId, field: 'Rodnet Coordinates' }),
+        credentials: 'include',
+      });
+
+      if (!res.ok) {
+        setValidationMessage('שגיאה בעדכון הרשומה');
+        return;
+      }
+
+      // Remove the validated record from display if both fields are true
+      setAirtableRecords(prev => prev.map(r =>
+        r.id === recordId
+          ? { ...r, fields: { ...r.fields, 'Rodnet Coordinates': true } }
+          : r
+      ));
+
+      // Show success message
+      setValidationMessage('קואורדינטות רודנט נשמרו כתקינות');
+
+      // Auto-clear message after 3 seconds
+      setTimeout(() => setValidationMessage(''), 3000);
+    } catch (err) {
+      setValidationMessage('שגיאה בעדכון הרשומה');
+    } finally {
+      setValidatingRecordId(null);
+      setValidationType(null);
     }
   }
 
@@ -900,7 +944,7 @@ export default function Home() {
           <div className={`bg-white border border-orange-200 rounded-lg p-6 mb-8 ${isRTL ? 'text-right' : 'text-left'}`}>
             <div className="flex justify-between items-center mb-6">
               <h3 className="text-2xl font-bold text-gray-900">
-                📍 {t('dashboard.address_verification', language)} ({airtableRecords.filter(r => !r.fields?.['Choose Google coordinates']).length})
+                📍 {t('dashboard.address_verification', language)} ({airtableRecords.filter(r => !r.fields?.['Choose Google coordinates'] && !r.fields?.['Rodnet Coordinates']).length})
               </h3>
               <button
                 onClick={() => setShowAirtable(false)}
@@ -927,7 +971,7 @@ export default function Home() {
                 </thead>
                 <tbody>
                   {airtableRecords
-                    .filter(record => !record.fields?.['Choose Google coordinates'])
+                    .filter(record => !record.fields?.['Choose Google coordinates'] && !record.fields?.['Rodnet Coordinates'])
                     .map((record) => {
                       const fields = record.fields || {};
                       const recommendation = fields['Geocode Recommendation'];
@@ -974,13 +1018,20 @@ export default function Home() {
                             </span>
                           </td>
                           <td className="px-4 py-3 text-gray-700 text-right text-xs leading-relaxed max-w-xs">{reason}</td>
-                          <td className="px-4 py-3 text-center">
+                          <td className="px-4 py-3 text-center gap-2 flex justify-center">
                             <button
-                              onClick={() => handleValidateRecord(record.id, address)}
+                              onClick={() => handleAcceptGoogle(record.id, address)}
+                              disabled={validatingRecordId === record.id}
+                              className="bg-green-600 hover:bg-green-700 disabled:bg-gray-400 text-white font-semibold px-3 py-1 rounded transition-colors text-sm"
+                            >
+                              {validatingRecordId === record.id && validationType === 'google' ? 'שומר...' : 'קבל גוגל'}
+                            </button>
+                            <button
+                              onClick={() => handleAcceptRodnet(record.id, address)}
                               disabled={validatingRecordId === record.id}
                               className="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-semibold px-3 py-1 rounded transition-colors text-sm"
                             >
-                              {validatingRecordId === record.id ? t('validation.saving', language) : t('validation.button', language)}
+                              {validatingRecordId === record.id && validationType === 'rodnet' ? 'שומר...' : 'קבל רודנט'}
                             </button>
                           </td>
                         </tr>

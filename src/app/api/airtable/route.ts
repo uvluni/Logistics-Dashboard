@@ -22,7 +22,7 @@ export async function PATCH(request: NextRequest) {
       );
     }
 
-    const { recordId } = await request.json();
+    const { recordId, field = 'Choose Google coordinates' } = await request.json();
 
     if (!recordId) {
       return NextResponse.json(
@@ -41,7 +41,7 @@ export async function PATCH(request: NextRequest) {
       },
       body: JSON.stringify({
         fields: {
-          'Choose Google coordinates': true,
+          [field]: true,
         },
       }),
     });

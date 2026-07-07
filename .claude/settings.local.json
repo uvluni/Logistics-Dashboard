@@ -92,7 +92,8 @@
       "Bash(sed -i 's/\"version\": \"4.0.0\"/\"version\": \"4.1.0\"/' package.json)",
       "Bash(git commit -m 'Release v4.1.0: Improved Airtable Address Verification table with multilingual support *)",
       "Bash(sed -i 's/\"version\": \"4.1.0\"/\"version\": \"4.2.0\"/' package.json)",
-      "Bash(sed -i 's/\"version\": \"4.3.0\"/\"version\": \"4.3.1\"/' package.json)"
+      "Bash(sed -i 's/\"version\": \"4.3.0\"/\"version\": \"4.3.1\"/' package.json)",
+      "Bash(sed -i 's/\"version\": \"4.3.1\"/\"version\": \"4.3.1\"/' package.json)"
     ]
   }
 }
