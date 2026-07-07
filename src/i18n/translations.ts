@@ -30,7 +30,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'dashboard.ai_insights': 'תובנות AI',
     'dashboard.generating_insights': 'יוצר תובנות...',
     'dashboard.insights_error': 'שגיאה ביצירת התובנות',
-    'dashboard.insights_title': 'תובנות AI על התכנון',
+    'dashboard.insights_title': 'מנטור לוגיסטי',
     'dashboard.address_verification': 'טיוב כתובות',
     'dashboard.loading_addresses': 'טוען כתובות...',
 
@@ -193,7 +193,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'dashboard.ai_insights': 'AI Insights',
     'dashboard.generating_insights': 'Generating insights...',
     'dashboard.insights_error': 'Error generating insights',
-    'dashboard.insights_title': 'AI Planning Insights',
+    'dashboard.insights_title': 'Logistics Mentor',
     'dashboard.address_verification': 'Address Verification',
     'dashboard.loading_addresses': 'Loading addresses...',
 
@@ -356,7 +356,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'dashboard.ai_insights': 'Perspectivas de IA',
     'dashboard.generating_insights': 'Generando perspectivas...',
     'dashboard.insights_error': 'Error al generar perspectivas',
-    'dashboard.insights_title': 'Perspectivas de IA sobre la Planificación',
+    'dashboard.insights_title': 'Mentor Logístico',
     'dashboard.address_verification': 'Verificación de Dirección',
     'dashboard.loading_addresses': 'Cargando direcciones...',
 
