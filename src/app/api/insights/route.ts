@@ -344,7 +344,7 @@ ${stopsAnalysis}
 • Average work time calculated from "Total Duration (min)" column in report`;
 }
 
-function generatePrompt(routesData: any[], language: string): string {
+function generatePrompt(routesData: any[], language: string, stopsAnalysis: string = ''): string {
   const routesSummary = routesData
     .slice(0, 10)
     .map((route, idx) => {

@@ -31,6 +31,8 @@ export const translations: Record<Language, Record<string, string>> = {
     'dashboard.generating_insights': 'יוצר תובנות...',
     'dashboard.insights_error': 'שגיאה ביצירת התובנות',
     'dashboard.insights_title': 'תובנות AI על התכנון',
+    'dashboard.address_verification': 'טיוב כתובות',
+    'dashboard.loading_addresses': 'טוען כתובות...',
 
     // Summary Section
     'summary.title': 'סיכום כללי',
@@ -175,6 +177,8 @@ export const translations: Record<Language, Record<string, string>> = {
     'dashboard.generating_insights': 'Generating insights...',
     'dashboard.insights_error': 'Error generating insights',
     'dashboard.insights_title': 'AI Planning Insights',
+    'dashboard.address_verification': 'Address Verification',
+    'dashboard.loading_addresses': 'Loading addresses...',
 
     // Summary Section
     'summary.title': 'Summary',
@@ -319,6 +323,8 @@ export const translations: Record<Language, Record<string, string>> = {
     'dashboard.generating_insights': 'Generando perspectivas...',
     'dashboard.insights_error': 'Error al generar perspectivas',
     'dashboard.insights_title': 'Perspectivas de IA sobre la Planificación',
+    'dashboard.address_verification': 'Verificación de Dirección',
+    'dashboard.loading_addresses': 'Cargando direcciones...',
 
     // Summary Section
     'summary.title': 'Resumen',
