@@ -115,6 +115,7 @@ function generateStopsAnalysis(stopsData: any[], language: string): string {
   }
 
   const isHebrew = language === 'he';
+  const isSpanish = language === 'es';
 
   // Analyze stops data with geographic insights
   let totalStops = 0;
@@ -236,6 +237,32 @@ ${optimizations.length > 0
 • מסלולים בודדים: ${singleStopRoutes.length} מסלולים עם תחנה בודדת - אפשר לתוספת מ"ל סמוכות`;
   }
 
+  if (isSpanish) {
+    return `📍 Información geográfica y de optimización del análisis de paradas:
+
+🚨 Problemas y oportunidades de consolidación:
+• ${emptyStops} paradas sin pedidos (costo desperdiciado - ${(emptyStops * 100 / totalStops).toFixed(1)}% del total)
+• ${singleStopRoutes.length} rutas de parada única (potencial de consolidación)
+• ${routesWithManyEmptyStops} rutas con 2+ paradas vacías
+• ${lowDeliveryStops.length} paradas con < 5 unidades (se pueden fusionar)
+
+📊 Estadísticas de análisis:
+• Total de paradas: ${totalStops}
+• Promedio de pedidos por parada: ${avgQtyPerStop} unidades
+• Rango de paradas por ruta: ${minStopsPerRoute}-${maxStopsPerRoute}
+
+🎯 Oportunidades de optimización:
+${optimizations.length > 0
+  ? optimizations.map(o => `• ${o}`).join('\n')
+  : '• Sin problemas de consolidación mayor - la planificación parece optimizada'
+}
+
+💡 Recomendaciones generales:
+• Paradas de bajo volumen: Consolidar ${lowDeliveryStops.length} paradas con < 5 unidades en rutas cercanas
+• Paradas vacías: Revisar ${emptyStops} paradas sin pedidos - ¿deberían estar en el plan?
+• Rutas de parada única: ${singleStopRoutes.length} rutas con 1 parada - agregar clientes cercanos`;
+  }
+
   return `📍 Geographic & Optimization Insights from Stops Analysis:
 
 🚨 Issues & Consolidation Opportunities:
@@ -263,10 +290,13 @@ ${optimizations.length > 0
 
 function generateLocalInsights(routesData: any[], language: string, stopsAnalysis: string = ''): string {
   if (!routesData || routesData.length === 0) {
-    return language === 'he' ? 'אין נתונים לניתוח' : 'No data to analyze';
+    if (language === 'he') return 'אין נתונים לניתוח';
+    if (language === 'es') return 'Sin datos para analizar';
+    return 'No data to analyze';
   }
 
   const isHebrew = language === 'he';
+  const isSpanish = language === 'es';
 
   // Calculate metrics
   let totalWeight = 0;
@@ -317,6 +347,34 @@ ${stopsAnalysis}
 • זמן עבודה ממוצע חושב מהעמודה "Total Duration (min)" בדוח`;
   }
 
+  if (isSpanish) {
+    return `📊 Análisis de planificación de distribución - ${new Date().toLocaleDateString('es-ES')}
+
+🔍 Resumen:
+• Número de rutas: ${routesData.length}
+• Promedio de utilización de peso: ${avgWeight}%
+• Tiempo de trabajo promedio: ${avgTime} minutos
+• Tiempo de trabajo máximo: ${maxTime} minutos
+
+⚠️ Problemas identificados:
+• ${lowUtilization} rutas con utilización baja (< 50%)
+• ${highUtilization} rutas con utilización alta (> 85%)
+
+💡 Recomendaciones:
+• Considere combinar rutas con bajo uso para mejorar la eficiencia
+• Verifique si se pueden agregar más paradas a rutas más pequeñas
+• Si el tiempo de trabajo excede 9 horas, considere dividir en dos rutas
+• Revise los procedimientos de la empresa para planificación de rutas
+• Supervise la retroalimentación del conductor sobre la eficiencia de ruta
+
+${stopsAnalysis}
+
+🔬 Método de cálculo:
+• Utilización de peso = suma de utilización de peso de todas las rutas / número de rutas
+• Problemas identificados basados en umbrales: < 50% (bajo) y > 85% (alto)
+• Tiempo de trabajo promedio calculado desde la columna "Total Duration (min)" en el informe`;
+  }
+
   return `📊 Distribution Planning Analysis - ${new Date().toLocaleDateString('en-US')}
 
 🔍 Summary:
@@ -363,6 +421,7 @@ Route ${idx + 1}:
     .join('\n');
 
   const isHebrew = language === 'he';
+  const isSpanish = language === 'es';
 
   if (isHebrew) {
     return `אתה מנתח תכנון הפצה מקצועי. בדוק את הנתונים הבאים של מסלולים וספק 3-4 פסקאות קצרות ומעשיות:
@@ -375,6 +434,19 @@ ${routesSummary}
 3. המלצות מעשיות לשיפור הנתוב
 
 כתוב בעברית, בצורה פשוטה וישירה.`;
+  }
+
+  if (isSpanish) {
+    return `Eres un analista profesional de planificación de distribución. Analiza los siguientes datos de rutas y proporciona 3-4 párrafos cortos y prácticos:
+
+${routesSummary}
+
+Por favor proporciona:
+1. Resumen general de la eficiencia de distribución
+2. 2-3 problemas clave a abordar
+3. Recomendaciones prácticas para optimizar las rutas
+
+Escribe en español, de manera clara y directa.`;
   }
 
   return `You are a professional distribution planning analyst. Analyze the following route data and provide 3-4 short, practical paragraphs:

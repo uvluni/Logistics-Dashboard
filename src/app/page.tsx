@@ -142,6 +142,13 @@ export default function Home() {
     }
   }, [selectedDate, isLoggedIn, loadRoutes]);
 
+  // Regenerate insights when language changes
+  useEffect(() => {
+    if (insights && kpis.length > 0) {
+      handleGenerateInsights();
+    }
+  }, [language]);
+
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
     setIsLoading(true);
