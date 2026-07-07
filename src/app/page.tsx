@@ -897,19 +897,117 @@ export default function Home() {
               >
                 {t('dashboard.report_orders', language)}
               </button>
-              <button
-                onClick={handleGenerateInsights}
-                disabled={generatingInsights || kpis.length === 0}
-                className="bg-red-900 hover:bg-red-800 disabled:bg-gray-400 text-white font-semibold px-4 py-2 rounded-lg transition-colors text-sm whitespace-nowrap"
-              >
-                {generatingInsights ? t('dashboard.generating_insights', language) : t('dashboard.ai_insights', language)}
-              </button>
             </div>
           </div>
           {isLoading && (
             <p className="text-center mt-4 text-blue-100 text-sm">{t('dashboard.loading_routes', language)}</p>
           )}
         </div>
+
+        {showAirtable && airtableRecords.length > 0 && (
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div className={`bg-white border border-orange-200 rounded-lg p-6 mb-8 ${isRTL ? 'text-right' : 'text-left'}`}>
+              <div className="flex justify-between items-center mb-6">
+                <h3 className="text-2xl font-bold text-gray-900">
+                  📍 {t('dashboard.address_verification', language)} ({airtableRecords.filter(r => !r.fields?.['Choose Google coordinates'] && !r.fields?.['Choose Roadnet coordinates']).length})
+                </h3>
+                <button
+                  onClick={() => setShowAirtable(false)}
+                  className="text-gray-400 hover:text-gray-900 font-bold text-xl"
+                >
+                  ✕
+                </button>
+              </div>
+              {validationMessage && (
+                <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg mb-4 text-sm">
+                  {validationMessage}
+                </div>
+              )}
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b-2 border-gray-200">
+                      <th className="px-4 py-3 font-semibold text-gray-900 text-right">{t('table.city', language)}</th>
+                      <th className="px-4 py-3 font-semibold text-gray-900 text-right">{t('table.street', language)}</th>
+                      <th className="px-4 py-3 font-semibold text-gray-900 text-center">{t('table.score', language)}</th>
+                      <th className="px-4 py-3 font-semibold text-gray-900 text-right">{t('table.reason', language)}</th>
+                      <th className="px-4 py-3 font-semibold text-gray-900 text-center">{t('table.validation', language)}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {airtableRecords
+                      .filter(record => !record.fields?.['Choose Google coordinates'] && !record.fields?.['Choose Roadnet coordinates'])
+                      .map((record) => {
+                        const fields = record.fields || {};
+                        const recommendation = fields['Geocode Recommendation'];
+                        const address = fields['Address Line 1'] || '-';
+                        const city = fields['City'] || '-';
+                        const reason = fields['Reason'] || '-';
+                        const score = recommendation ? parseInt(recommendation) : 1;
+
+                        return {
+                          record,
+                          score,
+                          address,
+                          city,
+                          recommendation,
+                          reason,
+                        };
+                      })
+                      .sort((a, b) => b.score - a.score)
+                      .map(({ record, score, address, city, recommendation, reason }) => {
+                        let bgColor = 'bg-green-50';
+                        let scoreBg = 'bg-green-100';
+                        let scoreText = 'text-green-900';
+                        let scoreLabel = t('score.valid', language);
+
+                        if (recommendation === '3') {
+                          bgColor = 'bg-red-50';
+                          scoreBg = 'bg-red-100';
+                          scoreText = 'text-red-900';
+                          scoreLabel = t('score.needs_fixing', language);
+                        } else if (recommendation === '2') {
+                          bgColor = 'bg-yellow-50';
+                          scoreBg = 'bg-yellow-100';
+                          scoreText = 'text-yellow-900';
+                          scoreLabel = t('score.consider', language);
+                        }
+
+                        return (
+                          <tr key={record.id} className={`border-b border-gray-100 ${bgColor}`}>
+                            <td className="px-4 py-3 text-gray-900 font-bold text-right">{city}</td>
+                            <td className="px-4 py-3 text-gray-900 font-medium text-right">{address}</td>
+                            <td className={`px-4 py-3 text-center font-semibold`}>
+                              <span className={`px-3 py-1 rounded-full text-sm ${scoreBg} ${scoreText}`}>
+                                {scoreLabel}
+                              </span>
+                            </td>
+                            <td className="px-4 py-3 text-gray-700 text-right text-xs leading-relaxed max-w-xs">{reason}</td>
+                            <td className="px-4 py-3 text-center gap-2 flex justify-center">
+                              <button
+                                onClick={() => handleAcceptGoogle(record.id, address)}
+                                disabled={validatingRecordId === record.id}
+                                className="bg-green-600 hover:bg-green-700 disabled:bg-gray-400 text-white font-semibold px-3 py-1 rounded transition-colors text-sm"
+                              >
+                                {validatingRecordId === record.id && validationType === 'google' ? t('validation.saving', language) : t('validation.accept_google', language)}
+                              </button>
+                              <button
+                                onClick={() => handleAcceptRodnet(record.id, address)}
+                                disabled={validatingRecordId === record.id}
+                                className="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-semibold px-3 py-1 rounded transition-colors text-sm"
+                              >
+                                {validatingRecordId === record.id && validationType === 'rodnet' ? t('validation.saving', language) : t('validation.accept_rodnet', language)}
+                              </button>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        )}
 
         {error && (
           <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-8">
@@ -945,109 +1043,6 @@ export default function Home() {
               </div>
             </div>
           </>
-        )}
-
-        {showAirtable && airtableRecords.length > 0 && (
-          <div className={`bg-white border border-orange-200 rounded-lg p-6 mb-8 ${isRTL ? 'text-right' : 'text-left'}`}>
-            <div className="flex justify-between items-center mb-6">
-              <h3 className="text-2xl font-bold text-gray-900">
-                📍 {t('dashboard.address_verification', language)} ({airtableRecords.filter(r => !r.fields?.['Choose Google coordinates'] && !r.fields?.['Choose Roadnet coordinates']).length})
-              </h3>
-              <button
-                onClick={() => setShowAirtable(false)}
-                className="text-gray-400 hover:text-gray-900 font-bold text-xl"
-              >
-                ✕
-              </button>
-            </div>
-            {validationMessage && (
-              <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg mb-4 text-sm">
-                {validationMessage}
-              </div>
-            )}
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="border-b-2 border-gray-200">
-                    <th className="px-4 py-3 font-semibold text-gray-900 text-right">{t('table.city', language)}</th>
-                    <th className="px-4 py-3 font-semibold text-gray-900 text-right">{t('table.street', language)}</th>
-                    <th className="px-4 py-3 font-semibold text-gray-900 text-center">{t('table.score', language)}</th>
-                    <th className="px-4 py-3 font-semibold text-gray-900 text-right">{t('table.reason', language)}</th>
-                    <th className="px-4 py-3 font-semibold text-gray-900 text-center">{t('table.validation', language)}</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {airtableRecords
-                    .filter(record => !record.fields?.['Choose Google coordinates'] && !record.fields?.['Choose Roadnet coordinates'])
-                    .map((record) => {
-                      const fields = record.fields || {};
-                      const recommendation = fields['Geocode Recommendation'];
-                      const address = fields['Address Line 1'] || '-';
-                      const city = fields['City'] || '-';
-                      const reason = fields['Reason'] || '-';
-                      const score = recommendation ? parseInt(recommendation) : 1;
-
-                      return {
-                        record,
-                        score,
-                        address,
-                        city,
-                        recommendation,
-                        reason,
-                      };
-                    })
-                    .sort((a, b) => b.score - a.score)
-                    .map(({ record, score, address, city, recommendation, reason }) => {
-                      let bgColor = 'bg-green-50';
-                      let scoreBg = 'bg-green-100';
-                      let scoreText = 'text-green-900';
-                      let scoreLabel = t('score.valid', language);
-
-                      if (recommendation === '3') {
-                        bgColor = 'bg-red-50';
-                        scoreBg = 'bg-red-100';
-                        scoreText = 'text-red-900';
-                        scoreLabel = t('score.needs_fixing', language);
-                      } else if (recommendation === '2') {
-                        bgColor = 'bg-yellow-50';
-                        scoreBg = 'bg-yellow-100';
-                        scoreText = 'text-yellow-900';
-                        scoreLabel = t('score.consider', language);
-                      }
-
-                      return (
-                        <tr key={record.id} className={`border-b border-gray-100 ${bgColor}`}>
-                          <td className="px-4 py-3 text-gray-900 font-bold text-right">{city}</td>
-                          <td className="px-4 py-3 text-gray-900 font-medium text-right">{address}</td>
-                          <td className={`px-4 py-3 text-center font-semibold`}>
-                            <span className={`px-3 py-1 rounded-full text-sm ${scoreBg} ${scoreText}`}>
-                              {scoreLabel}
-                            </span>
-                          </td>
-                          <td className="px-4 py-3 text-gray-700 text-right text-xs leading-relaxed max-w-xs">{reason}</td>
-                          <td className="px-4 py-3 text-center gap-2 flex justify-center">
-                            <button
-                              onClick={() => handleAcceptGoogle(record.id, address)}
-                              disabled={validatingRecordId === record.id}
-                              className="bg-green-600 hover:bg-green-700 disabled:bg-gray-400 text-white font-semibold px-3 py-1 rounded transition-colors text-sm"
-                            >
-                              {validatingRecordId === record.id && validationType === 'google' ? t('validation.saving', language) : t('validation.accept_google', language)}
-                            </button>
-                            <button
-                              onClick={() => handleAcceptRodnet(record.id, address)}
-                              disabled={validatingRecordId === record.id}
-                              className="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-semibold px-3 py-1 rounded transition-colors text-sm"
-                            >
-                              {validatingRecordId === record.id && validationType === 'rodnet' ? t('validation.saving', language) : t('validation.accept_rodnet', language)}
-                            </button>
-                          </td>
-                        </tr>
-                      );
-                    })}
-                </tbody>
-              </table>
-            </div>
-          </div>
         )}
 
         {summary && kpis.length === 0 && (
