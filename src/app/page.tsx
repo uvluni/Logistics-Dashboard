@@ -846,40 +846,66 @@ export default function Home() {
         )}
 
         {showAirtable && airtableRecords.length > 0 && (
-          <div className={`bg-gradient-to-br from-orange-50 to-yellow-50 border border-orange-200 rounded-lg p-6 mb-8 ${isRTL ? 'text-right' : 'text-left'}`}>
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="text-2xl font-bold text-orange-900 flex items-center gap-2">
-                <span>📋</span>
-                New Customer ({airtableRecords.length})
+          <div className={`bg-white border border-orange-200 rounded-lg p-6 mb-8 ${isRTL ? 'text-right' : 'text-left'}`}>
+            <div className="flex justify-between items-center mb-6">
+              <h3 className="text-2xl font-bold text-gray-900">
+                📍 טיוב כתובות ({airtableRecords.length})
               </h3>
               <button
                 onClick={() => setShowAirtable(false)}
-                className="text-orange-700 hover:text-orange-900 font-bold text-lg"
+                className="text-gray-400 hover:text-gray-900 font-bold text-xl"
               >
                 ✕
               </button>
             </div>
             <div className="overflow-x-auto">
-              <table className="w-full text-sm border-collapse">
+              <table className="w-full text-sm">
                 <thead>
-                  <tr className="bg-orange-200 border border-orange-300">
-                    {airtableRecords.length > 0 && Object.keys(airtableRecords[0].fields || {}).slice(0, 8).map((field) => (
-                      <th key={field} className="border border-orange-300 px-4 py-2 font-semibold text-orange-900">
-                        {field}
-                      </th>
-                    ))}
+                  <tr className="border-b-2 border-gray-200">
+                    <th className="px-4 py-3 font-semibold text-gray-900 text-right">כתובת</th>
+                    <th className="px-4 py-3 font-semibold text-gray-900 text-right">עיר</th>
+                    <th className="px-4 py-3 font-semibold text-gray-900 text-center">ציון</th>
+                    <th className="px-4 py-3 font-semibold text-gray-900 text-right">הסבר</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {airtableRecords.map((record, idx) => (
-                    <tr key={record.id} className={idx % 2 === 0 ? 'bg-white' : 'bg-orange-50'}>
-                      {Object.values(record.fields || {}).slice(0, 8).map((value: any, colIdx: number) => (
-                        <td key={colIdx} className="border border-orange-200 px-4 py-2 text-gray-700">
-                          {typeof value === 'object' ? JSON.stringify(value) : String(value || '-')}
+                  {airtableRecords.map((record, idx) => {
+                    const fields = record.fields || {};
+                    const recommendation = fields['Geocode Recommendation'];
+                    const address = `${fields['Address Line 1'] || ''} ${fields['Address Line 2'] || ''}`.trim();
+                    const city = fields['City'] || '-';
+                    const reason = fields['Reason'] || '-';
+
+                    let bgColor = 'bg-green-50';
+                    let scoreBg = 'bg-green-100';
+                    let scoreText = 'text-green-900';
+                    let scoreLabel = '✓ בסדר';
+
+                    if (recommendation === '3') {
+                      bgColor = 'bg-red-50';
+                      scoreBg = 'bg-red-100';
+                      scoreText = 'text-red-900';
+                      scoreLabel = '🔴 חיוני';
+                    } else if (recommendation === '2') {
+                      bgColor = 'bg-yellow-50';
+                      scoreBg = 'bg-yellow-100';
+                      scoreText = 'text-yellow-900';
+                      scoreLabel = '🟡 שקול';
+                    }
+
+                    return (
+                      <tr key={record.id} className={`border-b border-gray-100 ${bgColor}`}>
+                        <td className="px-4 py-3 text-gray-900 font-medium text-right">{address}</td>
+                        <td className="px-4 py-3 text-gray-700 text-right">{city}</td>
+                        <td className={`px-4 py-3 text-center font-semibold`}>
+                          <span className={`px-3 py-1 rounded-full text-sm ${scoreBg} ${scoreText}`}>
+                            {scoreLabel}
+                          </span>
                         </td>
-                      ))}
-                    </tr>
-                  ))}
+                        <td className="px-4 py-3 text-gray-700 text-right text-xs leading-relaxed max-w-xs">{reason}</td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>
