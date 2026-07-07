@@ -1,17 +1,31 @@
 <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
   <rect width="1024" height="1024" fill="#1b7d67"/>
-  <g fill="white" transform="translate(512, 512)">
-    <!-- Left loop -->
-    <circle cx="-120" cy="0" r="140" fill="none" stroke="white" stroke-width="90"/>
-    <!-- Right loop -->
-    <circle cx="120" cy="0" r="140" fill="none" stroke="white" stroke-width="90"/>
-    <!-- Top stem -->
-    <rect x="-40" y="-280" width="80" height="180" rx="40" fill="white"/>
+
+  <!-- Main shape centered -->
+  <g transform="translate(512, 512)">
+    <!-- Left circle -->
+    <circle cx="-180" cy="0" r="160" fill="none" stroke="white" stroke-width="110" stroke-linecap="round"/>
+
+    <!-- Right circle -->
+    <circle cx="180" cy="0" r="160" fill="none" stroke="white" stroke-width="110" stroke-linecap="round"/>
+
+    <!-- Top-left stem -->
+    <rect x="-65" y="-320" width="130" height="220" rx="65" fill="white"/>
+
+    <!-- Top-right stem -->
+    <rect x="-35" y="-280" width="70" height="160" rx="35" fill="white"/>
+
     <!-- Bottom stem -->
-    <rect x="-40" y="100" width="80" height="180" rx="40" fill="white"/>
-    <!-- Left stem -->
-    <rect x="-280" y="-40" width="180" height="80" rx="40" fill="white"/>
-    <!-- Right stem -->
-    <rect x="100" y="-40" width="180" height="80" rx="40" fill="white"/>
+    <rect x="-65" y="100" width="130" height="220" rx="65" fill="white"/>
+
+    <!-- Left horizontal stem -->
+    <rect x="-320" y="-65" width="220" height="130" rx="65" fill="white"/>
+
+    <!-- Right horizontal stem -->
+    <rect x="100" y="-65" width="220" height="130" rx="65" fill="white"/>
+
+    <!-- Center cross -->
+    <rect x="-30" y="-30" width="60" height="60" rx="10" fill="white"/>
   </g>
 </svg>
