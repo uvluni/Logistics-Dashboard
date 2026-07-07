@@ -44,7 +44,11 @@ export const translations: Record<Language, Record<string, string>> = {
     'score.consider': '🟡 שקול',
     'score.valid': '✓ תקין',
     'validation.button': 'אישור',
+    'validation.accept_google': 'קבל גוגל',
+    'validation.accept_rodnet': 'קבל רודנט',
     'validation.saving': 'שומר...',
+    'validation.google_accepted': 'קואורדינטות גוגל עודכנו ברודנט',
+    'validation.rodnet_accepted': 'קואורדינטות רודנט נשמרו כתקינות',
     'validation.success': '✓ הקואורדינטה "{address}" עודכנה בהצלחה בבסיס הנתונים',
 
     // Summary Section
@@ -203,7 +207,11 @@ export const translations: Record<Language, Record<string, string>> = {
     'score.consider': '🟡 Consider',
     'score.valid': '✓ Valid',
     'validation.button': 'Confirm',
+    'validation.accept_google': 'Accept Google',
+    'validation.accept_rodnet': 'Accept Rodnet',
     'validation.saving': 'Saving...',
+    'validation.google_accepted': 'Google coordinates updated in Rodnet',
+    'validation.rodnet_accepted': 'Rodnet coordinates saved as valid',
     'validation.success': '✓ Address "{address}" successfully updated in database',
 
     // Summary Section
@@ -362,7 +370,11 @@ export const translations: Record<Language, Record<string, string>> = {
     'score.consider': '🟡 Considerar',
     'score.valid': '✓ Válido',
     'validation.button': 'Confirmar',
+    'validation.accept_google': 'Aceptar Google',
+    'validation.accept_rodnet': 'Aceptar Rodnet',
     'validation.saving': 'Guardando...',
+    'validation.google_accepted': 'Coordenadas de Google actualizadas en Rodnet',
+    'validation.rodnet_accepted': 'Coordenadas de Rodnet guardadas como válidas',
     'validation.success': '✓ Dirección "{address}" actualizada exitosamente en base de datos',
 
     // Summary Section

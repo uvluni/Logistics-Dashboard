@@ -643,7 +643,7 @@ export default function Home() {
       ));
 
       // Show success message
-      setValidationMessage('קואורדינטות גוגל עודכנו ברודנט');
+      setValidationMessage(t('validation.google_accepted', language));
 
       // Auto-clear message after 3 seconds
       setTimeout(() => setValidationMessage(''), 3000);
@@ -681,7 +681,7 @@ export default function Home() {
       ));
 
       // Show success message
-      setValidationMessage('קואורדינטות רודנט נשמרו כתקינות');
+      setValidationMessage(t('validation.rodnet_accepted', language));
 
       // Auto-clear message after 3 seconds
       setTimeout(() => setValidationMessage(''), 3000);
@@ -944,7 +944,7 @@ export default function Home() {
           <div className={`bg-white border border-orange-200 rounded-lg p-6 mb-8 ${isRTL ? 'text-right' : 'text-left'}`}>
             <div className="flex justify-between items-center mb-6">
               <h3 className="text-2xl font-bold text-gray-900">
-                📍 {t('dashboard.address_verification', language)} ({airtableRecords.filter(r => !r.fields?.['Choose Google coordinates'] && !r.fields?.['Rodnet Coordinates']).length})
+                📍 {t('dashboard.address_verification', language)} ({airtableRecords.filter(r => !r.fields?.['Choose Google coordinates'] && !r.fields?.['Validated Rodnet']).length})
               </h3>
               <button
                 onClick={() => setShowAirtable(false)}
@@ -971,7 +971,7 @@ export default function Home() {
                 </thead>
                 <tbody>
                   {airtableRecords
-                    .filter(record => !record.fields?.['Choose Google coordinates'] && !record.fields?.['Rodnet Coordinates'])
+                    .filter(record => !record.fields?.['Choose Google coordinates'] && !record.fields?.['Validated Rodnet'])
                     .map((record) => {
                       const fields = record.fields || {};
                       const recommendation = fields['Geocode Recommendation'];
@@ -1024,14 +1024,14 @@ export default function Home() {
                               disabled={validatingRecordId === record.id}
                               className="bg-green-600 hover:bg-green-700 disabled:bg-gray-400 text-white font-semibold px-3 py-1 rounded transition-colors text-sm"
                             >
-                              {validatingRecordId === record.id && validationType === 'google' ? 'שומר...' : 'קבל גוגל'}
+                              {validatingRecordId === record.id && validationType === 'google' ? t('validation.saving', language) : t('validation.accept_google', language)}
                             </button>
                             <button
                               onClick={() => handleAcceptRodnet(record.id, address)}
                               disabled={validatingRecordId === record.id}
                               className="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-semibold px-3 py-1 rounded transition-colors text-sm"
                             >
-                              {validatingRecordId === record.id && validationType === 'rodnet' ? 'שומר...' : 'קבל רודנט'}
+                              {validatingRecordId === record.id && validationType === 'rodnet' ? t('validation.saving', language) : t('validation.accept_rodnet', language)}
                             </button>
                           </td>
                         </tr>
