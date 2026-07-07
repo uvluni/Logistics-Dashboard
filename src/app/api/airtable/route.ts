@@ -1,5 +1,78 @@
 import { NextRequest, NextResponse } from 'next/server';
 
+export async function PATCH(request: NextRequest) {
+  try {
+    const token = request.cookies.get('roadnet_token')?.value;
+
+    if (!token) {
+      return NextResponse.json(
+        { error: 'Not authenticated' },
+        { status: 401 }
+      );
+    }
+
+    const baseId = process.env.AIRTABLE_BASE_ID;
+    const tableId = process.env.AIRTABLE_TABLE_ID;
+    const airtableToken = process.env.AIRTABLE_TOKEN;
+
+    if (!baseId || !tableId || !airtableToken) {
+      return NextResponse.json(
+        { error: 'Airtable configuration missing' },
+        { status: 500 }
+      );
+    }
+
+    const { recordId } = await request.json();
+
+    if (!recordId) {
+      return NextResponse.json(
+        { error: 'Record ID is required' },
+        { status: 400 }
+      );
+    }
+
+    const url = `https://api.airtable.com/v0/${baseId}/${tableId}/${recordId}`;
+
+    const response = await fetch(url, {
+      method: 'PATCH',
+      headers: {
+        'Authorization': `Bearer ${airtableToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        fields: {
+          'Validated': true,
+        },
+      }),
+    });
+
+    console.log('[Airtable] PATCH response status:', response.status);
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('[Airtable] PATCH Error:', response.status, errorText);
+      return NextResponse.json(
+        { error: `Airtable API error: ${response.status}` },
+        { status: response.status }
+      );
+    }
+
+    const data = await response.json();
+    console.log('[Airtable] Record updated successfully:', recordId);
+
+    return NextResponse.json({
+      success: true,
+      record: data,
+    });
+  } catch (error) {
+    console.error('[Airtable] PATCH error:', error instanceof Error ? error.message : String(error));
+    return NextResponse.json(
+      { error: 'Failed to update Airtable record' },
+      { status: 500 }
+    );
+  }
+}
+
 export async function GET(request: NextRequest) {
   try {
     const token = request.cookies.get('roadnet_token')?.value;

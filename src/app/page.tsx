@@ -53,6 +53,8 @@ export default function Home() {
   const [airtableRecords, setAirtableRecords] = useState<any[]>([]);
   const [showAirtable, setShowAirtable] = useState(false);
   const [loadingAirtable, setLoadingAirtable] = useState(false);
+  const [validatingRecordId, setValidatingRecordId] = useState<string | null>(null);
+  const [validationMessage, setValidationMessage] = useState('');
   const datePickerRef = useRef<DatePicker>(null);
 
   const loadRoutes = useCallback(async () => {
@@ -598,6 +600,38 @@ export default function Home() {
     }
   }
 
+  async function handleValidateRecord(recordId: string, address: string) {
+    setValidatingRecordId(recordId);
+    setValidationMessage('');
+
+    try {
+      const res = await fetch('/api/airtable', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ recordId }),
+        credentials: 'include',
+      });
+
+      if (!res.ok) {
+        setValidationMessage('שגיאה בעדכון הרשומה');
+        return;
+      }
+
+      // Remove the validated record from display
+      setAirtableRecords(prev => prev.filter(r => r.id !== recordId));
+
+      // Show success message
+      setValidationMessage(`✓ הקואורדינטה "${address}" עודכנה בהצלחה בבסיס הנתונים`);
+
+      // Auto-clear message after 3 seconds
+      setTimeout(() => setValidationMessage(''), 3000);
+    } catch (err) {
+      setValidationMessage('שגיאה בעדכון הרשומה');
+    } finally {
+      setValidatingRecordId(null);
+    }
+  }
+
   if (!isLoggedIn) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-600 to-indigo-700 flex items-center justify-center p-4">
@@ -849,7 +883,7 @@ export default function Home() {
           <div className={`bg-white border border-orange-200 rounded-lg p-6 mb-8 ${isRTL ? 'text-right' : 'text-left'}`}>
             <div className="flex justify-between items-center mb-6">
               <h3 className="text-2xl font-bold text-gray-900">
-                📍 {t('dashboard.address_verification', language)} ({airtableRecords.length})
+                📍 {t('dashboard.address_verification', language)} ({airtableRecords.filter(r => !r.fields?.['Validated']).length})
               </h3>
               <button
                 onClick={() => setShowAirtable(false)}
@@ -858,6 +892,11 @@ export default function Home() {
                 ✕
               </button>
             </div>
+            {validationMessage && (
+              <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg mb-4 text-sm">
+                {validationMessage}
+              </div>
+            )}
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
@@ -866,10 +905,12 @@ export default function Home() {
                     <th className="px-4 py-3 font-semibold text-gray-900 text-right">רחוב</th>
                     <th className="px-4 py-3 font-semibold text-gray-900 text-center">ציון</th>
                     <th className="px-4 py-3 font-semibold text-gray-900 text-right">הסבר</th>
+                    <th className="px-4 py-3 font-semibold text-gray-900 text-center">אישור</th>
                   </tr>
                 </thead>
                 <tbody>
                   {airtableRecords
+                    .filter(record => !record.fields?.['Validated'])
                     .map((record) => {
                       const fields = record.fields || {};
                       const recommendation = fields['Geocode Recommendation'];
@@ -908,7 +949,7 @@ export default function Home() {
 
                       return (
                         <tr key={record.id} className={`border-b border-gray-100 ${bgColor}`}>
-                          <td className="px-4 py-3 text-gray-700 text-right">{city}</td>
+                          <td className="px-4 py-3 text-gray-900 font-bold text-right">{city}</td>
                           <td className="px-4 py-3 text-gray-900 font-medium text-right">{address}</td>
                           <td className={`px-4 py-3 text-center font-semibold`}>
                             <span className={`px-3 py-1 rounded-full text-sm ${scoreBg} ${scoreText}`}>
@@ -916,6 +957,15 @@ export default function Home() {
                             </span>
                           </td>
                           <td className="px-4 py-3 text-gray-700 text-right text-xs leading-relaxed max-w-xs">{reason}</td>
+                          <td className="px-4 py-3 text-center">
+                            <button
+                              onClick={() => handleValidateRecord(record.id, address)}
+                              disabled={validatingRecordId === record.id}
+                              className="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-semibold px-3 py-1 rounded transition-colors text-sm"
+                            >
+                              {validatingRecordId === record.id ? 'שומר...' : 'אישור'}
+                            </button>
+                          </td>
                         </tr>
                       );
                     })}
