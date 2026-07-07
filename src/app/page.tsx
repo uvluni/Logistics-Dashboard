@@ -971,7 +971,7 @@ export default function Home() {
                 </thead>
                 <tbody>
                   {airtableRecords
-                    .filter(record => !record.fields?.['Choose Google coordinates'] && !record.fields?.['Validated Rodnet'])
+                    .filter(record => !record.fields?.['Choose Google coordinates'] && !record.fields?.['Choose Roadnet coordinates'])
                     .map((record) => {
                       const fields = record.fields || {};
                       const recommendation = fields['Geocode Recommendation'];
