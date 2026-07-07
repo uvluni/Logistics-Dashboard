@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ROADNET - הצגת פרויקט</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #1b7d67 0%, #0d5a50 100%);
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        .presentation {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .slide {
+            width: 100%;
+            height: 100vh;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 60px;
+            text-align: right;
+            animation: slideIn 0.6s ease-out;
+        }
+
+        .slide.active {
+            display: flex;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Slide 1 - Title */
+        .slide-title {
+            background: linear-gradient(135deg, #1b7d67 0%, #0d5a50 100%);
+            color: white;
+        }
+
+        .slide-title h1 {
+            font-size: 4em;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .slide-title .subtitle {
+            font-size: 2em;
+            opacity: 0.9;
+            margin-bottom: 40px;
+        }
+
+        .slide-title .logo {
+            width: 150px;
+            height: 150px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 40px;
+            font-size: 4em;
+        }
+
+        /* Content Slides */
+        .slide-content {
+            background: white;
+            padding: 80px 60px;
+            border-radius: 10px;
+            max-width: 1000px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: slideIn 0.6s ease-out;
+        }
+
+        .slide-content h2 {
+            font-size: 3em;
+            color: #1b7d67;
+            margin-bottom: 40px;
+            border-bottom: 4px solid #1b7d67;
+            padding-bottom: 20px;
+        }
+
+        .slide-content p {
+            font-size: 1.4em;
+            line-height: 1.8;
+            margin-bottom: 20px;
+            color: #555;
+        }
+
+        .slide-content ul {
+            font-size: 1.3em;
+            line-height: 2;
+            margin-right: 40px;
+            color: #555;
+        }
+
+        .slide-content li {
+            margin-bottom: 15px;
+            padding-right: 20px;
+        }
+
+        .slide-content li strong {
+            color: #1b7d67;
+        }
+
+        /* Navigation */
+        .nav-buttons {
+            position: fixed;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+            z-index: 100;
+        }
+
+        button {
+            background: white;
+            border: 2px solid #1b7d67;
+            color: #1b7d67;
+            padding: 15px 30px;
+            font-size: 1.1em;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        button:hover {
+            background: #1b7d67;
+            color: white;
+            transform: scale(1.05);
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .slide-counter {
+            position: fixed;
+            top: 40px;
+            left: 40px;
+            background: white;
+            color: #1b7d67;
+            padding: 15px 25px;
+            border-radius: 50px;
+            font-size: 1.1em;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        /* Special styles */
+        .highlight {
+            background: #fff3cd;
+            padding: 20px;
+            border-right: 4px solid #ffc107;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-top: 30px;
+        }
+
+        .grid-2 h3 {
+            color: #1b7d67;
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            margin-top: 0;
+        }
+
+        .grid-2 ul {
+            margin-right: 0;
+        }
+
+        .process-flow {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin: 20px 0;
+            font-size: 1.2em;
+        }
+
+        .process-step {
+            background: #f0f0f0;
+            padding: 15px 25px;
+            border-radius: 25px;
+            min-width: 120px;
+            text-align: center;
+            font-weight: 600;
+            color: #1b7d67;
+        }
+
+        .process-step.highlight {
+            background: #1b7d67;
+            color: white;
+        }
+
+        .arrow {
+            font-size: 1.5em;
+            color: #1b7d67;
+        }
+
+        .tech-stack {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .tech-item {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            border-right: 4px solid #1b7d67;
+        }
+
+        .tech-item strong {
+            color: #1b7d67;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .icon {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide-counter">
+        <span id="current-slide">1</span> / <span id="total-slides">9</span>
+    </div>
+
+    <!-- Slide 1: Title -->
+    <div class="slide slide-title active">
+        <h1>🚚 ROADNET</h1>
+        <p class="subtitle">דשבורד תכנון הפצה יומי</p>
+        <div class="logo">🌿</div>
+    </div>
+
+    <!-- Slide 2: What is ROADNET -->
+    <div class="slide">
+        <div class="slide-content">
+            <h2>מה זה ROADNET?</h2>
+            <p><strong>ROADNET</strong> היא פלטפורמה של <strong>אופטימיזציה של מסלולי הפצה</strong> שמפתחת חברת אמן קומפיוטרס.</p>
+            <ul>
+                <li><strong>מטרה:</strong> תכנון אוטומטי של מסלולי הפצה יעילים</li>
+                <li><strong>טכנולוגיה:</strong> אלגוריתמים מתקדמים של ניתוב וקאורדינציה GPS</li>
+                <li><strong>פונקציות:</strong> ניתוב, אופטימיזציה, ניהול משאים, ניתוח ביצועים</li>
+                <li><strong>לקוחות:</strong> חברות הפצה, לוגיסטיקה, ושירותי קוריר</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Slide 3: The Problems -->
+    <div class="slide">
+        <div class="slide-content">
+            <h2>הבעיות שאנחנו פותרים</h2>
+            <div class="grid-2">
+                <div>
+                    <h3>🗺️ בעיה 1: טיוב כתובות</h3>
+                    <ul>
+                        <li>כתובות שגויות או לא מדויקות</li>
+                        <li>הבדלים בין GPS של רודנט לבין Google</li>
+                        <li>צורך בחיזוי מהיר של הנתונים</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>📊 בעיה 2: מבט על התכנון</h3>
+                    <ul>
+                        <li>עמידה בKPIs יומיים</li>
+                        <li>צורך בחוות דעת מקצועית</li>
+                        <li>שיפור יעילות ההפצה</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 4: Solution 1 - Address Verification -->
+    <div class="slide">
+        <div class="slide-content">
+            <h2>✅ פתרון 1: טיוב כתובות מהיר</h2>
+            <p><strong>השוואת קואורדינטות וממשק UI מהיר:</strong></p>
+            <ul>
+                <li>📍 קבלת קואורדינטות מקאורדינטות ה-Geoder של ROADNET</li>
+                <li>🔄 השוואה עם קואורדינטות של Google Maps</li>
+                <li>✨ UI מהיר ונוח - שני כפתורים:
+                    <ul>
+                        <li><strong>קבל קואורדינטות של Google</strong> - בחר את הנתונים של Google</li>
+                        <li><strong>קבל קואורדינטות של Roadnet</strong> - בחר את הנתונים של Roadnet</li>
+                    </ul>
+                </li>
+                <li>💾 שמירה אוטומטית ל-Airtable</li>
+            </ul>
+            <div class="highlight">
+                <strong>תוצאה:</strong> הפחתת זמן טיוב כתובות מ-דקות ל-שניות
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 5: Solution 2 - Daily Planning Insights -->
+    <div class="slide">
+        <div class="slide-content">
+            <h2>✅ פתרון 2: Logistics Mentor</h2>
+            <p><strong>מבט מקיף על יום התכנון עם חוות דעת AI:</strong></p>
+            <ul>
+                <li>📊 <strong>KPI Dashboard:</strong> זמן נסיעה, זמן שירות, עמידה בלוח</li>
+                <li>🤖 <strong>AI Insights (Logistics Mentor):</strong> ניתוח של התכנון ודרכי שיפור</li>
+                <li>🎯 <strong>המלצות מקצועיות:</strong>
+                    <ul>
+                        <li>הצביעה על בעיות בתכנון</li>
+                        <li>הצעות לאופטימיזציה</li>
+                        <li>שיפור נהלים</li>
+                    </ul>
+                </li>
+            </ul>
+            <div class="highlight">
+                <strong>תוצאה:</strong> שיפור יעילות ההפצה וירידה בעלויות
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 6: What We Built -->
+    <div class="slide">
+        <div class="slide-content">
+            <h2>🛠️ מה שבנינו בפרויקט הזה</h2>
+            <p><strong>דשבורד ROADNET - הפלטפורמה שלנו:</strong></p>
+            <ul>
+                <li>📱 <strong>ממשק ב-Next.js 15:</strong> TypeScript + Tailwind CSS</li>
+                <li>🌍 <strong>תמיכה רב-שפתית:</strong> עברית (RTL), אנגלית (LTR), ספרדית</li>
+                <li>🗺️ <strong>טבלת טיוב כתובות:</strong> טוען אוטומטי מ-Airtable</li>
+                <li>📊 <strong>KPI Cards:</strong> טעינה מעוכבת (Suspense)</li>
+                <li>🤖 <strong>Logistics Mentor Insights:</strong> חוות דעת AI אוטומטית</li>
+                <li>💾 <strong>דוחות Excel:</strong> Routes, Stops, Orders</li>
+                <li>✨ <strong>אנימציות חלקות:</strong> פייד-אין, סלייד-אפ</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Slide 7: Tech Stack -->
+    <div class="slide">
+        <div class="slide-content">
+            <h2>⚙️ סטך טכנולוגי</h2>
+            <div class="tech-stack">
+                <div class="tech-item">
+                    <strong>🖥️ Frontend</strong>
+                    Next.js 15, TypeScript, Tailwind CSS, React
+                </div>
+                <div class="tech-item">
+                    <strong>🔐 Auth</strong>
+                    Bearer Token, ROADNET API, Rate Limiting
+                </div>
+                <div class="tech-item">
+                    <strong>📊 Data</strong>
+                    Airtable API, ROADNET API, Excel Export
+                </div>
+                <div class="tech-item">
+                    <strong>🤖 AI</strong>
+                    Claude API for Logistics Mentor insights
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 8: Automation with MAKE -->
+    <div class="slide">
+        <div class="slide-content">
+            <h2>⚡ האוטומציה היומית ב-MAKE</h2>
+            <p><strong>תהליך יומי אוטומטי שרץ כל יום:</strong></p>
+
+            <div style="margin: 30px 0;">
+                <div class="process-flow">
+                    <div class="process-step highlight">1. ROADNET API</div>
+                    <div class="arrow">←</div>
+                    <div class="process-step">2. MAKE Workflow</div>
+                </div>
+                <div class="process-flow">
+                    <div class="process-step highlight">Airtable</div>
+                    <div class="arrow">←</div>
+                    <div class="process-step">כתיבת כתובות וקואורדינטות</div>
+                </div>
+                <div class="process-flow">
+                    <div class="process-step highlight">Google Geocoder</div>
+                    <div class="arrow">←</div>
+                    <div class="process-step">השוואת קואורדינטות</div>
+                </div>
+            </div>
+
+            <ul>
+                <li>🔄 <strong>כל בוקר בשעה 06:00:</strong> MAKE יוצא בוקר את הנתונים מ-ROADNET</li>
+                <li>📍 <strong>Geocoding:</strong> שיחזור קואורדינטות של Google עבור כל כתובת</li>
+                <li>💾 <strong>Airtable:</strong> כתיבת כל הנתונים לטבלה</li>
+                <li>✅ <strong>טיוב:</strong> משתמש בודק ובוחר בקואורדינטות הנכונות</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Slide 9: Summary -->
+    <div class="slide">
+        <div class="slide-content">
+            <h2>📋 סיכום</h2>
+            <div class="grid-2">
+                <div>
+                    <h3>✨ היתרונות</h3>
+                    <ul>
+                        <li>⚡ טיוב מהיר של כתובות</li>
+                        <li>🤖 AI insights אוטומטיים</li>
+                        <li>📱 ממשק ידידותי ומהיר</li>
+                        <li>🌍 תמיכה רב-שפתית</li>
+                        <li>💾 דוחות אוטומטיים</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>🎯 התוצאות</h3>
+                    <ul>
+                        <li>⏱️ חיסכון בזמן עבודה</li>
+                        <li>💰 הפחתת עלויות</li>
+                        <li>🚀 שיפור יעילות</li>
+                        <li>📊 תובנות טובות יותר</li>
+                        <li>🔄 אוטומציה מלאה</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="highlight" style="margin-top: 40px; text-align: center; font-size: 1.3em;">
+                <strong>🎉 פתרון מלא, משולב וחכם</strong>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="nav-buttons">
+        <button id="prev-btn" onclick="previousSlide()">← הקודם</button>
+        <button id="next-btn" onclick="nextSlide()">הבא →</button>
+    </div>
+
+    <script>
+        let currentSlide = 1;
+        const totalSlides = document.querySelectorAll('.slide').length;
+        document.getElementById('total-slides').textContent = totalSlides;
+
+        function showSlide(n) {
+            const slides = document.querySelectorAll('.slide');
+
+            if (n > totalSlides) {
+                currentSlide = totalSlides;
+            }
+            if (n < 1) {
+                currentSlide = 1;
+            }
+
+            slides.forEach(slide => slide.classList.remove('active'));
+            slides[currentSlide - 1].classList.add('active');
+
+            document.getElementById('current-slide').textContent = currentSlide;
+            document.getElementById('prev-btn').disabled = currentSlide === 1;
+            document.getElementById('next-btn').disabled = currentSlide === totalSlides;
+        }
+
+        function nextSlide() {
+            currentSlide++;
+            showSlide(currentSlide);
+        }
+
+        function previousSlide() {
+            currentSlide--;
+            showSlide(currentSlide);
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextSlide();
+            if (e.key === 'ArrowLeft') previousSlide();
+        });
+
+        showSlide(currentSlide);
+    </script>
+</body>
+</html>
