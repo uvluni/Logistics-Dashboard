@@ -1,0 +1,17 @@
+<svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1024" height="1024" fill="#1b7d67"/>
+  <g fill="white" transform="translate(512, 512)">
+    <!-- Left loop -->
+    <circle cx="-120" cy="0" r="140" fill="none" stroke="white" stroke-width="90"/>
+    <!-- Right loop -->
+    <circle cx="120" cy="0" r="140" fill="none" stroke="white" stroke-width="90"/>
+    <!-- Top stem -->
+    <rect x="-40" y="-280" width="80" height="180" rx="40" fill="white"/>
+    <!-- Bottom stem -->
+    <rect x="-40" y="100" width="80" height="180" rx="40" fill="white"/>
+    <!-- Left stem -->
+    <rect x="-280" y="-40" width="180" height="80" rx="40" fill="white"/>
+    <!-- Right stem -->
+    <rect x="100" y="-40" width="180" height="80" rx="40" fill="white"/>
+  </g>
+</svg>
