@@ -102,6 +102,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'dashboard.loading_routes': 'טוען מסלולים...',
     'dashboard.no_routes_message': 'אין מסלולים עבור התאריך שנבחר',
     'dashboard.loading_message': 'בתהליך טעינת מסלולים ל-',
+    'dashboard.loading_summary': 'טוען נתונים...',
 
     // Insights - Weight Utilization
     'insight.low_weight': 'ניצול משקל נמוך - אפשר לשלב מסלולים',
@@ -265,6 +266,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'dashboard.loading_routes': 'Loading routes...',
     'dashboard.no_routes_message': 'No routes found for selected date',
     'dashboard.loading_message': 'Loading routes for ',
+    'dashboard.loading_summary': 'Loading data...',
 
     // Insights - Weight Utilization
     'insight.low_weight': 'Low weight utilization - consider combining routes',
@@ -428,6 +430,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'dashboard.loading_routes': 'Cargando rutas...',
     'dashboard.no_routes_message': 'No se encontraron rutas para la fecha seleccionada',
     'dashboard.loading_message': 'Cargando rutas para ',
+    'dashboard.loading_summary': 'Cargando datos...',
 
     // Insights - Weight Utilization
     'insight.low_weight': 'Baja utilización de peso - considere combinar rutas',

@@ -901,7 +901,65 @@ export default function Home() {
           </div>
         </div>
 
-        <div className={`overflow-hidden transition-all duration-300 ${showAirtable && airtableRecords.length > 0 ? 'max-h-[2000px] opacity-100' : 'max-h-0 opacity-0'}`}>
+        <div className="fade-in-up">
+          {error && (
+            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-8">
+              {error}
+            </div>
+          )}
+
+          {isLoading && (
+            <div className="text-center text-gray-500 py-12">{t('dashboard.loading_summary', language)}</div>
+          )}
+
+          {summary && kpis.length > 0 && (
+            <div className="fade-in-up">
+              <DashboardSummary summary={summary} normalWorkDayMinutes={kpis[0]?.normalWorkDayMinutes} />
+
+              {insights && (
+                <div className={`bg-gradient-to-br from-purple-50 to-indigo-50 border border-purple-200 rounded-lg p-6 mb-8 ${isRTL ? 'text-right' : 'text-left'}`}>
+                  <h3 className="text-xl font-bold text-purple-900 mb-4 flex items-center gap-2">
+                    <span>🤖</span>
+                    {t('dashboard.insights_title', language)}
+                  </h3>
+                  <div className={`text-gray-700 whitespace-pre-wrap leading-relaxed text-sm ${isRTL ? 'text-right' : 'text-left'}`}>
+                    {insights}
+                  </div>
+                </div>
+              )}
+
+              <Suspense fallback={<div className="text-center text-gray-500">{t('dashboard.loading_routes', language)}</div>}>
+                <div className="mb-8">
+                  <h2 className={`text-2xl font-bold text-gray-900 mb-6 ${isRTL ? 'text-right' : 'text-left'}`}>
+                    {t('kpi.title', language)}
+                  </h2>
+
+                  <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+                    {kpis.map((kpi) => (
+                      <KPICard key={kpi.routeId} kpi={kpi} />
+                    ))}
+                  </div>
+                </div>
+              </Suspense>
+            </div>
+          )}
+
+          {summary && kpis.length === 0 && (
+            <div className="bg-white border border-gray-200 rounded-lg p-12 text-center">
+              <p className="text-gray-600 text-lg">{t('dashboard.no_routes_message', language)}</p>
+            </div>
+          )}
+
+          {!summary && isLoggedIn && !error && !isLoading && (
+            <div className="bg-white border border-gray-200 rounded-lg p-12 text-center">
+              <p className={`text-gray-600 text-lg ${isRTL ? 'text-right' : 'text-left'}`}>
+                {t('dashboard.loading_message', language)}{selectedDate}...
+              </p>
+            </div>
+          )}
+        </div>
+
+        <div className={`overflow-hidden transition-all duration-300 ${showAirtable && airtableRecords.length > 0 && !isLoading ? 'max-h-[2000px] opacity-100' : 'max-h-0 opacity-0'}`}>
           <div className="py-8 airtable-entrance">
             <div className={`bg-white border border-orange-200 rounded-lg p-6 mb-8 ${isRTL ? 'text-right' : 'text-left'}`}>
               <div className="flex justify-between items-center mb-6">
@@ -1005,58 +1063,6 @@ export default function Home() {
             </div>
           </div>
         </div>
-
-        {error && (
-          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-8">
-            {error}
-          </div>
-        )}
-
-        {summary && kpis.length > 0 && (
-          <>
-            <DashboardSummary summary={summary} normalWorkDayMinutes={kpis[0]?.normalWorkDayMinutes} />
-
-            {insights && (
-              <div className={`bg-gradient-to-br from-purple-50 to-indigo-50 border border-purple-200 rounded-lg p-6 mb-8 ${isRTL ? 'text-right' : 'text-left'}`}>
-                <h3 className="text-xl font-bold text-purple-900 mb-4 flex items-center gap-2">
-                  <span>🤖</span>
-                  {t('dashboard.insights_title', language)}
-                </h3>
-                <div className={`text-gray-700 whitespace-pre-wrap leading-relaxed text-sm ${isRTL ? 'text-right' : 'text-left'}`}>
-                  {insights}
-                </div>
-              </div>
-            )}
-
-            <Suspense fallback={<div className="text-center text-gray-500">{t('dashboard.loading_routes', language)}</div>}>
-              <div className="mb-8">
-                <h2 className={`text-2xl font-bold text-gray-900 mb-6 ${isRTL ? 'text-right' : 'text-left'}`}>
-                  {t('kpi.title', language)}
-                </h2>
-
-                <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-                  {kpis.map((kpi) => (
-                    <KPICard key={kpi.routeId} kpi={kpi} />
-                  ))}
-                </div>
-              </div>
-            </Suspense>
-          </>
-        )}
-
-        {summary && kpis.length === 0 && (
-          <div className="bg-white border border-gray-200 rounded-lg p-12 text-center">
-            <p className="text-gray-600 text-lg">{t('dashboard.no_routes_message', language)}</p>
-          </div>
-        )}
-
-        {!summary && isLoggedIn && !error && !isLoading && (
-          <div className="bg-white border border-gray-200 rounded-lg p-12 text-center">
-            <p className={`text-gray-600 text-lg ${isRTL ? 'text-right' : 'text-left'}`}>
-              {t('dashboard.loading_message', language)}{selectedDate}...
-            </p>
-          </div>
-        )}
 
       </div>
     </div>
