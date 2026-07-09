@@ -93,7 +93,11 @@
       "Bash(git commit -m 'Release v4.1.0: Improved Airtable Address Verification table with multilingual support *)",
       "Bash(sed -i 's/\"version\": \"4.1.0\"/\"version\": \"4.2.0\"/' package.json)",
       "Bash(sed -i 's/\"version\": \"4.3.0\"/\"version\": \"4.3.1\"/' package.json)",
-      "Bash(sed -i 's/\"version\": \"4.3.1\"/\"version\": \"4.3.1\"/' package.json)"
+      "Bash(sed -i 's/\"version\": \"4.3.1\"/\"version\": \"4.3.1\"/' package.json)",
+      "Bash(Start-Sleep -Milliseconds 1500)",
+      "Bash(start presentation.html)",
+      "Bash(powershell -Command \"Start-Process presentation.html\")",
+      "Bash(powershell -Command \"& { [System.Diagnostics.Process]::Start\\('presentation.html'\\) }\")"
     ]
   }
 }
