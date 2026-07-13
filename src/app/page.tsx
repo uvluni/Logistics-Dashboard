@@ -804,7 +804,7 @@ export default function Home() {
             <button onClick={() => setLanguage('es')} style={{ padding: '6px 12px', borderRadius: '6px', fontWeight: 600, transition: 'all 0.2s', backgroundColor: language === 'es' ? 'var(--color-blue)' : 'var(--border-primary)', color: language === 'es' ? 'white' : 'var(--text-secondary)', border: 'none', cursor: 'pointer' }}>
               ES
             </button>
-            <button onClick={toggleTheme} style={{ padding: '6px 12px', borderRadius: '6px', fontWeight: 600, transition: 'all 0.2s', backgroundColor: 'var(--border-primary)', color: 'var(--text-secondary)', border: 'none', cursor: 'pointer', fontSize: '16px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', minWidth: '44px', minHeight: '44px' }} title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}>
+            <button onClick={toggleTheme} style={{ padding: '6px 12px', borderRadius: '6px', fontWeight: 600, backgroundColor: '#e5e7eb', color: '#6b7280', border: 'none', cursor: 'pointer', fontSize: '18px', display: 'inline-block', minWidth: '40px', textAlign: 'center' }} title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}>
               {theme === 'dark' ? '☀️' : '🌙'}
             </button>
             <button onClick={handleLogout} style={{ padding: '8px 16px', borderRadius: '6px', fontWeight: 600, transition: 'all 0.2s', backgroundColor: '#dc2626', color: 'white', border: 'none', cursor: 'pointer', fontSize: '14px' }}>
