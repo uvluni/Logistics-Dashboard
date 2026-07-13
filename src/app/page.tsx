@@ -735,6 +735,9 @@ export default function Home() {
           <button onClick={() => setLanguage('es')} style={{ padding: '6px 12px', borderRadius: '6px', fontWeight: 600, transition: 'all 0.2s', backgroundColor: language === 'es' ? '#3b82f6' : 'white', color: language === 'es' ? 'white' : '#2563eb', border: 'none', cursor: 'pointer' }}>
             ES
           </button>
+          <button onClick={toggleTheme} style={{ padding: '6px 12px', borderRadius: '6px', fontWeight: 600, backgroundColor: 'white', color: '#6b7280', border: 'none', cursor: 'pointer', fontSize: '16px', minWidth: '40px', textAlign: 'center' }} title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}>
+            {theme === 'dark' ? '☀️' : '🌙'}
+          </button>
         </div>
 
         <div style={{ backgroundColor: 'var(--bg-secondary)', borderRadius: '8px', boxShadow: '0 20px 25px -5px rgba(0,0,0,0.1)', maxWidth: '400px', width: '100%', padding: '32px' }}>
