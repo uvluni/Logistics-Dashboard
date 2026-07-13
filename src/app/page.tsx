@@ -43,6 +43,8 @@ export default function Home() {
   const { language, setLanguage, isRTL } = useLanguage();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const [kpis, setKpis] = useState<RouteKPI[]>([]);
   const [summary, setSummary] = useState<Summary | null>(null);
   const [selectedDate, setSelectedDate] = useState('');
@@ -154,6 +156,12 @@ export default function Home() {
 
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
+
+    if (!username.trim() || !password) {
+      setError(t('auth.missing_credentials', language));
+      return;
+    }
+
     setIsLoading(true);
     setError('');
 
@@ -174,8 +182,10 @@ export default function Home() {
         method: 'POST',
         credentials: 'include',
         headers: {
+          'Content-Type': 'application/json',
           'x-csrf-token': csrfToken,
         },
+        body: JSON.stringify({ username: username.trim(), password }),
       });
 
       if (res.ok) {
@@ -195,6 +205,7 @@ export default function Home() {
     setIsLoggedIn(false);
     setKpis([]);
     setSummary(null);
+    setPassword('');
   }
 
   async function handleDownloadReport() {
@@ -751,9 +762,10 @@ export default function Home() {
               </label>
               <input
                 type="email"
-                defaultValue="yuval@rasner.co.il"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                autoComplete="username"
                 className={`w-full px-4 py-2 border border-gray-300 rounded-lg ${isRTL ? 'text-right' : 'text-left'}`}
-                disabled
               />
             </div>
 
@@ -763,9 +775,10 @@ export default function Home() {
               </label>
               <input
                 type="password"
-                defaultValue="••••••••••••"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                autoComplete="current-password"
                 className={`w-full px-4 py-2 border border-gray-300 rounded-lg ${isRTL ? 'text-right' : 'text-left'}`}
-                disabled
               />
             </div>
 

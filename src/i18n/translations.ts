@@ -12,6 +12,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'auth.connecting': 'מתחבר...',
     'auth.error': 'שגיאה בהתחברות. בדוק את הקרדנשיאלס.',
     'auth.connection_error': 'שגיאה בחיבור לשרת',
+    'auth.missing_credentials': 'יש להזין שם משתמש וסיסמא',
 
     // Error Messages
     'error.session_expired': 'התחברות פקעה. בחברו שוב.',
@@ -180,6 +181,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'auth.connecting': 'Connecting...',
     'auth.error': 'Login error. Check your credentials.',
     'auth.connection_error': 'Connection error with server',
+    'auth.missing_credentials': 'Please enter a username and password',
 
     // Error Messages
     'error.session_expired': 'Session expired. Please login again.',
@@ -348,6 +350,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'auth.connecting': 'Conectando...',
     'auth.error': 'Error de inicio de sesión. Verifique sus credenciales.',
     'auth.connection_error': 'Error de conexión con el servidor',
+    'auth.missing_credentials': 'Ingrese un usuario y una contraseña',
 
     // Error Messages
     'error.session_expired': 'Sesión expirada. Por favor inicie sesión nuevamente.',

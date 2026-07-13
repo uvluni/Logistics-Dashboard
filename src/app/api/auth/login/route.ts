@@ -15,13 +15,22 @@ export async function POST(request: NextRequest) {
     }
 
     const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
-    const username = process.env.ROADNET_API_USERNAME;
-    const password = process.env.ROADNET_API_PASSWORD;
 
-    if (!baseUrl || !username || !password) {
+    if (!baseUrl) {
       return NextResponse.json(
         { error: 'Missing environment variables' },
         { status: 500 }
+      );
+    }
+
+    const body = await request.json().catch(() => null);
+    const username = body?.username;
+    const password = body?.password;
+
+    if (typeof username !== 'string' || !username.trim() || typeof password !== 'string' || !password) {
+      return NextResponse.json(
+        { error: 'Username and password are required' },
+        { status: 400 }
       );
     }
 

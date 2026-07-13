@@ -20,9 +20,9 @@ npm run dev        # → http://localhost:3000
 Requires `.env.local` with:
 ```
 NEXT_PUBLIC_API_BASE_URL=https://apex-prod-eu-integration.eu.roadnet.com/integration
-ROADNET_API_USERNAME=...
-ROADNET_API_PASSWORD=...
 ```
+
+ROADNET username/password are no longer stored in env vars — they're entered on the login screen each session and sent straight through to the ROADNET login API.
 
 ## Key files
 ```
@@ -63,7 +63,7 @@ presentation.html      # Standalone HTML presentation for client demos
 ## Working conventions
 - The project is in: `C:\Users\yuval\OneDrive - Aman Computers\Claude\Code\routes-report`
 - Git is initialized — commit after each meaningful change
-- API credentials are in `.env.local` (not committed to git)
+- Airtable API credentials are in `.env.local` (not committed to git); ROADNET credentials are entered at login and never stored
 - Hebrew is the primary language; RTL layout throughout
 - Run `npm run dev` to test locally before committing
 
