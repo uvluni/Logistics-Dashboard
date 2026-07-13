@@ -8,7 +8,6 @@ import KPICard from '@/components/KPICard';
 import DashboardSummary from '@/components/DashboardSummary';
 import { RouteKPI, DashboardSummary as Summary } from '@/types';
 import { useLanguage } from '@/context/LanguageContext';
-import { useTheme } from '@/context/ThemeContext';
 import { t } from '@/i18n/translations';
 
 function getTodayDate(): string {
@@ -42,15 +41,21 @@ function formatDateForDisplay(isoDate: string): string {
 
 export default function Home() {
   const { language, setLanguage, isRTL } = useLanguage();
-  let theme = 'dark';
-  let toggleTheme = () => {};
-  try {
-    const themeCtx = useTheme();
-    theme = themeCtx.theme;
-    toggleTheme = themeCtx.toggleTheme;
-  } catch (e) {
-    // Fallback if ThemeContext is not available
-  }
+  const [theme, setTheme] = useState<'dark' | 'light'>('dark');
+
+  const toggleTheme = () => {
+    const newTheme = theme === 'dark' ? 'light' : 'dark';
+    setTheme(newTheme);
+    document.documentElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+  };
+
+  useEffect(() => {
+    const savedTheme = (localStorage.getItem('theme') as 'dark' | 'light') || 'dark';
+    setTheme(savedTheme);
+    document.documentElement.setAttribute('data-theme', savedTheme);
+  }, []);
+
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [username, setUsername] = useState('');
