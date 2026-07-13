@@ -724,35 +724,30 @@ export default function Home() {
 
   if (!isLoggedIn) {
     return (
-      <div style={{ minHeight: '100vh', background: 'linear-gradient(135deg, #2563eb 0%, #4f46e5 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '16px', position: 'relative' }}>
-        <div style={{ position: 'absolute', top: '16px', right: '16px', left: 'auto', display: 'flex', gap: '8px', alignItems: 'center', zIndex: 50 }}>
-          <button onClick={() => setLanguage('he')} style={{ padding: '6px 12px', borderRadius: '6px', fontWeight: 600, transition: 'all 0.2s', backgroundColor: language === 'he' ? 'white' : '#3b82f6', color: language === 'he' ? '#2563eb' : 'white', border: 'none', cursor: 'pointer' }}>
+      <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '16px', position: 'relative' }}>
+        <div style={{ position: 'absolute', top: '20px', right: '20px', left: 'auto', display: 'flex', gap: '12px', alignItems: 'center', zIndex: 50 }}>
+          <button onClick={() => setLanguage('he')} style={{ padding: '8px 12px', borderRadius: '4px', fontWeight: 500, fontSize: '13px', transition: 'all 0.2s', backgroundColor: language === 'he' ? 'var(--color-blue)' : 'transparent', color: language === 'he' ? 'white' : 'var(--text-secondary)', border: '1px solid ' + (language === 'he' ? 'var(--color-blue)' : 'var(--border-primary)'), cursor: 'pointer' }}>
             עב
           </button>
-          <button onClick={() => setLanguage('en')} style={{ padding: '6px 12px', borderRadius: '6px', fontWeight: 600, transition: 'all 0.2s', backgroundColor: language === 'en' ? 'white' : '#3b82f6', color: language === 'en' ? '#2563eb' : 'white', border: 'none', cursor: 'pointer' }}>
+          <button onClick={() => setLanguage('en')} style={{ padding: '8px 12px', borderRadius: '4px', fontWeight: 500, fontSize: '13px', transition: 'all 0.2s', backgroundColor: language === 'en' ? 'var(--color-blue)' : 'transparent', color: language === 'en' ? 'white' : 'var(--text-secondary)', border: '1px solid ' + (language === 'en' ? 'var(--color-blue)' : 'var(--border-primary)'), cursor: 'pointer' }}>
             EN
           </button>
-          <button onClick={() => setLanguage('es')} style={{ padding: '6px 12px', borderRadius: '6px', fontWeight: 600, transition: 'all 0.2s', backgroundColor: language === 'es' ? '#3b82f6' : 'white', color: language === 'es' ? 'white' : '#2563eb', border: 'none', cursor: 'pointer' }}>
+          <button onClick={() => setLanguage('es')} style={{ padding: '8px 12px', borderRadius: '4px', fontWeight: 500, fontSize: '13px', transition: 'all 0.2s', backgroundColor: language === 'es' ? 'var(--color-blue)' : 'transparent', color: language === 'es' ? 'white' : 'var(--text-secondary)', border: '1px solid ' + (language === 'es' ? 'var(--color-blue)' : 'var(--border-primary)'), cursor: 'pointer' }}>
             ES
           </button>
-          <button onClick={toggleTheme} style={{ padding: '6px 12px', borderRadius: '6px', fontWeight: 600, backgroundColor: 'white', color: '#6b7280', border: 'none', cursor: 'pointer', fontSize: '18px', lineHeight: '1' }}>
+          <div style={{ width: '1px', height: '24px', backgroundColor: 'var(--border-primary)' }}></div>
+          <button onClick={toggleTheme} style={{ padding: '6px 10px', borderRadius: '4px', backgroundColor: 'transparent', color: 'var(--text-secondary)', border: '1px solid var(--border-primary)', cursor: 'pointer', fontSize: '16px', transition: 'all 0.2s' }}>
             {theme === 'dark' ? '☀️' : '🌙'}
           </button>
         </div>
 
-        <div style={{ backgroundColor: 'var(--bg-secondary)', borderRadius: '8px', boxShadow: '0 20px 25px -5px rgba(0,0,0,0.1)', maxWidth: '400px', width: '100%', padding: '32px' }}>
-          <h1 style={{ fontSize: '30px', fontWeight: 700, color: 'var(--text-primary)', textAlign: 'center', marginBottom: '8px' }}>
+        <div style={{ backgroundColor: 'var(--bg-secondary)', borderRadius: '6px', border: '1px solid var(--border-primary)', maxWidth: '420px', width: '100%', padding: '40px' }}>
+          <h1 style={{ fontSize: '24px', fontWeight: 700, color: 'var(--text-primary)', textAlign: 'center', marginBottom: '6px', letterSpacing: '-0.5px' }}>
             {t('app.title', language)}
           </h1>
-          <p style={{ color: 'var(--text-secondary)', textAlign: 'center', marginBottom: '32px', fontSize: '14px' }}>
+          <p style={{ color: 'var(--text-tertiary)', textAlign: 'center', marginBottom: '32px', fontSize: '13px', fontWeight: 400 }}>
             {t('app.subtitle', language)}
           </p>
-
-          <div style={{ textAlign: 'center', marginBottom: '24px' }}>
-            <button onClick={toggleTheme} style={{ padding: '8px 16px', borderRadius: '6px', fontWeight: 600, backgroundColor: 'var(--bg-card)', color: 'var(--text-primary)', border: '1px solid var(--border-primary)', cursor: 'pointer', fontSize: '16px', transition: 'all 0.2s' }} title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}>
-              {theme === 'dark' ? '☀️ Light Mode' : '🌙 Dark Mode'}
-            </button>
-          </div>
 
           <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: '16px', textAlign: isRTL ? 'right' : 'left' }}>
             {error && (
@@ -762,7 +757,7 @@ export default function Home() {
             )}
 
             <div>
-              <label style={{ display: 'block', color: 'var(--text-primary)', fontSize: '14px', fontWeight: 500, marginBottom: '8px', textAlign: isRTL ? 'right' : 'left' }}>
+              <label style={{ display: 'block', color: 'var(--text-primary)', fontSize: '13px', fontWeight: 500, marginBottom: '6px', textAlign: isRTL ? 'right' : 'left' }}>
                 {t('auth.email', language)}
               </label>
               <input
@@ -770,12 +765,14 @@ export default function Home() {
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 autoComplete="username"
-                style={{ width: '100%', padding: '8px 16px', border: '1px solid var(--border-primary)', borderRadius: '6px', backgroundColor: 'var(--bg-tertiary)', color: 'var(--text-primary)', textAlign: isRTL ? 'right' : 'left' }}
+                style={{ width: '100%', padding: '10px 12px', border: '1px solid var(--border-primary)', borderRadius: '4px', backgroundColor: 'var(--bg-tertiary)', color: 'var(--text-primary)', fontSize: '14px', textAlign: isRTL ? 'right' : 'left', transition: 'border-color 0.2s' }}
+                onFocus={(e) => e.target.style.borderColor = 'var(--color-blue)'}
+                onBlur={(e) => e.target.style.borderColor = 'var(--border-primary)'}
               />
             </div>
 
             <div>
-              <label style={{ display: 'block', color: 'var(--text-primary)', fontSize: '14px', fontWeight: 500, marginBottom: '8px', textAlign: isRTL ? 'right' : 'left' }}>
+              <label style={{ display: 'block', color: 'var(--text-primary)', fontSize: '13px', fontWeight: 500, marginBottom: '6px', textAlign: isRTL ? 'right' : 'left' }}>
                 {t('auth.password', language)}
               </label>
               <input
@@ -783,14 +780,16 @@ export default function Home() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 autoComplete="current-password"
-                style={{ width: '100%', padding: '8px 16px', border: '1px solid var(--border-primary)', borderRadius: '6px', backgroundColor: 'var(--bg-tertiary)', color: 'var(--text-primary)', textAlign: isRTL ? 'right' : 'left' }}
+                style={{ width: '100%', padding: '10px 12px', border: '1px solid var(--border-primary)', borderRadius: '4px', backgroundColor: 'var(--bg-tertiary)', color: 'var(--text-primary)', fontSize: '14px', textAlign: isRTL ? 'right' : 'left', transition: 'border-color 0.2s' }}
+                onFocus={(e) => e.target.style.borderColor = 'var(--color-blue)'}
+                onBlur={(e) => e.target.style.borderColor = 'var(--border-primary)'}
               />
             </div>
 
             <button
               type="submit"
               disabled={isLoading}
-              style={{ width: '100%', backgroundColor: isLoading ? '#9ca3af' : 'var(--color-blue)', color: 'white', fontWeight: 600, padding: '12px', borderRadius: '6px', transition: 'all 0.2s', border: 'none', cursor: isLoading ? 'not-allowed' : 'pointer', opacity: isLoading ? 0.6 : 1 }}
+              style={{ width: '100%', backgroundColor: isLoading ? 'var(--text-tertiary)' : 'var(--color-blue)', color: 'white', fontWeight: 500, padding: '10px', borderRadius: '4px', transition: 'all 0.2s', border: 'none', cursor: isLoading ? 'not-allowed' : 'pointer', opacity: isLoading ? 0.7 : 1, fontSize: '14px' }}
             >
               {isLoading ? t('auth.connecting', language) : t('auth.login', language)}
             </button>
@@ -826,10 +825,10 @@ export default function Home() {
       </div>
 
       <div style={{ maxWidth: '100%', margin: '0 auto', padding: '32px' }}>
-        <div style={{ background: 'linear-gradient(135deg, var(--color-blue) 0%, #1e3a8a 100%)', borderRadius: '8px', padding: '32px', marginBottom: '32px', boxShadow: '0 4px 6px rgba(0,0,0,0.1)', color: 'white' }}>
-          <h2 style={{ fontSize: '24px', fontWeight: 600, marginBottom: '24px', textAlign: isRTL ? 'right' : 'left' }}>{t('dashboard.planning_header', language)} - {selectedDate ? formatDateForDisplay(selectedDate) : '...'}</h2>
+        <div style={{ backgroundColor: 'var(--bg-secondary)', borderRadius: '6px', border: '1px solid var(--border-primary)', padding: '32px', marginBottom: '32px' }}>
+          <h2 style={{ fontSize: '20px', fontWeight: 600, marginBottom: '24px', color: 'var(--text-primary)', textAlign: isRTL ? 'right' : 'left' }}>{t('dashboard.planning_header', language)} - {selectedDate ? formatDateForDisplay(selectedDate) : '...'}</h2>
           <div>
-            <label style={{ display: 'block', fontSize: '14px', fontWeight: 500, marginBottom: '12px', opacity: 0.9, color: 'white', textAlign: isRTL ? 'right' : 'left' }}>
+            <label style={{ display: 'block', fontSize: '13px', fontWeight: 500, marginBottom: '12px', color: 'var(--text-primary)', textAlign: isRTL ? 'right' : 'left' }}>
               {t('dashboard.select_date', language)}
             </label>
             <div style={{ display: 'flex', gap: '8px', alignItems: 'stretch', flexWrap: 'wrap' }}>
