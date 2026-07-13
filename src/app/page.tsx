@@ -42,7 +42,15 @@ function formatDateForDisplay(isoDate: string): string {
 
 export default function Home() {
   const { language, setLanguage, isRTL } = useLanguage();
-  const { theme, toggleTheme } = useTheme();
+  let theme = 'dark';
+  let toggleTheme = () => {};
+  try {
+    const themeCtx = useTheme();
+    theme = themeCtx.theme;
+    toggleTheme = themeCtx.toggleTheme;
+  } catch (e) {
+    // Fallback if ThemeContext is not available
+  }
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [username, setUsername] = useState('');
@@ -709,43 +717,18 @@ export default function Home() {
 
   if (!isLoggedIn) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-600 to-indigo-700 flex items-center justify-center p-4">
-        <div className="absolute top-4 right-4 flex gap-2 items-center">
-          <button
-            onClick={() => setLanguage('he')}
-            className={`px-3 py-1 rounded font-semibold transition-colors ${
-              language === 'he'
-                ? 'bg-white text-blue-600'
-                : 'bg-blue-500 text-white hover:bg-blue-400'
-            }`}
-          >
+      <div style={{ minHeight: '100vh', background: 'linear-gradient(135deg, #2563eb 0%, #4f46e5 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '16px', position: 'relative' }}>
+        <div style={{ position: 'absolute', top: '16px', right: '16px', display: 'flex', gap: '8px', alignItems: 'center' }}>
+          <button onClick={() => setLanguage('he')} style={{ padding: '6px 12px', borderRadius: '6px', fontWeight: 600, transition: 'all 0.2s', backgroundColor: language === 'he' ? 'white' : '#3b82f6', color: language === 'he' ? '#2563eb' : 'white', border: 'none', cursor: 'pointer' }}>
             עב
           </button>
-          <button
-            onClick={() => setLanguage('en')}
-            className={`px-3 py-1 rounded font-semibold transition-colors ${
-              language === 'en'
-                ? 'bg-white text-blue-600'
-                : 'bg-blue-500 text-white hover:bg-blue-400'
-            }`}
-          >
+          <button onClick={() => setLanguage('en')} style={{ padding: '6px 12px', borderRadius: '6px', fontWeight: 600, transition: 'all 0.2s', backgroundColor: language === 'en' ? 'white' : '#3b82f6', color: language === 'en' ? '#2563eb' : 'white', border: 'none', cursor: 'pointer' }}>
             EN
           </button>
-          <button
-            onClick={() => setLanguage('es')}
-            className={`px-3 py-1 rounded font-semibold transition-colors ${
-              language === 'es'
-                ? 'bg-white text-blue-600'
-                : 'bg-blue-500 text-white hover:bg-blue-400'
-            }`}
-          >
+          <button onClick={() => setLanguage('es')} style={{ padding: '6px 12px', borderRadius: '6px', fontWeight: 600, transition: 'all 0.2s', backgroundColor: language === 'es' ? 'var(--color-blue)' : 'var(--border-primary)', color: language === 'es' ? 'white' : 'var(--text-secondary)', border: 'none', cursor: 'pointer' }}>
             ES
           </button>
-          <button
-            onClick={toggleTheme}
-            className="bg-blue-500 text-white hover:bg-blue-400 px-3 py-1 rounded font-semibold transition-colors"
-            title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
-          >
+          <button onClick={toggleTheme} style={{ padding: '6px 12px', borderRadius: '6px', fontWeight: 600, transition: 'all 0.2s', backgroundColor: 'var(--border-primary)', color: 'var(--text-secondary)', border: 'none', cursor: 'pointer', fontSize: '16px' }} title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}>
             {theme === 'dark' ? '☀️' : '🌙'}
           </button>
         </div>
