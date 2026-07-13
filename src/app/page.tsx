@@ -723,18 +723,15 @@ export default function Home() {
   if (!isLoggedIn) {
     return (
       <div style={{ minHeight: '100vh', background: 'linear-gradient(135deg, #2563eb 0%, #4f46e5 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '16px', position: 'relative' }}>
-        <div style={{ position: 'absolute', top: '16px', right: '16px', display: 'flex', gap: '8px', alignItems: 'center' }}>
+        <div style={{ position: 'absolute', top: '16px', right: '16px', left: 'auto', display: 'flex', gap: '8px', alignItems: 'center', zIndex: 50 }}>
           <button onClick={() => setLanguage('he')} style={{ padding: '6px 12px', borderRadius: '6px', fontWeight: 600, transition: 'all 0.2s', backgroundColor: language === 'he' ? 'white' : '#3b82f6', color: language === 'he' ? '#2563eb' : 'white', border: 'none', cursor: 'pointer' }}>
             עב
           </button>
           <button onClick={() => setLanguage('en')} style={{ padding: '6px 12px', borderRadius: '6px', fontWeight: 600, transition: 'all 0.2s', backgroundColor: language === 'en' ? 'white' : '#3b82f6', color: language === 'en' ? '#2563eb' : 'white', border: 'none', cursor: 'pointer' }}>
             EN
           </button>
-          <button onClick={() => setLanguage('es')} style={{ padding: '6px 12px', borderRadius: '6px', fontWeight: 600, transition: 'all 0.2s', backgroundColor: language === 'es' ? 'var(--color-blue)' : 'var(--border-primary)', color: language === 'es' ? 'white' : 'var(--text-secondary)', border: 'none', cursor: 'pointer' }}>
+          <button onClick={() => setLanguage('es')} style={{ padding: '6px 12px', borderRadius: '6px', fontWeight: 600, transition: 'all 0.2s', backgroundColor: language === 'es' ? '#3b82f6' : 'white', color: language === 'es' ? 'white' : '#2563eb', border: 'none', cursor: 'pointer' }}>
             ES
-          </button>
-          <button onClick={toggleTheme} style={{ padding: '6px 12px', borderRadius: '6px', fontWeight: 600, transition: 'all 0.2s', backgroundColor: '#6b7280', color: 'white', border: 'none', cursor: 'pointer', fontSize: '13px' }}>
-            {theme === 'dark' ? 'Light' : 'Dark'}
           </button>
         </div>
 
