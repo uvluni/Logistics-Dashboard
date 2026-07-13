@@ -735,7 +735,7 @@ export default function Home() {
           <button onClick={() => setLanguage('es')} style={{ padding: '6px 12px', borderRadius: '6px', fontWeight: 600, transition: 'all 0.2s', backgroundColor: language === 'es' ? '#3b82f6' : 'white', color: language === 'es' ? 'white' : '#2563eb', border: 'none', cursor: 'pointer' }}>
             ES
           </button>
-          <button onClick={toggleTheme} style={{ padding: '6px 12px', borderRadius: '6px', fontWeight: 600, backgroundColor: 'white', color: '#6b7280', border: 'none', cursor: 'pointer', fontSize: '16px', minWidth: '40px', textAlign: 'center' }} title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}>
+          <button onClick={toggleTheme} style={{ padding: '6px 12px', borderRadius: '6px', fontWeight: 600, backgroundColor: 'white', color: '#6b7280', border: 'none', cursor: 'pointer', fontSize: '18px', lineHeight: '1' }}>
             {theme === 'dark' ? '☀️' : '🌙'}
           </button>
         </div>
@@ -747,6 +747,12 @@ export default function Home() {
           <p style={{ color: 'var(--text-secondary)', textAlign: 'center', marginBottom: '32px', fontSize: '14px' }}>
             {t('app.subtitle', language)}
           </p>
+
+          <div style={{ textAlign: 'center', marginBottom: '24px' }}>
+            <button onClick={toggleTheme} style={{ padding: '8px 16px', borderRadius: '6px', fontWeight: 600, backgroundColor: 'var(--bg-card)', color: 'var(--text-primary)', border: '1px solid var(--border-primary)', cursor: 'pointer', fontSize: '16px', transition: 'all 0.2s' }} title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}>
+              {theme === 'dark' ? '☀️ Light Mode' : '🌙 Dark Mode'}
+            </button>
+          </div>
 
           <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: '16px', textAlign: isRTL ? 'right' : 'left' }}>
             {error && (
