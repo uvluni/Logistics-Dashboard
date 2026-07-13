@@ -733,8 +733,8 @@ export default function Home() {
           <button onClick={() => setLanguage('es')} style={{ padding: '6px 12px', borderRadius: '6px', fontWeight: 600, transition: 'all 0.2s', backgroundColor: language === 'es' ? 'var(--color-blue)' : 'var(--border-primary)', color: language === 'es' ? 'white' : 'var(--text-secondary)', border: 'none', cursor: 'pointer' }}>
             ES
           </button>
-          <button onClick={toggleTheme} style={{ padding: '6px 12px', borderRadius: '6px', fontWeight: 600, transition: 'all 0.2s', backgroundColor: 'var(--border-primary)', color: 'var(--text-secondary)', border: 'none', cursor: 'pointer', fontSize: '16px' }} title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}>
-            {theme === 'dark' ? '☀️' : '🌙'}
+          <button onClick={toggleTheme} style={{ padding: '6px 12px', borderRadius: '6px', fontWeight: 600, transition: 'all 0.2s', backgroundColor: '#6b7280', color: 'white', border: 'none', cursor: 'pointer', fontSize: '13px' }}>
+            {theme === 'dark' ? 'Light' : 'Dark'}
           </button>
         </div>
 
