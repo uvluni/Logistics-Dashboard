@@ -2,6 +2,7 @@
 
 import { LanguageProvider } from '@/context/LanguageContext';
 import { useLanguage } from '@/context/LanguageContext';
+import { ThemeProvider } from '@/context/ThemeContext';
 import { useEffect } from 'react';
 
 function LanguageUpdater() {
@@ -18,9 +19,11 @@ function LanguageUpdater() {
 
 export default function Providers({ children }: { children: React.ReactNode }) {
   return (
-    <LanguageProvider>
-      <LanguageUpdater />
-      {children}
-    </LanguageProvider>
+    <ThemeProvider>
+      <LanguageProvider>
+        <LanguageUpdater />
+        {children}
+      </LanguageProvider>
+    </ThemeProvider>
   );
 }

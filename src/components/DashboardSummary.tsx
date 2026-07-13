@@ -18,107 +18,67 @@ function formatTotalWorkTime(minutes: number, language: 'he' | 'en' | 'es'): str
   return `${hours} ${t('summary.time_hours', language)}, ${mins} ${t('summary.minutes', language)}`;
 }
 
+function getUtilizationColor(utilization: number): string {
+  if (utilization > 85) return 'var(--color-orange, #ea580c)';
+  if (utilization > 60) return 'var(--color-green, #16a34a)';
+  return 'var(--color-red, #dc2626)';
+}
+
 export default function DashboardSummary({ summary, normalWorkDayMinutes = 540 }: DashboardSummaryProps) {
   const { language, isRTL } = useLanguage();
-  const utilizationColor =
-    summary.weightUtilization > 85
-      ? 'text-orange-600'
-      : summary.weightUtilization > 60
-        ? 'text-green-600'
-        : 'text-red-600';
 
   return (
-    <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-lg p-6 mb-6">
-      <h2 className={`text-2xl font-bold text-gray-900 mb-6 ${isRTL ? 'text-right' : 'text-left'}`}>
+    <div style={{ backgroundColor: 'var(--bg-secondary)', border: '1px solid var(--border-primary)', borderRadius: '8px', padding: '20px', marginBottom: '24px' }}>
+      <h2 style={{ fontSize: '20px', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '20px', textAlign: isRTL ? 'right' : 'left' }}>
         {t('summary.title', language)}
       </h2>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-        <div className="bg-white rounded-lg p-4 border border-gray-200">
-          <p className={`text-gray-600 text-sm ${isRTL ? 'text-right' : 'text-left'}`}>
-            {t('summary.total_routes', language)}
-          </p>
-          <p className={`text-3xl font-bold text-blue-600 ${isRTL ? 'text-right' : 'text-left'}`}>
-            {summary.totalRoutes}
-          </p>
-        </div>
-        <div className="bg-white rounded-lg p-4 border border-gray-200">
-          <p className={`text-gray-600 text-sm ${isRTL ? 'text-right' : 'text-left'}`}>
-            {t('summary.total_stops', language)}
-          </p>
-          <p className={`text-3xl font-bold text-green-600 ${isRTL ? 'text-right' : 'text-left'}`}>
-            {summary.totalStops}
-          </p>
-        </div>
-        <div className="bg-white rounded-lg p-4 border border-gray-200">
-          <p className={`text-gray-600 text-sm ${isRTL ? 'text-right' : 'text-left'}`}>
-            {t('summary.weight_utilization', language)}
-          </p>
-          <p className={`text-3xl font-bold ${isRTL ? 'text-right' : 'text-left'} ${utilizationColor}`}>
-            {summary.weightUtilization}%
-          </p>
-        </div>
-        <div className="bg-white rounded-lg p-4 border border-gray-200">
-          <p className={`text-gray-600 text-sm ${isRTL ? 'text-right' : 'text-left'}`}>
-            {language === 'he'
-              ? `${t('summary.time_utilization', language)} (מ-${normalWorkDayMinutes === 300 ? '5' : '9'} ${t('summary.time_hours', language)})`
-              : language === 'es'
-              ? `${t('summary.time_utilization', language)} (de ${normalWorkDayMinutes === 300 ? '5' : '9'} ${t('summary.time_hours', language)})`
-              : `${t('summary.time_utilization', language)} (${normalWorkDayMinutes === 300 ? '5' : '9'} ${t('summary.time_hours', language)})`}
-          </p>
-          <p className={`text-3xl font-bold text-indigo-600 ${isRTL ? 'text-right' : 'text-left'}`}>
-            {summary.timeUtilization}%
-          </p>
-        </div>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))', gap: '12px', marginBottom: '20px' }}>
+        {[
+          { label: t('summary.total_routes', language), value: summary.totalRoutes },
+          { label: t('summary.total_stops', language), value: summary.totalStops },
+          { label: t('summary.weight_utilization', language), value: `${summary.weightUtilization}%` },
+          { label: language === 'he' ? `${t('summary.time_utilization', language)} (מ-${normalWorkDayMinutes === 300 ? '5' : '9'} ${t('summary.time_hours', language)})` : language === 'es' ? `${t('summary.time_utilization', language)} (de ${normalWorkDayMinutes === 300 ? '5' : '9'} ${t('summary.time_hours', language)})` : `${t('summary.time_utilization', language)} (${normalWorkDayMinutes === 300 ? '5' : '9'} ${t('summary.time_hours', language)})`, value: `${summary.timeUtilization}%` },
+        ].map((stat, idx) => (
+          <div key={idx} style={{ backgroundColor: 'var(--bg-tertiary)', borderRadius: '6px', padding: '12px', textAlign: 'center' }}>
+            <p style={{ color: 'var(--text-secondary)', fontSize: '11px', margin: '0 0 6px 0' }}>{stat.label}</p>
+            <p style={{ color: 'var(--text-primary)', fontSize: '20px', fontWeight: 600, margin: 0 }}>{stat.value}</p>
+          </div>
+        ))}
       </div>
 
-      <div className="grid grid-cols-2 gap-4 mb-6 md:hidden">
-        <div className="bg-white rounded-lg p-4 border border-gray-200">
-          <p className={`text-gray-600 text-sm ${isRTL ? 'text-right' : 'text-left'}`}>{t('summary.total_work_time', language)}</p>
-          <p className={`text-3xl font-bold text-purple-600 ${isRTL ? 'text-right' : 'text-left'}`}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))', gap: '12px', marginBottom: '20px' }}>
+        <div style={{ backgroundColor: 'var(--bg-tertiary)', borderRadius: '6px', padding: '12px' }}>
+          <p style={{ color: 'var(--text-secondary)', fontSize: '11px', margin: '0 0 6px 0', textAlign: isRTL ? 'right' : 'left' }}>{t('summary.total_work_time', language)}</p>
+          <p style={{ color: 'var(--text-primary)', fontSize: '16px', fontWeight: 600, margin: 0, textAlign: isRTL ? 'right' : 'left' }}>
             {formatTotalWorkTime(summary.totalWorkMinutes, language)}
           </p>
         </div>
-        <div className="bg-white rounded-lg p-4 border border-gray-200">
-          <p className={`text-gray-600 text-sm ${isRTL ? 'text-right' : 'text-left'}`}>{t('summary.avg_time_per_route', language)}</p>
-          <p className={`text-3xl font-bold text-blue-600 ${isRTL ? 'text-right' : 'text-left'}`}>
+        <div style={{ backgroundColor: 'var(--bg-tertiary)', borderRadius: '6px', padding: '12px' }}>
+          <p style={{ color: 'var(--text-secondary)', fontSize: '11px', margin: '0 0 6px 0', textAlign: isRTL ? 'right' : 'left' }}>{t('summary.avg_time_per_route', language)}</p>
+          <p style={{ color: 'var(--text-primary)', fontSize: '16px', fontWeight: 600, margin: 0, textAlign: isRTL ? 'right' : 'left' }}>
             {formatTotalWorkTime(Math.round(summary.totalWorkMinutes / summary.totalRoutes), language)}
           </p>
         </div>
       </div>
 
-      <div className="hidden md:grid grid-cols-2 gap-4 mb-6">
-        <div className="bg-white rounded-lg p-4 border border-gray-200">
-          <p className={`text-gray-600 text-sm ${isRTL ? 'text-right' : 'text-left'}`}>{t('summary.total_work_time', language)}</p>
-          <p className={`text-3xl font-bold text-purple-600 ${isRTL ? 'text-right' : 'text-left'}`}>
-            {formatTotalWorkTime(summary.totalWorkMinutes, language)}
-          </p>
-        </div>
-        <div className="bg-white rounded-lg p-4 border border-gray-200">
-          <p className={`text-gray-600 text-sm ${isRTL ? 'text-right' : 'text-left'}`}>{t('summary.avg_time_per_route', language)}</p>
-          <p className={`text-3xl font-bold text-blue-600 ${isRTL ? 'text-right' : 'text-left'}`}>
-            {formatTotalWorkTime(Math.round(summary.totalWorkMinutes / summary.totalRoutes), language)}
-          </p>
-        </div>
-      </div>
-
-      <div className="bg-white rounded-lg p-4 border border-gray-200 mb-6">
-        <div className="grid grid-cols-3 gap-4">
-          <div className={`text-center ${isRTL ? '' : ''}`}>
-            <p className={`text-gray-600 text-sm ${isRTL ? 'text-right' : 'text-left'}`}>{t('summary.routes_85_100', language)}</p>
-            <p className={`text-2xl font-bold text-orange-600 ${isRTL ? 'text-right' : 'text-left'}`}>
+      <div style={{ backgroundColor: 'var(--bg-tertiary)', borderRadius: '6px', padding: '12px', marginBottom: '20px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px' }}>
+          <div style={{ textAlign: 'center' }}>
+            <p style={{ color: 'var(--text-secondary)', fontSize: '11px', margin: '0 0 6px 0', textAlign: isRTL ? 'right' : 'left' }}>{t('summary.routes_85_100', language)}</p>
+            <p style={{ color: 'var(--color-orange, #ea580c)', fontSize: '18px', fontWeight: 600, margin: 0, textAlign: isRTL ? 'right' : 'left' }}>
               {summary.overUtilizedRoutes}
             </p>
           </div>
-          <div className={`text-center border-r border-l border-gray-200 px-4 ${isRTL ? '' : ''}`}>
-            <p className={`text-gray-600 text-sm ${isRTL ? 'text-right' : 'text-left'}`}>{t('summary.routes_under_50', language)}</p>
-            <p className={`text-2xl font-bold text-red-600 ${isRTL ? 'text-right' : 'text-left'}`}>
+          <div style={{ textAlign: 'center', borderLeft: '1px solid var(--border-primary)', borderRight: '1px solid var(--border-primary)', paddingLeft: '12px', paddingRight: '12px' }}>
+            <p style={{ color: 'var(--text-secondary)', fontSize: '11px', margin: '0 0 6px 0', textAlign: isRTL ? 'right' : 'left' }}>{t('summary.routes_under_50', language)}</p>
+            <p style={{ color: 'var(--color-red, #dc2626)', fontSize: '18px', fontWeight: 600, margin: 0, textAlign: isRTL ? 'right' : 'left' }}>
               {summary.underUtilizedRoutes}
             </p>
           </div>
-          <div className={`text-center ${isRTL ? '' : ''}`}>
-            <p className={`text-gray-600 text-sm ${isRTL ? 'text-right' : 'text-left'}`}>{t('summary.overweight_routes_count', language)}</p>
-            <p className={`text-2xl font-bold text-red-700 ${isRTL ? 'text-right' : 'text-left'}`}>
+          <div style={{ textAlign: 'center' }}>
+            <p style={{ color: 'var(--text-secondary)', fontSize: '11px', margin: '0 0 6px 0', textAlign: isRTL ? 'right' : 'left' }}>{t('summary.overweight_routes_count', language)}</p>
+            <p style={{ color: 'var(--color-red, #dc2626)', fontSize: '18px', fontWeight: 600, margin: 0, textAlign: isRTL ? 'right' : 'left' }}>
               {summary.overWeightRoutes.length}
             </p>
           </div>
@@ -126,62 +86,40 @@ export default function DashboardSummary({ summary, normalWorkDayMinutes = 540 }
       </div>
 
       {(summary.overWeightRoutes.length > 0 || summary.overTimeRoutes.length > 0) && (
-        <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-4">
-          <p className={`text-red-800 font-semibold ${isRTL ? 'text-right' : 'text-left'}`}>
+        <div style={{ backgroundColor: 'var(--bg-tertiary)', border: '1px solid var(--border-primary)', borderRadius: '6px', padding: '12px', marginBottom: '16px' }}>
+          <p style={{ color: 'var(--color-red, #dc2626)', fontWeight: 600, margin: '0 0 12px 0', textAlign: isRTL ? 'right' : 'left' }}>
             {t('summary.overweight_routes', language)}
           </p>
           {summary.overWeightRoutes.length > 0 && (
-            <div className={`mt-3 ${isRTL ? 'text-right' : 'text-left'}`}>
-              <p className="text-red-700">
-                <span className="font-semibold">{t('summary.overweight_label', language)}</span>{' '}
-                <span className="blur-sm">{summary.overWeightRoutes.join(', ')}</span>
+            <div style={{ marginBottom: '12px', textAlign: isRTL ? 'right' : 'left' }}>
+              <p style={{ color: 'var(--color-red, #dc2626)', margin: 0, fontSize: '13px' }}>
+                <span style={{ fontWeight: 600 }}>{t('summary.overweight_label', language)}</span> <span style={{ filter: 'blur(4px)' }}>{summary.overWeightRoutes.join(', ')}</span>
               </p>
             </div>
           )}
           {summary.overTimeRoutes.length > 0 && (
-            <div className={`mt-3 ${isRTL ? 'text-right' : 'text-left'}`}>
-              <p className="text-red-700">
-                <span className="font-semibold">{t('summary.overtime_label', language)}</span> {language === 'he' ? `(מ-${normalWorkDayMinutes === 300 ? '5' : '9'} ${t('summary.time_hours', language)}):` : language === 'es' ? `(de ${normalWorkDayMinutes === 300 ? '5' : '9'} ${t('summary.time_hours', language)}):` : `(${normalWorkDayMinutes === 300 ? '5' : '9'} ${t('summary.time_hours', language)}):`}{' '}
-                <span className="blur-sm">{summary.overTimeRoutes.join(', ')}</span>
+            <div style={{ textAlign: isRTL ? 'right' : 'left' }}>
+              <p style={{ color: 'var(--color-red, #dc2626)', margin: 0, fontSize: '13px' }}>
+                <span style={{ fontWeight: 600 }}>{t('summary.overtime_label', language)}</span> {language === 'he' ? `(מ-${normalWorkDayMinutes === 300 ? '5' : '9'} ${t('summary.time_hours', language)}):` : language === 'es' ? `(de ${normalWorkDayMinutes === 300 ? '5' : '9'} ${t('summary.time_hours', language)}):` : `(${normalWorkDayMinutes === 300 ? '5' : '9'} ${t('summary.time_hours', language)}):`}{' '}
+                <span style={{ filter: 'blur(4px)' }}>{summary.overTimeRoutes.join(', ')}</span>
               </p>
             </div>
           )}
         </div>
       )}
 
-      <div className="bg-white rounded-lg p-4 border border-gray-200 mb-4">
-        <p className={`text-gray-600 text-sm font-semibold mb-3 ${isRTL ? 'text-right' : 'text-left'}`}>
+      <div style={{ backgroundColor: 'var(--bg-tertiary)', borderRadius: '6px', padding: '12px', marginBottom: '16px' }}>
+        <p style={{ color: 'var(--text-secondary)', fontSize: '12px', fontWeight: 600, margin: '0 0 12px 0', textAlign: isRTL ? 'right' : 'left' }}>
           {t('summary.planning_recommendation', language)}
         </p>
-        <div
-          className={`text-lg font-semibold whitespace-pre-line ${isRTL ? 'text-right' : 'text-left'} ${
-            (language === 'he' && summary.recommendation.includes('טוב')) ||
-            (language === 'en' && summary.recommendation.includes('balanced')) ||
-            (language === 'es' && summary.recommendation.includes('equilibrada'))
-              ? 'text-green-700'
-              : (language === 'he' && summary.recommendation.includes('חורגים')) ||
-                (language === 'en' && summary.recommendation.includes('exceeding') || summary.recommendation.includes('overload')) ||
-                (language === 'es' && summary.recommendation.includes('excede') || summary.recommendation.includes('sobrecarga'))
-                ? 'text-red-700'
-                : 'text-orange-700'
-          }`}
-        >
+        <div style={{ textAlign: isRTL ? 'right' : 'left' }}>
           {summary.recommendation.split('\n').map((line, idx) => {
             const trimmed = line.trim();
-
-            // Check if this is a line with driver names
-            // Either: pure driver list (only Hebrew + commas/digits) OR a line after a driver header
             const isPureDriverList = /^[\s,א-ת\d\-]+$/.test(trimmed) && trimmed.length > 0 && !trimmed.includes(':');
-
-            // Check if previous line indicates driver names are coming (support all languages)
             const prevLine = idx > 0 ? summary.recommendation.split('\n')[idx - 1] : '';
-            const isAfterDriverHeader =
-              prevLine.includes('נהגים') || prevLine.includes('נהג') ||  // Hebrew
-              prevLine.includes('drivers') || prevLine.includes('driver') ||  // English
-              prevLine.includes('conductores') || prevLine.includes('conductor');  // Spanish
+            const isAfterDriverHeader = prevLine.includes('נהגים') || prevLine.includes('נהג') || prevLine.includes('drivers') || prevLine.includes('driver') || prevLine.includes('conductores') || prevLine.includes('conductor');
 
             if (isPureDriverList || (isAfterDriverHeader && trimmed.length > 0)) {
-              // Safely blur driver names without HTML injection vulnerability
               const parts: (string | React.ReactNode)[] = [];
               let lastIndex = 0;
               const hebrewNameRegex = /[א-ת]+(?:\s[א-ת]+)*/g;
@@ -192,7 +130,7 @@ export default function DashboardSummary({ summary, normalWorkDayMinutes = 540 }
                   parts.push(line.substring(lastIndex, match.index));
                 }
                 parts.push(
-                  <span key={`${idx}-${match.index}`} className="blur-sm">{match[0]}</span>
+                  <span key={`${idx}-${match.index}`} style={{ filter: 'blur(4px)' }}>{match[0]}</span>
                 );
                 lastIndex = match.index + match[0].length;
               }
@@ -202,23 +140,25 @@ export default function DashboardSummary({ summary, normalWorkDayMinutes = 540 }
               }
 
               return (
-                <div key={idx}>{parts.length > 0 ? parts : line}</div>
+                <div key={idx} style={{ fontSize: '13px', color: 'var(--text-primary)', margin: '4px 0' }}>{parts.length > 0 ? parts : line}</div>
               );
             }
 
+            const recommendationColor = (language === 'he' && trimmed.includes('טוב')) || (language === 'en' && trimmed.includes('balanced')) || (language === 'es' && trimmed.includes('equilibrada')) ? 'var(--color-green, #16a34a)' : (language === 'he' && trimmed.includes('חורגים')) || (language === 'en' && (trimmed.includes('exceeding') || trimmed.includes('overload'))) || (language === 'es' && (trimmed.includes('excede') || trimmed.includes('sobrecarga'))) ? 'var(--color-red, #dc2626)' : 'var(--color-orange, #ea580c)';
+
             return (
-              <div key={idx}>{line}</div>
+              <div key={idx} style={{ fontSize: '13px', color: recommendationColor, margin: '4px 0' }}>{line}</div>
             );
           })}
         </div>
       </div>
 
       {summary.weatherNote && (
-        <div className="bg-white rounded-lg p-4 border border-gray-200">
-          <p className={`text-gray-600 text-sm font-semibold mb-3 ${isRTL ? 'text-right' : 'text-left'}`}>
+        <div style={{ backgroundColor: 'var(--bg-tertiary)', borderRadius: '6px', padding: '12px' }}>
+          <p style={{ color: 'var(--text-secondary)', fontSize: '12px', fontWeight: 600, margin: '0 0 8px 0', textAlign: isRTL ? 'right' : 'left' }}>
             {t('summary.daily_conditions', language)}
           </p>
-          <p className={`text-gray-700 font-medium whitespace-pre-line ${isRTL ? 'text-right' : 'text-left'}`}>
+          <p style={{ color: 'var(--text-primary)', fontSize: '13px', margin: 0, whiteSpace: 'pre-line', textAlign: isRTL ? 'right' : 'left' }}>
             {summary.weatherNote}
           </p>
         </div>

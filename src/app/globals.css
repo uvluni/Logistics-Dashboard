@@ -16,9 +16,54 @@ html {
   -moz-osx-font-smoothing: grayscale;
 }
 
+:root {
+  --bg-primary: #f9fafb;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #f3f4f6;
+  --bg-card: #ffffff;
+  --bg-metric: #f0f4ff;
+  --bg-header: #ffffff;
+
+  --border-primary: #e5e7eb;
+  --border-secondary: #d1d5db;
+  --border-metric: #bfdbfe;
+
+  --text-primary: #111827;
+  --text-secondary: #6b7280;
+  --text-tertiary: #9ca3af;
+  --text-header: #111827;
+
+  --color-blue: #1e40af;
+  --color-blue-light: #60a5fa;
+  --color-data: #1e40af;
+}
+
+html[data-theme="dark"] {
+  --bg-primary: #0f172a;
+  --bg-secondary: #1e293b;
+  --bg-tertiary: #0f172a;
+  --bg-card: #1e293b;
+  --bg-metric: #0f172a;
+  --bg-header: #1e293b;
+
+  --border-primary: #334155;
+  --border-secondary: #475569;
+  --border-metric: #334155;
+
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-tertiary: #64748b;
+  --text-header: #f1f5f9;
+
+  --color-blue: #60a5fa;
+  --color-blue-light: #60a5fa;
+  --color-data: #60a5fa;
+}
+
 body {
-  background-color: #f9fafb;
-  color: #111827;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 input::-webkit-outer-spin-button,

@@ -8,6 +8,7 @@ import KPICard from '@/components/KPICard';
 import DashboardSummary from '@/components/DashboardSummary';
 import { RouteKPI, DashboardSummary as Summary } from '@/types';
 import { useLanguage } from '@/context/LanguageContext';
+import { useTheme } from '@/context/ThemeContext';
 import { t } from '@/i18n/translations';
 
 function getTodayDate(): string {
@@ -41,6 +42,7 @@ function formatDateForDisplay(isoDate: string): string {
 
 export default function Home() {
   const { language, setLanguage, isRTL } = useLanguage();
+  const { theme, toggleTheme } = useTheme();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [username, setUsername] = useState('');
@@ -708,7 +710,7 @@ export default function Home() {
   if (!isLoggedIn) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-600 to-indigo-700 flex items-center justify-center p-4">
-        <div className="absolute top-4 right-4 flex gap-2">
+        <div className="absolute top-4 right-4 flex gap-2 items-center">
           <button
             onClick={() => setLanguage('he')}
             className={`px-3 py-1 rounded font-semibold transition-colors ${
@@ -739,25 +741,32 @@ export default function Home() {
           >
             ES
           </button>
+          <button
+            onClick={toggleTheme}
+            className="bg-blue-500 text-white hover:bg-blue-400 px-3 py-1 rounded font-semibold transition-colors"
+            title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+          >
+            {theme === 'dark' ? '☀️' : '🌙'}
+          </button>
         </div>
 
-        <div className="bg-white rounded-lg shadow-xl max-w-md w-full p-8">
-          <h1 className="text-3xl font-bold text-gray-900 text-center mb-2">
+        <div style={{ backgroundColor: 'var(--bg-secondary)', borderRadius: '8px', boxShadow: '0 20px 25px -5px rgba(0,0,0,0.1)', maxWidth: '400px', width: '100%', padding: '32px' }}>
+          <h1 style={{ fontSize: '30px', fontWeight: 700, color: 'var(--text-primary)', textAlign: 'center', marginBottom: '8px' }}>
             {t('app.title', language)}
           </h1>
-          <p className="text-gray-600 text-center mb-8 text-sm">
+          <p style={{ color: 'var(--text-secondary)', textAlign: 'center', marginBottom: '32px', fontSize: '14px' }}>
             {t('app.subtitle', language)}
           </p>
 
-          <form onSubmit={handleLogin} className={`space-y-4 ${isRTL ? 'text-right' : 'text-left'}`}>
+          <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: '16px', textAlign: isRTL ? 'right' : 'left' }}>
             {error && (
-              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
+              <div style={{ backgroundColor: '#fee2e2', border: '1px solid #fecaca', color: '#991b1b', padding: '12px 16px', borderRadius: '6px' }}>
                 {error}
               </div>
             )}
 
             <div>
-              <label className={`block text-gray-700 text-sm font-medium mb-2 ${isRTL ? 'text-right' : 'text-left'}`}>
+              <label style={{ display: 'block', color: 'var(--text-primary)', fontSize: '14px', fontWeight: 500, marginBottom: '8px', textAlign: isRTL ? 'right' : 'left' }}>
                 {t('auth.email', language)}
               </label>
               <input
@@ -765,12 +774,12 @@ export default function Home() {
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 autoComplete="username"
-                className={`w-full px-4 py-2 border border-gray-300 rounded-lg ${isRTL ? 'text-right' : 'text-left'}`}
+                style={{ width: '100%', padding: '8px 16px', border: '1px solid var(--border-primary)', borderRadius: '6px', backgroundColor: 'var(--bg-tertiary)', color: 'var(--text-primary)', textAlign: isRTL ? 'right' : 'left' }}
               />
             </div>
 
             <div>
-              <label className={`block text-gray-700 text-sm font-medium mb-2 ${isRTL ? 'text-right' : 'text-left'}`}>
+              <label style={{ display: 'block', color: 'var(--text-primary)', fontSize: '14px', fontWeight: 500, marginBottom: '8px', textAlign: isRTL ? 'right' : 'left' }}>
                 {t('auth.password', language)}
               </label>
               <input
@@ -778,14 +787,14 @@ export default function Home() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 autoComplete="current-password"
-                className={`w-full px-4 py-2 border border-gray-300 rounded-lg ${isRTL ? 'text-right' : 'text-left'}`}
+                style={{ width: '100%', padding: '8px 16px', border: '1px solid var(--border-primary)', borderRadius: '6px', backgroundColor: 'var(--bg-tertiary)', color: 'var(--text-primary)', textAlign: isRTL ? 'right' : 'left' }}
               />
             </div>
 
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-semibold py-3 rounded-lg transition-colors"
+              style={{ width: '100%', backgroundColor: isLoading ? '#9ca3af' : 'var(--color-blue)', color: 'white', fontWeight: 600, padding: '12px', borderRadius: '6px', transition: 'all 0.2s', border: 'none', cursor: isLoading ? 'not-allowed' : 'pointer', opacity: isLoading ? 0.6 : 1 }}
             >
               {isLoading ? t('auth.connecting', language) : t('auth.login', language)}
             </button>
@@ -796,64 +805,42 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="sticky top-0 bg-white border-b border-gray-200 shadow-sm z-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-gray-900">{t('dashboard.title', language)}</h1>
-          <div className="flex gap-2 items-center">
-            <button
-              onClick={() => setLanguage('he')}
-              className={`px-3 py-1 rounded font-semibold transition-colors ${
-                language === 'he'
-                  ? 'bg-white text-blue-600'
-                  : 'bg-blue-500 text-white hover:bg-blue-400'
-              }`}
-            >
+    <div style={{ backgroundColor: 'var(--bg-primary)', minHeight: '100vh' }}>
+      <div style={{ position: 'sticky', top: 0, backgroundColor: 'var(--bg-secondary)', borderBottom: '1px solid var(--border-primary)', boxShadow: '0 1px 2px rgba(0,0,0,0.05)', zIndex: 10 }}>
+        <div style={{ maxWidth: '100%', margin: '0 auto', padding: '16px 32px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <h1 style={{ fontSize: '24px', fontWeight: 600, color: 'var(--text-primary)' }}>{t('dashboard.title', language)}</h1>
+          <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+            <button onClick={() => setLanguage('he')} style={{ padding: '6px 12px', borderRadius: '6px', fontWeight: 600, transition: 'all 0.2s', backgroundColor: language === 'he' ? 'var(--color-blue)' : 'var(--border-primary)', color: language === 'he' ? 'white' : 'var(--text-secondary)', border: 'none', cursor: 'pointer' }}>
               עב
             </button>
-            <button
-              onClick={() => setLanguage('en')}
-              className={`px-3 py-1 rounded font-semibold transition-colors ${
-                language === 'en'
-                  ? 'bg-white text-blue-600'
-                  : 'bg-blue-500 text-white hover:bg-blue-400'
-              }`}
-            >
+            <button onClick={() => setLanguage('en')} style={{ padding: '6px 12px', borderRadius: '6px', fontWeight: 600, transition: 'all 0.2s', backgroundColor: language === 'en' ? 'var(--color-blue)' : 'var(--border-primary)', color: language === 'en' ? 'white' : 'var(--text-secondary)', border: 'none', cursor: 'pointer' }}>
               EN
             </button>
-            <button
-              onClick={() => setLanguage('es')}
-              className={`px-3 py-1 rounded font-semibold transition-colors ${
-                language === 'es'
-                  ? 'bg-white text-blue-600'
-                  : 'bg-blue-500 text-white hover:bg-blue-400'
-              }`}
-            >
+            <button onClick={() => setLanguage('es')} style={{ padding: '6px 12px', borderRadius: '6px', fontWeight: 600, transition: 'all 0.2s', backgroundColor: language === 'es' ? 'var(--color-blue)' : 'var(--border-primary)', color: language === 'es' ? 'white' : 'var(--text-secondary)', border: 'none', cursor: 'pointer' }}>
               ES
             </button>
-            <button
-              onClick={handleLogout}
-              className="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors text-sm"
-            >
+            <button onClick={toggleTheme} style={{ padding: '6px 12px', borderRadius: '6px', fontWeight: 600, transition: 'all 0.2s', backgroundColor: 'var(--border-primary)', color: 'var(--text-secondary)', border: 'none', cursor: 'pointer', fontSize: '16px' }} title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}>
+              {theme === 'dark' ? '☀️' : '🌙'}
+            </button>
+            <button onClick={handleLogout} style={{ padding: '8px 16px', borderRadius: '6px', fontWeight: 600, transition: 'all 0.2s', backgroundColor: '#dc2626', color: 'white', border: 'none', cursor: 'pointer', fontSize: '14px' }}>
               {t('auth.logout', language)}
             </button>
           </div>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="bg-gradient-to-br from-blue-600 to-indigo-600 rounded-lg p-8 mb-8 shadow-md text-white">
-          <h2 className={`text-2xl font-bold mb-6 ${isRTL ? 'text-right' : 'text-left'}`}>{t('dashboard.planning_header', language)} - {selectedDate ? formatDateForDisplay(selectedDate) : '...'}</h2>
+      <div style={{ maxWidth: '100%', margin: '0 auto', padding: '32px' }}>
+        <div style={{ background: 'linear-gradient(135deg, var(--color-blue) 0%, #1e3a8a 100%)', borderRadius: '8px', padding: '32px', marginBottom: '32px', boxShadow: '0 4px 6px rgba(0,0,0,0.1)', color: 'white' }}>
+          <h2 style={{ fontSize: '24px', fontWeight: 600, marginBottom: '24px', textAlign: isRTL ? 'right' : 'left' }}>{t('dashboard.planning_header', language)} - {selectedDate ? formatDateForDisplay(selectedDate) : '...'}</h2>
           <div>
-            <label className={`block text-sm font-medium mb-3 opacity-90 ${isRTL ? 'text-right' : 'text-left'}`}>
+            <label style={{ display: 'block', fontSize: '14px', fontWeight: 500, marginBottom: '12px', opacity: 0.9, color: 'white', textAlign: isRTL ? 'right' : 'left' }}>
               {t('dashboard.select_date', language)}
             </label>
-            <div className="flex gap-2 items-stretch flex-wrap">
+            <div style={{ display: 'flex', gap: '8px', alignItems: 'stretch', flexWrap: 'wrap' }}>
               <div
                 onClick={() => datePickerRef.current?.setOpen(true)}
-                className="bg-white hover:bg-gray-50 cursor-pointer rounded-lg px-2 py-2 flex items-center gap-2 transition-colors focus-within:ring-2 focus-within:ring-blue-300 focus-within:ring-offset-2 min-w-40"
+                style={{ backgroundColor: 'white', cursor: 'pointer', borderRadius: '6px', padding: '8px', display: 'flex', alignItems: 'center', gap: '8px', transition: 'all 0.2s', minWidth: '160px', pointerEvents: 'auto' }}
                 suppressHydrationWarning
-                style={{ pointerEvents: 'auto' }}
               >
                 <span className="text-2xl">📅</span>
                 {selectedDate && (
@@ -879,22 +866,13 @@ export default function Home() {
                   />
                 )}
               </div>
-              <button
-                onClick={handleDownloadReport}
-                className="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded-lg transition-colors text-sm whitespace-nowrap"
-              >
+              <button onClick={handleDownloadReport} style={{ backgroundColor: '#16a34a', color: 'white', fontWeight: 600, padding: '8px 16px', borderRadius: '6px', transition: 'all 0.2s', fontSize: '14px', whiteSpace: 'nowrap', border: 'none', cursor: 'pointer' }}>
                 {t('dashboard.report_routes', language)}
               </button>
-              <button
-                onClick={handleDownloadStopsReport}
-                className="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded-lg transition-colors text-sm whitespace-nowrap"
-              >
+              <button onClick={handleDownloadStopsReport} style={{ backgroundColor: '#16a34a', color: 'white', fontWeight: 600, padding: '8px 16px', borderRadius: '6px', transition: 'all 0.2s', fontSize: '14px', whiteSpace: 'nowrap', border: 'none', cursor: 'pointer' }}>
                 {t('dashboard.report_stops', language)}
               </button>
-              <button
-                onClick={handleDownloadOrdersReport}
-                className="bg-green-600 hover:bg-green-700 text-white font-semibold px-4 py-2 rounded-lg transition-colors text-sm whitespace-nowrap"
-              >
+              <button onClick={handleDownloadOrdersReport} style={{ backgroundColor: '#16a34a', color: 'white', fontWeight: 600, padding: '8px 16px', borderRadius: '6px', transition: 'all 0.2s', fontSize: '14px', whiteSpace: 'nowrap', border: 'none', cursor: 'pointer' }}>
                 {t('dashboard.report_orders', language)}
               </button>
               <button
