@@ -50,9 +50,11 @@ export default function Home() {
   const [mounted, setMounted] = useState(false);
   const [insights, setInsights] = useState('');
   const [generatingInsights, setGeneratingInsights] = useState(false);
+  const [insightsError, setInsightsError] = useState('');
   const [airtableRecords, setAirtableRecords] = useState<any[]>([]);
   const [showAirtable, setShowAirtable] = useState(false);
   const [loadingAirtable, setLoadingAirtable] = useState(false);
+  const [airtableError, setAirtableError] = useState('');
   const [validatingRecordId, setValidatingRecordId] = useState<string | null>(null);
   const [validationMessage, setValidationMessage] = useState('');
   const [validationType, setValidationType] = useState<'google' | 'rodnet' | null>(null);
@@ -143,26 +145,12 @@ export default function Home() {
     }
   }, [selectedDate, isLoggedIn, loadRoutes]);
 
-  // Regenerate insights when language changes
+  // Regenerate insights when language changes (only if already generated once)
   useEffect(() => {
     if (insights && kpis.length > 0) {
       handleGenerateInsights();
     }
   }, [language]);
-
-  // Auto-load Airtable verification table on login
-  useEffect(() => {
-    if (isLoggedIn && selectedDate) {
-      handleLoadAirtable();
-    }
-  }, [isLoggedIn, selectedDate]);
-
-  // Auto-generate AI insights when KPIs are loaded
-  useEffect(() => {
-    if (kpis.length > 0 && !insights) {
-      handleGenerateInsights();
-    }
-  }, [kpis]);
 
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
@@ -503,17 +491,17 @@ export default function Home() {
 
   async function handleGenerateInsights() {
     if (!selectedDate) {
-      setError(t('error.select_date_first', language));
+      setInsightsError(t('error.select_date_first', language));
       return;
     }
 
     if (kpis.length === 0) {
-      setError(t('dashboard.no_routes_message', language));
+      setInsightsError(t('dashboard.no_routes_message', language));
       return;
     }
 
     setGeneratingInsights(true);
-    setError('');
+    setInsightsError('');
     setInsights('');
 
     try {
@@ -587,15 +575,14 @@ export default function Home() {
       }
 
       if (!res.ok) {
-        const errorData = await res.json().catch(() => ({}));
-        setError(errorData.error || t('dashboard.insights_error', language));
+        setInsightsError(t('dashboard.insights_no_key', language));
         return;
       }
 
       const data = await res.json();
       setInsights(data.insights || '');
     } catch (err) {
-      setError(t('dashboard.insights_error', language));
+      setInsightsError(t('dashboard.insights_no_key', language));
     } finally {
       setGeneratingInsights(false);
     }
@@ -603,7 +590,7 @@ export default function Home() {
 
   async function handleLoadAirtable() {
     setLoadingAirtable(true);
-    setError('');
+    setAirtableError('');
 
     try {
       const res = await fetch('/api/airtable', {
@@ -617,7 +604,7 @@ export default function Home() {
       }
 
       if (!res.ok) {
-        setError('Failed to load Airtable data');
+        setAirtableError(t('dashboard.geocode_no_key', language));
         return;
       }
 
@@ -625,7 +612,7 @@ export default function Home() {
       setAirtableRecords(data.records || []);
       setShowAirtable(true);
     } catch (err) {
-      setError('Error loading Airtable data');
+      setAirtableError(t('dashboard.geocode_no_key', language));
     } finally {
       setLoadingAirtable(false);
     }
@@ -897,6 +884,20 @@ export default function Home() {
               >
                 {t('dashboard.report_orders', language)}
               </button>
+              <button
+                onClick={handleGenerateInsights}
+                disabled={generatingInsights}
+                className="bg-purple-600 hover:bg-purple-700 disabled:bg-gray-400 text-white font-semibold px-4 py-2 rounded-lg transition-colors text-sm whitespace-nowrap"
+              >
+                {t('dashboard.generate_insights_button', language)}
+              </button>
+              <button
+                onClick={handleLoadAirtable}
+                disabled={loadingAirtable}
+                className="bg-orange-600 hover:bg-orange-700 disabled:bg-gray-400 text-white font-semibold px-4 py-2 rounded-lg transition-colors text-sm whitespace-nowrap"
+              >
+                {t('dashboard.geocode_report_button', language)}
+              </button>
             </div>
           </div>
         </div>
@@ -915,6 +916,14 @@ export default function Home() {
           {summary && kpis.length > 0 && (
             <div className="fade-in-up">
               <DashboardSummary summary={summary} normalWorkDayMinutes={kpis[0]?.normalWorkDayMinutes} />
+
+              {generatingInsights && (
+                <div className="text-center text-gray-400 text-sm py-2 fade-in-up">{t('dashboard.generating_insights', language)}</div>
+              )}
+
+              {insightsError && !generatingInsights && (
+                <div className="text-center text-gray-400 text-sm py-2 fade-in-up">{insightsError}</div>
+              )}
 
               {insights && (
                 <div className={`bg-gradient-to-br from-purple-50 to-indigo-50 border border-purple-200 rounded-lg p-6 mb-8 ${isRTL ? 'text-right' : 'text-left'}`}>
@@ -958,6 +967,14 @@ export default function Home() {
             </div>
           )}
         </div>
+
+        {loadingAirtable && (
+          <div className="text-center text-gray-400 text-sm py-2 fade-in-up">{t('dashboard.loading_addresses', language)}</div>
+        )}
+
+        {airtableError && !loadingAirtable && (
+          <div className="text-center text-gray-400 text-sm py-2 fade-in-up">{airtableError}</div>
+        )}
 
         <div className={`overflow-hidden transition-all duration-300 ${showAirtable && airtableRecords.length > 0 && !isLoading ? 'max-h-[2000px] opacity-100' : 'max-h-0 opacity-0'}`}>
           <div className="py-8 airtable-entrance">
