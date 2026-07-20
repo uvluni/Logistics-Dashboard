@@ -85,6 +85,25 @@ export async function GET(request: NextRequest) {
       );
     }
 
+    // Mock mode for development
+    if (token === 'mock-token-dev') {
+      return NextResponse.json({
+        routes: [],
+        kpis: [],
+        summary: {
+          totalRoutes: 0,
+          totalStops: 0,
+          totalDistance: 0,
+          totalDuration: 0,
+          averageUtilization: 0,
+          completionRate: 0,
+          weather: null,
+          insights: 'Demo mode - no data',
+        },
+        timestamp: new Date().toISOString(),
+      });
+    }
+
     if (!baseUrl) {
       return NextResponse.json(
         { error: 'Missing API base URL' },

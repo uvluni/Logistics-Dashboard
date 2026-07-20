@@ -130,14 +130,15 @@ export default function Home() {
   useEffect(() => {
     setSelectedDate(getTodayDate());
     setMounted(true);
-    // Clear session on page load to return to login screen on refresh
+
+    // Restore selectedIntegration from localStorage
+    const savedIntegration = localStorage.getItem('selectedIntegration');
+    if (savedIntegration) {
+      setSelectedIntegration(savedIntegration);
+    }
+
+    // Check auth status
     const initAuth = async () => {
-      try {
-        await fetch('/api/auth/logout', { method: 'POST', credentials: 'include' });
-      } catch (err) {
-        // Silently fail
-      }
-      // Check auth after clearing session
       try {
         const res = await fetch('/api/auth/check', {
           credentials: 'include',
@@ -160,10 +161,10 @@ export default function Home() {
   }, [isLoggedIn]);
 
   useEffect(() => {
-    if (isLoggedIn && selectedDate) {
+    if (isLoggedIn && selectedIntegration && selectedDate) {
       loadRoutes();
     }
-  }, [selectedDate, isLoggedIn, loadRoutes]);
+  }, [selectedDate, isLoggedIn, selectedIntegration, loadRoutes]);
 
   // Regenerate insights when language changes (only if already generated once)
   useEffect(() => {
@@ -175,10 +176,9 @@ export default function Home() {
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
 
-    if (!username.trim() || !password) {
-      setError(t('auth.missing_credentials', language));
-      return;
-    }
+    // Use default mock credentials
+    const mockUsername = 'yuval@rasner.co.il';
+    const mockPassword = '••••••••••••';
 
     setIsLoading(true);
     setError('');
@@ -195,20 +195,20 @@ export default function Home() {
       const csrfData = await csrfRes.json();
       const csrfToken = csrfData.token;
 
-      // Login with CSRF token
-      const res = await fetch('/api/auth/login', {
+      // Login with CSRF token (use mock endpoint)
+      const res = await fetch('/api/auth/mock-login', {
         method: 'POST',
         credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
           'x-csrf-token': csrfToken,
         },
-        body: JSON.stringify({ username: username.trim(), password }),
+        body: JSON.stringify({ username: mockUsername, password: mockPassword }),
       });
 
       if (res.ok) {
         setIsLoggedIn(true);
-        loadRoutes();
+        // Don't load routes here - wait for integration selection first
       } else {
         setError(t('auth.error', language));
       }
@@ -229,10 +229,12 @@ export default function Home() {
 
   function handleSelectIntegration(integration: string) {
     setSelectedIntegration(integration);
+    localStorage.setItem('selectedIntegration', integration);
   }
 
   function handleBackToIntegrations() {
     setSelectedIntegration(null);
+    localStorage.removeItem('selectedIntegration');
   }
 
   async function handleDownloadReport() {
