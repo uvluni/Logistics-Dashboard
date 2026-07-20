@@ -762,12 +762,9 @@ export default function Home() {
               </label>
               <input
                 type="email"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                autoComplete="username"
-                style={{ width: '100%', padding: '10px 12px', border: '1px solid var(--border-primary)', borderRadius: '4px', backgroundColor: 'var(--bg-tertiary)', color: 'var(--text-primary)', fontSize: '14px', textAlign: isRTL ? 'right' : 'left', transition: 'border-color 0.2s' }}
-                onFocus={(e) => e.target.style.borderColor = 'var(--color-blue)'}
-                onBlur={(e) => e.target.style.borderColor = 'var(--border-primary)'}
+                defaultValue="yuval@rasner.co.il"
+                disabled
+                style={{ width: '100%', padding: '10px 12px', border: '1px solid var(--border-primary)', borderRadius: '4px', backgroundColor: 'var(--bg-tertiary)', color: 'var(--text-primary)', fontSize: '14px', textAlign: isRTL ? 'right' : 'left', transition: 'border-color 0.2s', opacity: 0.7, cursor: 'not-allowed' }}
               />
             </div>
 
@@ -777,12 +774,9 @@ export default function Home() {
               </label>
               <input
                 type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                autoComplete="current-password"
-                style={{ width: '100%', padding: '10px 12px', border: '1px solid var(--border-primary)', borderRadius: '4px', backgroundColor: 'var(--bg-tertiary)', color: 'var(--text-primary)', fontSize: '14px', textAlign: isRTL ? 'right' : 'left', transition: 'border-color 0.2s' }}
-                onFocus={(e) => e.target.style.borderColor = 'var(--color-blue)'}
-                onBlur={(e) => e.target.style.borderColor = 'var(--border-primary)'}
+                defaultValue="••••••••••••"
+                disabled
+                style={{ width: '100%', padding: '10px 12px', border: '1px solid var(--border-primary)', borderRadius: '4px', backgroundColor: 'var(--bg-tertiary)', color: 'var(--text-primary)', fontSize: '14px', textAlign: isRTL ? 'right' : 'left', transition: 'border-color 0.2s', opacity: 0.7, cursor: 'not-allowed' }}
               />
             </div>
 
