@@ -59,6 +59,7 @@ export default function Home() {
   }, []);
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [selectedIntegration, setSelectedIntegration] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -220,9 +221,18 @@ export default function Home() {
 
   async function handleLogout() {
     setIsLoggedIn(false);
+    setSelectedIntegration(null);
     setKpis([]);
     setSummary(null);
     setPassword('');
+  }
+
+  function handleSelectIntegration(integration: string) {
+    setSelectedIntegration(integration);
+  }
+
+  function handleBackToIntegrations() {
+    setSelectedIntegration(null);
   }
 
   async function handleDownloadReport() {
@@ -722,7 +732,7 @@ export default function Home() {
     }
   }
 
-  if (!isLoggedIn) {
+  if (!isLoggedIn || !mounted) {
     return (
       <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '16px', position: 'relative' }}>
         <div style={{ position: 'absolute', top: '20px', right: '20px', left: 'auto', display: 'flex', gap: '12px', alignItems: 'center', zIndex: 50 }}>
@@ -793,6 +803,112 @@ export default function Home() {
     );
   }
 
+  // Integrations Hub screen
+  if (!selectedIntegration) {
+    const integrations = [
+      {
+        id: 'roadnet',
+        name: language === 'he' ? 'ROADNET' : 'ROADNET',
+        description: language === 'he' ? 'מערכת ניהול מסלולים וחלוקה' : 'Route planning & distribution system',
+        icon: '🚚',
+        color: '#3b82f6',
+      },
+      {
+        id: 'logistics',
+        name: language === 'he' ? 'לוגיסטיקה' : 'Logistics',
+        description: language === 'he' ? 'ניהול חלוקה מתקדם' : 'Advanced delivery management',
+        icon: '📦',
+        color: '#10b981',
+      },
+      {
+        id: 'analytics',
+        name: language === 'he' ? 'ניתוח' : 'Analytics',
+        description: language === 'he' ? 'דוחות ותחזוקות' : 'Reports & forecasting',
+        icon: '📊',
+        color: '#8b5cf6',
+      },
+    ];
+
+    return (
+      <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-primary)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '32px 16px', position: 'relative' }}>
+        <div style={{ position: 'absolute', top: '20px', right: '20px', left: 'auto', display: 'flex', gap: '12px', alignItems: 'center', zIndex: 50 }}>
+          <button onClick={() => setLanguage('he')} style={{ padding: '8px 12px', borderRadius: '4px', fontWeight: 500, fontSize: '13px', transition: 'all 0.2s', backgroundColor: language === 'he' ? 'var(--color-blue)' : 'transparent', color: language === 'he' ? 'white' : 'var(--text-secondary)', border: '1px solid ' + (language === 'he' ? 'var(--color-blue)' : 'var(--border-primary)'), cursor: 'pointer' }}>
+            עב
+          </button>
+          <button onClick={() => setLanguage('en')} style={{ padding: '8px 12px', borderRadius: '4px', fontWeight: 500, fontSize: '13px', transition: 'all 0.2s', backgroundColor: language === 'en' ? 'var(--color-blue)' : 'transparent', color: language === 'en' ? 'white' : 'var(--text-secondary)', border: '1px solid ' + (language === 'en' ? 'var(--color-blue)' : 'var(--border-primary)'), cursor: 'pointer' }}>
+            EN
+          </button>
+          <button onClick={() => setLanguage('es')} style={{ padding: '8px 12px', borderRadius: '4px', fontWeight: 500, fontSize: '13px', transition: 'all 0.2s', backgroundColor: language === 'es' ? 'var(--color-blue)' : 'transparent', color: language === 'es' ? 'white' : 'var(--text-secondary)', border: '1px solid ' + (language === 'es' ? 'var(--color-blue)' : 'var(--border-primary)'), cursor: 'pointer' }}>
+            ES
+          </button>
+          <div style={{ width: '1px', height: '24px', backgroundColor: 'var(--border-primary)' }}></div>
+          <button onClick={toggleTheme} style={{ padding: '6px 10px', borderRadius: '4px', backgroundColor: 'transparent', color: 'var(--text-secondary)', border: '1px solid var(--border-primary)', cursor: 'pointer', fontSize: '16px', transition: 'all 0.2s' }}>
+            {theme === 'dark' ? '☀️' : '🌙'}
+          </button>
+          <button onClick={handleLogout} style={{ padding: '8px 12px', borderRadius: '4px', fontWeight: 500, fontSize: '13px', transition: 'all 0.2s', backgroundColor: '#dc2626', color: 'white', border: '1px solid #dc2626', cursor: 'pointer' }}>
+            {language === 'he' ? 'התנתק' : language === 'es' ? 'Salir' : 'Logout'}
+          </button>
+        </div>
+
+        <div style={{ maxWidth: '900px', width: '100%' }}>
+          <div style={{ textAlign: 'center', marginBottom: '48px' }}>
+            <h1 style={{ fontSize: '32px', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '12px', letterSpacing: '-0.5px' }}>
+              {language === 'he' ? 'בחר חיבור' : language === 'es' ? 'Seleccionar conexión' : 'Select Connection'}
+            </h1>
+            <p style={{ color: 'var(--text-tertiary)', fontSize: '15px', fontWeight: 400 }}>
+              {language === 'he' ? 'בחר את מערכת ניהול ההפצה שברצונך להשתמש בה' : language === 'es' ? 'Elige el sistema que deseas usar' : 'Choose the system you want to use'}
+            </p>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '24px' }}>
+            {integrations.map((integration) => (
+              <button
+                key={integration.id}
+                onClick={() => handleSelectIntegration(integration.id)}
+                style={{
+                  backgroundColor: 'var(--bg-secondary)',
+                  border: '2px solid var(--border-primary)',
+                  borderRadius: '8px',
+                  padding: '32px 24px',
+                  textAlign: 'center',
+                  cursor: 'pointer',
+                  transition: 'all 0.3s',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  gap: '16px',
+                  position: 'relative',
+                }}
+                onMouseEnter={(e) => {
+                  const target = e.currentTarget as HTMLButtonElement;
+                  target.style.borderColor = integration.color;
+                  target.style.boxShadow = `0 0 20px ${integration.color}20`;
+                  target.style.transform = 'translateY(-4px)';
+                }}
+                onMouseLeave={(e) => {
+                  const target = e.currentTarget as HTMLButtonElement;
+                  target.style.borderColor = 'var(--border-primary)';
+                  target.style.boxShadow = 'none';
+                  target.style.transform = 'translateY(0)';
+                }}
+              >
+                <div style={{ fontSize: '48px' }}>{integration.icon}</div>
+                <div>
+                  <h3 style={{ fontSize: '18px', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '6px' }}>
+                    {integration.name}
+                  </h3>
+                  <p style={{ fontSize: '13px', color: 'var(--text-tertiary)', fontWeight: 400 }}>
+                    {integration.description}
+                  </p>
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div style={{ backgroundColor: 'var(--bg-primary)', minHeight: '100vh' }}>
       <div style={{ position: 'sticky', top: 0, backgroundColor: 'var(--bg-secondary)', borderBottom: '1px solid var(--border-primary)', boxShadow: '0 1px 2px rgba(0,0,0,0.05)', zIndex: 10 }}>
@@ -810,6 +926,9 @@ export default function Home() {
             </button>
             <button onClick={toggleTheme} style={{ padding: '6px 12px', borderRadius: '6px', fontWeight: 600, backgroundColor: '#e5e7eb', color: '#6b7280', border: 'none', cursor: 'pointer', fontSize: '18px', display: 'inline-block', minWidth: '40px', textAlign: 'center' }} title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}>
               {theme === 'dark' ? '☀️' : '🌙'}
+            </button>
+            <button onClick={handleBackToIntegrations} style={{ padding: '8px 16px', borderRadius: '6px', fontWeight: 600, transition: 'all 0.2s', backgroundColor: 'var(--color-blue)', color: 'white', border: 'none', cursor: 'pointer', fontSize: '14px' }}>
+              {language === 'he' ? '← חזור' : language === 'es' ? '← Volver' : '← Back'}
             </button>
             <button onClick={handleLogout} style={{ padding: '8px 16px', borderRadius: '6px', fontWeight: 600, transition: 'all 0.2s', backgroundColor: '#dc2626', color: 'white', border: 'none', cursor: 'pointer', fontSize: '14px' }}>
               {t('auth.logout', language)}
