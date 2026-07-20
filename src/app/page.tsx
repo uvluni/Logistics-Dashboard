@@ -115,7 +115,7 @@ export default function Home() {
     } finally {
       setIsLoading(false);
     }
-  }, [selectedDate, language, setIsLoading, setError, setIsLoggedIn, setKpis, setSummary]);
+  }, [selectedDate, language]);
 
   // Update HTML dir and lang based on language
   useEffect(() => {
