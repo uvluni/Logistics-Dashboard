@@ -634,8 +634,15 @@ export default function Home() {
       });
 
       if (res.status === 401) {
-        setIsLoggedIn(false);
-        setError(t('error.session_expired', language));
+        // 401 from airtable endpoint means token not found, not session expired
+        // Show airtable section anyway with empty records
+        setAirtableRecords([]);
+        setShowAirtable(true);
+
+        // Scroll to airtable section
+        setTimeout(() => {
+          airtableRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 100);
         return;
       }
 
