@@ -81,6 +81,8 @@ export default function Home() {
   const [validationMessage, setValidationMessage] = useState('');
   const [validationType, setValidationType] = useState<'google' | 'rodnet' | null>(null);
   const datePickerRef = useRef<DatePicker>(null);
+  const insightsRef = useRef<HTMLDivElement>(null);
+  const airtableRef = useRef<HTMLDivElement>(null);
 
   const loadRoutes = useCallback(async () => {
     setIsLoading(true);
@@ -544,6 +546,11 @@ export default function Home() {
     setInsightsError('');
     setInsights('');
 
+    // Scroll to insights after generation starts
+    setTimeout(() => {
+      insightsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 100);
+
     try {
       // Prepare routes data as Excel format
       const routesData = kpis.map(kpi => ({
@@ -651,6 +658,11 @@ export default function Home() {
       const data = await res.json();
       setAirtableRecords(data.records || []);
       setShowAirtable(true);
+
+      // Scroll to airtable section after it loads
+      setTimeout(() => {
+        airtableRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 100);
     } catch (err) {
       setAirtableError(t('dashboard.geocode_no_key', language));
     } finally {
@@ -1030,7 +1042,7 @@ export default function Home() {
               )}
 
               {insights && (
-                <div className={`bg-gradient-to-br from-purple-50 to-indigo-50 border border-purple-200 rounded-lg p-6 mb-8 ${isRTL ? 'text-right' : 'text-left'}`}>
+                <div ref={insightsRef} className={`bg-gradient-to-br from-purple-50 to-indigo-50 border border-purple-200 rounded-lg p-6 mb-8 ${isRTL ? 'text-right' : 'text-left'}`}>
                   <h3 className="text-xl font-bold text-purple-900 mb-4 flex items-center gap-2">
                     <span>🤖</span>
                     {t('dashboard.insights_title', language)}
@@ -1080,7 +1092,7 @@ export default function Home() {
           <div className="text-center text-gray-400 text-sm py-2 fade-in-up">{airtableError}</div>
         )}
 
-        <div className={`overflow-hidden transition-all duration-300 ${showAirtable && airtableRecords.length > 0 && !isLoading ? 'max-h-[2000px] opacity-100' : 'max-h-0 opacity-0'}`}>
+        <div ref={airtableRef} className={`overflow-hidden transition-all duration-300 ${showAirtable && airtableRecords.length > 0 && !isLoading ? 'max-h-[2000px] opacity-100' : 'max-h-0 opacity-0'}`}>
           <div className="py-8 airtable-entrance">
             <div className={`bg-white border border-orange-200 rounded-lg p-6 mb-8 ${isRTL ? 'text-right' : 'text-left'}`}>
               <div className="flex justify-between items-center mb-6">
