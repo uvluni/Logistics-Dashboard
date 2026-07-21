@@ -174,9 +174,10 @@ export default function Home() {
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
 
-    // Use default mock credentials
-    const mockUsername = 'yuval@rasner.co.il';
-    const mockPassword = '••••••••••••';
+    if (!username.trim() || !password.trim()) {
+      setError(t('auth.missing_credentials', language));
+      return;
+    }
 
     setIsLoading(true);
     setError('');
@@ -193,19 +194,20 @@ export default function Home() {
       const csrfData = await csrfRes.json();
       const csrfToken = csrfData.token;
 
-      // Login with CSRF token (use mock endpoint)
-      const res = await fetch('/api/auth/mock-login', {
+      // Login with real ROADNET credentials
+      const res = await fetch('/api/auth/login', {
         method: 'POST',
         credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
           'x-csrf-token': csrfToken,
         },
-        body: JSON.stringify({ username: mockUsername, password: mockPassword }),
+        body: JSON.stringify({ username: username.trim(), password }),
       });
 
       if (res.ok) {
         setIsLoggedIn(true);
+        setPassword(''); // Clear password after successful login
         // Don't load routes here - wait for integration selection first
       } else {
         setError(t('auth.error', language));
@@ -772,9 +774,10 @@ export default function Home() {
               </label>
               <input
                 type="email"
-                defaultValue="yuval@rasner.co.il"
-                disabled
-                style={{ width: '100%', padding: '10px 12px', border: '1px solid var(--border-primary)', borderRadius: '4px', backgroundColor: 'var(--bg-tertiary)', color: 'var(--text-primary)', fontSize: '14px', textAlign: isRTL ? 'right' : 'left', transition: 'border-color 0.2s', opacity: 0.7, cursor: 'not-allowed' }}
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                placeholder="Enter your email"
+                style={{ width: '100%', padding: '10px 12px', border: '1px solid var(--border-primary)', borderRadius: '4px', backgroundColor: 'var(--bg-secondary)', color: 'var(--text-primary)', fontSize: '14px', textAlign: isRTL ? 'right' : 'left', transition: 'border-color 0.2s' }}
               />
             </div>
 
@@ -784,9 +787,10 @@ export default function Home() {
               </label>
               <input
                 type="password"
-                defaultValue="••••••••••••"
-                disabled
-                style={{ width: '100%', padding: '10px 12px', border: '1px solid var(--border-primary)', borderRadius: '4px', backgroundColor: 'var(--bg-tertiary)', color: 'var(--text-primary)', fontSize: '14px', textAlign: isRTL ? 'right' : 'left', transition: 'border-color 0.2s', opacity: 0.7, cursor: 'not-allowed' }}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Enter your password"
+                style={{ width: '100%', padding: '10px 12px', border: '1px solid var(--border-primary)', borderRadius: '4px', backgroundColor: 'var(--bg-secondary)', color: 'var(--text-primary)', fontSize: '14px', textAlign: isRTL ? 'right' : 'left', transition: 'border-color 0.2s' }}
               />
             </div>
 
