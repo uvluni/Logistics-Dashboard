@@ -55,7 +55,9 @@ export default function Home() {
   useEffect(() => {
     const savedTheme = (localStorage.getItem('theme') as 'dark' | 'light') || 'dark';
     setTheme(savedTheme);
-    document.documentElement.setAttribute('data-theme', savedTheme);
+    if (typeof document !== 'undefined') {
+      document.documentElement.setAttribute('data-theme', savedTheme);
+    }
   }, []);
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
