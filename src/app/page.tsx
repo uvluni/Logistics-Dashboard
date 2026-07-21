@@ -736,24 +736,26 @@ export default function Home() {
 
   if (!isLoggedIn || !mounted) {
     return (
-      <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '16px', position: 'relative' }}>
-        <div style={{ position: 'absolute', top: '20px', right: '20px', left: 'auto', display: 'flex', gap: '12px', alignItems: 'center', zIndex: 50 }}>
-          <button onClick={() => setLanguage('he')} style={{ padding: '8px 12px', borderRadius: '4px', fontWeight: 500, fontSize: '13px', transition: 'all 0.2s', backgroundColor: language === 'he' ? 'var(--color-blue)' : 'transparent', color: language === 'he' ? 'white' : 'var(--text-secondary)', border: '1px solid ' + (language === 'he' ? 'var(--color-blue)' : 'var(--border-primary)'), cursor: 'pointer' }}>
-            עב
-          </button>
-          <button onClick={() => setLanguage('en')} style={{ padding: '8px 12px', borderRadius: '4px', fontWeight: 500, fontSize: '13px', transition: 'all 0.2s', backgroundColor: language === 'en' ? 'var(--color-blue)' : 'transparent', color: language === 'en' ? 'white' : 'var(--text-secondary)', border: '1px solid ' + (language === 'en' ? 'var(--color-blue)' : 'var(--border-primary)'), cursor: 'pointer' }}>
-            EN
-          </button>
-          <button onClick={() => setLanguage('es')} style={{ padding: '8px 12px', borderRadius: '4px', fontWeight: 500, fontSize: '13px', transition: 'all 0.2s', backgroundColor: language === 'es' ? 'var(--color-blue)' : 'transparent', color: language === 'es' ? 'white' : 'var(--text-secondary)', border: '1px solid ' + (language === 'es' ? 'var(--color-blue)' : 'var(--border-primary)'), cursor: 'pointer' }}>
-            ES
-          </button>
-          <div style={{ width: '1px', height: '24px', backgroundColor: 'var(--border-primary)' }}></div>
-          <button onClick={toggleTheme} style={{ padding: '6px 10px', borderRadius: '4px', backgroundColor: 'transparent', color: 'var(--text-secondary)', border: '1px solid var(--border-primary)', cursor: 'pointer', fontSize: '16px', transition: 'all 0.2s' }}>
-            {theme === 'dark' ? '☀️' : '🌙'}
-          </button>
+      <div style={{ backgroundColor: 'var(--bg-primary)', minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+        <div style={{ position: 'sticky', top: 0, backgroundColor: 'var(--bg-secondary)', borderBottom: '1px solid var(--border-primary)', boxShadow: '0 1px 2px rgba(0,0,0,0.05)', zIndex: 10, padding: '16px 32px' }}>
+          <div style={{ display: 'flex', gap: '8px', alignItems: 'center', justifyContent: 'flex-end' }}>
+            <button onClick={() => setLanguage('he')} style={{ padding: '6px 12px', borderRadius: '6px', fontWeight: 600, transition: 'all 0.2s', backgroundColor: language === 'he' ? 'var(--color-blue)' : 'var(--border-primary)', color: language === 'he' ? 'white' : 'var(--text-secondary)', border: 'none', cursor: 'pointer' }}>
+              עב
+            </button>
+            <button onClick={() => setLanguage('en')} style={{ padding: '6px 12px', borderRadius: '6px', fontWeight: 600, transition: 'all 0.2s', backgroundColor: language === 'en' ? 'var(--color-blue)' : 'var(--border-primary)', color: language === 'en' ? 'white' : 'var(--text-secondary)', border: 'none', cursor: 'pointer' }}>
+              EN
+            </button>
+            <button onClick={() => setLanguage('es')} style={{ padding: '6px 12px', borderRadius: '6px', fontWeight: 600, transition: 'all 0.2s', backgroundColor: language === 'es' ? 'var(--color-blue)' : 'var(--border-primary)', color: language === 'es' ? 'white' : 'var(--text-secondary)', border: 'none', cursor: 'pointer' }}>
+              ES
+            </button>
+            <button onClick={toggleTheme} style={{ padding: '6px 12px', borderRadius: '6px', fontWeight: 600, backgroundColor: '#e5e7eb', color: '#6b7280', border: 'none', cursor: 'pointer', fontSize: '18px', display: 'inline-block', minWidth: '40px', textAlign: 'center' }} title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}>
+              {theme === 'dark' ? '☀️' : '🌙'}
+            </button>
+          </div>
         </div>
 
-        <div style={{ backgroundColor: 'var(--bg-secondary)', borderRadius: '6px', border: '1px solid var(--border-primary)', maxWidth: '420px', width: '100%', padding: '40px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexGrow: 1, padding: '16px' }}>
+          <div style={{ backgroundColor: 'var(--bg-secondary)', borderRadius: '6px', border: '1px solid var(--border-primary)', maxWidth: '420px', width: '100%', padding: '40px' }}>
           <h1 style={{ fontSize: '24px', fontWeight: 700, color: 'var(--text-primary)', textAlign: 'center', marginBottom: '6px', letterSpacing: '-0.5px' }}>
             {t('app.title', language)}
           </h1>
@@ -803,6 +805,7 @@ export default function Home() {
             </button>
           </form>
         </div>
+        </div>
       </div>
     );
   }
@@ -834,27 +837,29 @@ export default function Home() {
     ];
 
     return (
-      <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-primary)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '32px 16px', position: 'relative' }}>
-        <div style={{ position: 'absolute', top: '20px', right: '20px', left: 'auto', display: 'flex', gap: '12px', alignItems: 'center', zIndex: 50 }}>
-          <button onClick={() => setLanguage('he')} style={{ padding: '8px 12px', borderRadius: '4px', fontWeight: 500, fontSize: '13px', transition: 'all 0.2s', backgroundColor: language === 'he' ? 'var(--color-blue)' : 'transparent', color: language === 'he' ? 'white' : 'var(--text-secondary)', border: '1px solid ' + (language === 'he' ? 'var(--color-blue)' : 'var(--border-primary)'), cursor: 'pointer' }}>
-            עב
-          </button>
-          <button onClick={() => setLanguage('en')} style={{ padding: '8px 12px', borderRadius: '4px', fontWeight: 500, fontSize: '13px', transition: 'all 0.2s', backgroundColor: language === 'en' ? 'var(--color-blue)' : 'transparent', color: language === 'en' ? 'white' : 'var(--text-secondary)', border: '1px solid ' + (language === 'en' ? 'var(--color-blue)' : 'var(--border-primary)'), cursor: 'pointer' }}>
-            EN
-          </button>
-          <button onClick={() => setLanguage('es')} style={{ padding: '8px 12px', borderRadius: '4px', fontWeight: 500, fontSize: '13px', transition: 'all 0.2s', backgroundColor: language === 'es' ? 'var(--color-blue)' : 'transparent', color: language === 'es' ? 'white' : 'var(--text-secondary)', border: '1px solid ' + (language === 'es' ? 'var(--color-blue)' : 'var(--border-primary)'), cursor: 'pointer' }}>
-            ES
-          </button>
-          <div style={{ width: '1px', height: '24px', backgroundColor: 'var(--border-primary)' }}></div>
-          <button onClick={toggleTheme} style={{ padding: '6px 10px', borderRadius: '4px', backgroundColor: 'transparent', color: 'var(--text-secondary)', border: '1px solid var(--border-primary)', cursor: 'pointer', fontSize: '16px', transition: 'all 0.2s' }}>
-            {theme === 'dark' ? '☀️' : '🌙'}
-          </button>
-          <button onClick={handleLogout} style={{ padding: '8px 12px', borderRadius: '4px', fontWeight: 500, fontSize: '13px', transition: 'all 0.2s', backgroundColor: '#dc2626', color: 'white', border: '1px solid #dc2626', cursor: 'pointer' }}>
-            {language === 'he' ? 'התנתק' : language === 'es' ? 'Salir' : 'Logout'}
-          </button>
+      <div style={{ backgroundColor: 'var(--bg-primary)', minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+        <div style={{ position: 'sticky', top: 0, backgroundColor: 'var(--bg-secondary)', borderBottom: '1px solid var(--border-primary)', boxShadow: '0 1px 2px rgba(0,0,0,0.05)', zIndex: 10, padding: '16px 32px' }}>
+          <div style={{ display: 'flex', gap: '8px', alignItems: 'center', justifyContent: 'flex-end' }}>
+            <button onClick={() => setLanguage('he')} style={{ padding: '6px 12px', borderRadius: '6px', fontWeight: 600, transition: 'all 0.2s', backgroundColor: language === 'he' ? 'var(--color-blue)' : 'var(--border-primary)', color: language === 'he' ? 'white' : 'var(--text-secondary)', border: 'none', cursor: 'pointer' }}>
+              עב
+            </button>
+            <button onClick={() => setLanguage('en')} style={{ padding: '6px 12px', borderRadius: '6px', fontWeight: 600, transition: 'all 0.2s', backgroundColor: language === 'en' ? 'var(--color-blue)' : 'var(--border-primary)', color: language === 'en' ? 'white' : 'var(--text-secondary)', border: 'none', cursor: 'pointer' }}>
+              EN
+            </button>
+            <button onClick={() => setLanguage('es')} style={{ padding: '6px 12px', borderRadius: '6px', fontWeight: 600, transition: 'all 0.2s', backgroundColor: language === 'es' ? 'var(--color-blue)' : 'var(--border-primary)', color: language === 'es' ? 'white' : 'var(--text-secondary)', border: 'none', cursor: 'pointer' }}>
+              ES
+            </button>
+            <button onClick={toggleTheme} style={{ padding: '6px 12px', borderRadius: '6px', fontWeight: 600, backgroundColor: '#e5e7eb', color: '#6b7280', border: 'none', cursor: 'pointer', fontSize: '18px', display: 'inline-block', minWidth: '40px', textAlign: 'center' }} title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}>
+              {theme === 'dark' ? '☀️' : '🌙'}
+            </button>
+            <button onClick={handleLogout} style={{ padding: '8px 16px', borderRadius: '6px', fontWeight: 600, transition: 'all 0.2s', backgroundColor: '#dc2626', color: 'white', border: 'none', cursor: 'pointer', fontSize: '14px' }}>
+              {t('auth.logout', language)}
+            </button>
+          </div>
         </div>
 
-        <div style={{ maxWidth: '900px', width: '100%' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', flexGrow: 1, padding: '32px 16px' }}>
+          <div style={{ maxWidth: '900px', width: '100%' }}>
           <div style={{ textAlign: 'center', marginBottom: '48px' }}>
             <h1 style={{ fontSize: '32px', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '12px', letterSpacing: '-0.5px' }}>
               {language === 'he' ? 'Integration Layer' : language === 'es' ? 'Integration Layer' : 'Integration Layer'}
@@ -909,6 +914,7 @@ export default function Home() {
             ))}
           </div>
         </div>
+        </div>
       </div>
     );
   }
@@ -930,9 +936,6 @@ export default function Home() {
             </button>
             <button onClick={toggleTheme} style={{ padding: '6px 12px', borderRadius: '6px', fontWeight: 600, backgroundColor: '#e5e7eb', color: '#6b7280', border: 'none', cursor: 'pointer', fontSize: '18px', display: 'inline-block', minWidth: '40px', textAlign: 'center' }} title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}>
               {theme === 'dark' ? '☀️' : '🌙'}
-            </button>
-            <button onClick={handleBackToIntegrations} style={{ padding: '8px 16px', borderRadius: '6px', fontWeight: 600, transition: 'all 0.2s', backgroundColor: 'var(--color-blue)', color: 'white', border: 'none', cursor: 'pointer', fontSize: '14px' }}>
-              {language === 'he' ? '← חזור' : language === 'es' ? '← Volver' : '← Back'}
             </button>
             <button onClick={handleLogout} style={{ padding: '8px 16px', borderRadius: '6px', fontWeight: 600, transition: 'all 0.2s', backgroundColor: '#dc2626', color: 'white', border: 'none', cursor: 'pointer', fontSize: '14px' }}>
               {t('auth.logout', language)}
