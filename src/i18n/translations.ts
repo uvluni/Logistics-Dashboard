@@ -35,7 +35,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'dashboard.insights_error': 'שגיאה ביצירת התובנות',
     'dashboard.insights_title': 'מנטור לוגיסטי',
     'dashboard.insights_no_key': 'לא הוגדר מפתח לחיבור לתובנות',
-    'dashboard.geocode_no_key': 'לא הוגדר מפתח לחיבור לאיתור כתובות',
+    'dashboard.geocode_no_key': 'שגיאה בחיבור ל-Airtable - בדוק את ה-Airtable Token ב-.env.local',
     'dashboard.address_verification': 'טיוב כתובות',
     'dashboard.loading_addresses': 'טוען כתובות...',
 
@@ -204,7 +204,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'dashboard.insights_error': 'Error generating insights',
     'dashboard.insights_title': 'Logistics Mentor',
     'dashboard.insights_no_key': 'No API key configured for insights',
-    'dashboard.geocode_no_key': 'No API key configured for address lookup',
+    'dashboard.geocode_no_key': 'Error connecting to Airtable - check AIRTABLE_TOKEN in .env.local',
     'dashboard.address_verification': 'Address Verification',
     'dashboard.loading_addresses': 'Loading addresses...',
 
@@ -373,7 +373,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'dashboard.insights_error': 'Error al generar perspectivas',
     'dashboard.insights_title': 'Mentor Logístico',
     'dashboard.insights_no_key': 'No se configuró una clave API para los insights',
-    'dashboard.geocode_no_key': 'No se configuró una clave API para la verificación de direcciones',
+    'dashboard.geocode_no_key': 'Error al conectar con Airtable - verifique AIRTABLE_TOKEN en .env.local',
     'dashboard.address_verification': 'Verificación de Dirección',
     'dashboard.loading_addresses': 'Cargando direcciones...',
 
