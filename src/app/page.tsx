@@ -615,7 +615,7 @@ export default function Home() {
 
       // Scroll to insights after data is received
       setTimeout(() => {
-        insightsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        insightsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }, 100);
     } catch (err) {
       setInsightsError(t('dashboard.insights_no_key', language));
@@ -645,7 +645,7 @@ export default function Home() {
 
         // Scroll to airtable section even on error
         setTimeout(() => {
-          airtableRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          airtableRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }, 100);
         return;
       }
@@ -656,7 +656,7 @@ export default function Home() {
 
       // Scroll to airtable section on success
       setTimeout(() => {
-        airtableRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        airtableRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }, 100);
     } catch (err) {
       setAirtableError(t('dashboard.geocode_no_key', language));
@@ -664,7 +664,7 @@ export default function Home() {
 
       // Scroll to airtable section even on exception
       setTimeout(() => {
-        airtableRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        airtableRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }, 100);
     } finally {
       setLoadingAirtable(false);
