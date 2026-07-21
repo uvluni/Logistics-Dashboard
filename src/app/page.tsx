@@ -633,21 +633,10 @@ export default function Home() {
         credentials: 'include',
       });
 
-      if (res.status === 401) {
-        // 401 from airtable endpoint means token not found, not session expired
-        // Show airtable section anyway with empty records
-        setAirtableRecords([]);
-        setShowAirtable(true);
-
-        // Scroll to airtable section
-        setTimeout(() => {
-          airtableRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }, 100);
-        return;
-      }
-
       if (!res.ok) {
+        // Show error message but don't scroll
         setAirtableError(t('dashboard.geocode_no_key', language));
+        setLoadingAirtable(false);
         return;
       }
 
@@ -655,7 +644,7 @@ export default function Home() {
       setAirtableRecords(data.records || []);
       setShowAirtable(true);
 
-      // Scroll to airtable section after it loads
+      // Scroll to airtable section only on success
       setTimeout(() => {
         airtableRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }, 100);
