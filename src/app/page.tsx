@@ -1104,14 +1104,15 @@ export default function Home() {
 
         <div ref={airtableRef} className={`overflow-hidden transition-all duration-300 ${showAirtable && airtableRecords.length > 0 && !isLoading ? 'max-h-[2000px] opacity-100' : 'max-h-0 opacity-0'}`}>
           <div className="py-8 airtable-entrance">
-            <div className={`bg-white border border-orange-200 rounded-lg p-6 mb-8 ${isRTL ? 'text-right' : 'text-left'}`}>
+            <div style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-primary)' }} className={`border rounded-lg p-6 mb-8 ${isRTL ? 'text-right' : 'text-left'}`}>
               <div className="flex justify-between items-center mb-6">
-                <h3 className="text-2xl font-bold text-gray-900">
+                <h3 style={{ color: 'var(--text-primary)' }} className="text-2xl font-bold">
                   📍 {t('dashboard.address_verification', language)} ({airtableRecords.filter(r => !r.fields?.['Choose Google coordinates'] && !r.fields?.['Choose Roadnet coordinates']).length})
                 </h3>
                 <button
                   onClick={() => setShowAirtable(false)}
-                  className="text-gray-400 hover:text-gray-900 font-bold text-xl"
+                  style={{ color: 'var(--text-secondary)' }}
+                  className="hover:opacity-70 font-bold text-xl"
                 >
                   ✕
                 </button>
@@ -1206,6 +1207,37 @@ export default function Home() {
             </div>
           </div>
         </div>
+
+        {/* Scroll to top button */}
+        {(summary || insights || showAirtable) && (
+          <button
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            style={{
+              position: 'fixed',
+              bottom: '24px',
+              right: '24px',
+              width: '48px',
+              height: '48px',
+              borderRadius: '50%',
+              backgroundColor: 'var(--color-blue)',
+              color: 'white',
+              border: 'none',
+              cursor: 'pointer',
+              fontSize: '24px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
+              zIndex: 40,
+              transition: 'all 0.2s'
+            }}
+            onMouseEnter={(e) => e.target.style.transform = 'scale(1.1)'}
+            onMouseLeave={(e) => e.target.style.transform = 'scale(1)'}
+            title="Scroll to top"
+          >
+            ↑
+          </button>
+        )}
 
       </div>
     </div>
