@@ -1216,23 +1216,24 @@ export default function Home() {
               position: 'fixed',
               bottom: '24px',
               right: '24px',
-              width: '48px',
-              height: '48px',
+              width: '44px',
+              height: '44px',
               borderRadius: '50%',
               backgroundColor: 'var(--color-blue)',
               color: 'white',
               border: 'none',
               cursor: 'pointer',
-              fontSize: '24px',
+              fontSize: '20px',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
               zIndex: 40,
-              transition: 'all 0.2s'
+              transition: 'opacity 0.3s',
+              opacity: 0.5,
+              boxShadow: 'none'
             }}
-            onMouseEnter={(e) => e.target.style.transform = 'scale(1.1)'}
-            onMouseLeave={(e) => e.target.style.transform = 'scale(1)'}
+            onMouseEnter={(e) => e.target.style.opacity = '1'}
+            onMouseLeave={(e) => e.target.style.opacity = '0.5'}
             title="Scroll to top"
           >
             ↑
