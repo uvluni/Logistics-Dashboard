@@ -613,9 +613,18 @@ export default function Home() {
       const data = await res.json();
       setInsights(data.insights || '');
 
-      // Scroll to insights after data is received
+      // Scroll to insights after data is received, accounting for sticky header
       setTimeout(() => {
-        insightsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        const element = insightsRef.current;
+        if (element) {
+          const headerOffset = 100;
+          const elementPosition = element.getBoundingClientRect().top + window.scrollY;
+          const offsetPosition = elementPosition - headerOffset;
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
+          });
+        }
       }, 100);
     } catch (err) {
       setInsightsError(t('dashboard.insights_no_key', language));
