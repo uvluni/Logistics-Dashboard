@@ -84,6 +84,15 @@ export async function GET(request: NextRequest) {
       );
     }
 
+    // In dev mode with mock token, return empty airtable records
+    if (token === 'mock-token-dev') {
+      return NextResponse.json({
+        success: true,
+        records: [],
+        totalRecords: 0,
+      });
+    }
+
     const baseId = process.env.AIRTABLE_BASE_ID;
     const tableId = process.env.AIRTABLE_TABLE_ID;
     const airtableToken = process.env.AIRTABLE_TOKEN;

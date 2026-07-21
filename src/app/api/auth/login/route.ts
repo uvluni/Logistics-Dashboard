@@ -3,15 +3,17 @@ import { verifyCSRFToken } from '@/lib/csrf';
 
 export async function POST(request: NextRequest) {
   try {
-    // Verify CSRF token
-    const csrfToken = request.cookies.get('csrf_token')?.value;
-    const csrfHeader = request.headers.get('x-csrf-token');
+    // Verify CSRF token (skip in development)
+    if (process.env.NODE_ENV === 'production') {
+      const csrfToken = request.cookies.get('csrf_token')?.value;
+      const csrfHeader = request.headers.get('x-csrf-token');
 
-    if (!csrfToken || !csrfHeader || !verifyCSRFToken(csrfHeader) || csrfHeader !== csrfToken) {
-      return NextResponse.json(
-        { error: 'CSRF token validation failed' },
-        { status: 403 }
-      );
+      if (!csrfToken || !csrfHeader || !verifyCSRFToken(csrfHeader) || csrfHeader !== csrfToken) {
+        return NextResponse.json(
+          { error: 'CSRF token validation failed' },
+          { status: 403 }
+        );
+      }
     }
 
     const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;

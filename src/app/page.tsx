@@ -140,17 +140,6 @@ export default function Home() {
     if (savedIntegration) {
       setSelectedIntegration(savedIntegration);
     }
-
-    // Clear any existing session on page load
-    const initAuth = async () => {
-      try {
-        await fetch('/api/auth/logout', { method: 'POST', credentials: 'include' });
-      } catch (err) {
-        // Silently fail
-      }
-      setIsLoggedIn(false);
-    };
-    initAuth();
   }, []);
 
   // Reset date to today when logged in
