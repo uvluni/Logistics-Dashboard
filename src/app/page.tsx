@@ -139,18 +139,14 @@ export default function Home() {
       setSelectedIntegration(savedIntegration);
     }
 
-    // Check auth status
+    // Clear any existing session on page load
     const initAuth = async () => {
       try {
-        const res = await fetch('/api/auth/check', {
-          credentials: 'include',
-        });
-        if (res.ok) {
-          setIsLoggedIn(true);
-        }
+        await fetch('/api/auth/logout', { method: 'POST', credentials: 'include' });
       } catch (err) {
-        setIsLoggedIn(false);
+        // Silently fail
       }
+      setIsLoggedIn(false);
     };
     initAuth();
   }, []);
