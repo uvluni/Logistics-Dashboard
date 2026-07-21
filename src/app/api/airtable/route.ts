@@ -76,8 +76,10 @@ export async function PATCH(request: NextRequest) {
 export async function GET(request: NextRequest) {
   try {
     const token = request.cookies.get('roadnet_token')?.value;
+    console.log('[Airtable] GET - Token from cookie:', token ? '✓' : '✗');
 
     if (!token) {
+      console.log('[Airtable] No token found');
       return NextResponse.json(
         { error: 'Not authenticated' },
         { status: 401 }
@@ -86,6 +88,7 @@ export async function GET(request: NextRequest) {
 
     // In dev mode with mock token, return empty airtable records
     if (token === 'mock-token-dev') {
+      console.log('[Airtable] Using mock token - returning empty records');
       return NextResponse.json({
         success: true,
         records: [],
