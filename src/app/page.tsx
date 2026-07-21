@@ -857,7 +857,7 @@ export default function Home() {
         <div style={{ maxWidth: '900px', width: '100%' }}>
           <div style={{ textAlign: 'center', marginBottom: '48px' }}>
             <h1 style={{ fontSize: '32px', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '12px', letterSpacing: '-0.5px' }}>
-              {language === 'he' ? 'בחר חיבור' : language === 'es' ? 'Seleccionar conexión' : 'Select Connection'}
+              {language === 'he' ? 'Integration Layer' : language === 'es' ? 'Integration Layer' : 'Integration Layer'}
             </h1>
             <p style={{ color: 'var(--text-tertiary)', fontSize: '15px', fontWeight: 400 }}>
               {language === 'he' ? 'בחר את מערכת ניהול ההפצה שברצונך להשתמש בה' : language === 'es' ? 'Elige el sistema que deseas usar' : 'Choose the system you want to use'}
