@@ -535,11 +535,6 @@ export default function Home() {
     setInsightsError('');
     setInsights('');
 
-    // Scroll to insights after generation starts
-    setTimeout(() => {
-      insightsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }, 100);
-
     try {
       // Prepare routes data as Excel format
       const routesData = kpis.map(kpi => ({
@@ -617,8 +612,18 @@ export default function Home() {
 
       const data = await res.json();
       setInsights(data.insights || '');
+
+      // Scroll to insights after data is received
+      setTimeout(() => {
+        insightsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 100);
     } catch (err) {
       setInsightsError(t('dashboard.insights_no_key', language));
+
+      // Scroll to insights section even on error
+      setTimeout(() => {
+        insightsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 100);
     } finally {
       setGeneratingInsights(false);
     }
@@ -1038,12 +1043,12 @@ export default function Home() {
               )}
 
               {insights && (
-                <div ref={insightsRef} className={`bg-gradient-to-br from-purple-50 to-indigo-50 border border-purple-200 rounded-lg p-6 mb-8 ${isRTL ? 'text-right' : 'text-left'}`}>
-                  <h3 className="text-xl font-bold text-purple-900 mb-4 flex items-center gap-2">
+                <div ref={insightsRef} style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-primary)' }} className={`border rounded-lg p-6 mb-8 ${isRTL ? 'text-right' : 'text-left'}`}>
+                  <h3 style={{ color: 'var(--text-primary)' }} className="text-xl font-bold mb-4 flex items-center gap-2">
                     <span>🤖</span>
                     {t('dashboard.insights_title', language)}
                   </h3>
-                  <div className={`text-gray-700 whitespace-pre-wrap leading-relaxed text-sm ${isRTL ? 'text-right' : 'text-left'}`}>
+                  <div style={{ color: 'var(--text-secondary)' }} className={`whitespace-pre-wrap leading-relaxed text-sm ${isRTL ? 'text-right' : 'text-left'}`}>
                     {insights}
                   </div>
                 </div>
