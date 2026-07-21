@@ -19,6 +19,16 @@ export default function RootLayout({
     <html suppressHydrationWarning>
       <head>
         <meta charSet="utf-8" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                const theme = localStorage.getItem('theme') || 'dark';
+                document.documentElement.setAttribute('data-theme', theme);
+              })();
+            `,
+          }}
+        />
       </head>
       <body className="bg-gray-50" suppressHydrationWarning>
         <Providers>{children}</Providers>
