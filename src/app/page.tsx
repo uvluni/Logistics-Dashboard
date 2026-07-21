@@ -634,9 +634,14 @@ export default function Home() {
       });
 
       if (!res.ok) {
-        // Show error message but don't scroll
+        // Show error message and scroll to section
         setAirtableError(t('dashboard.geocode_no_key', language));
-        setLoadingAirtable(false);
+        setShowAirtable(true);
+
+        // Scroll to airtable section even on error
+        setTimeout(() => {
+          airtableRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 100);
         return;
       }
 
@@ -644,12 +649,18 @@ export default function Home() {
       setAirtableRecords(data.records || []);
       setShowAirtable(true);
 
-      // Scroll to airtable section only on success
+      // Scroll to airtable section on success
       setTimeout(() => {
         airtableRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }, 100);
     } catch (err) {
       setAirtableError(t('dashboard.geocode_no_key', language));
+      setShowAirtable(true);
+
+      // Scroll to airtable section even on exception
+      setTimeout(() => {
+        airtableRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 100);
     } finally {
       setLoadingAirtable(false);
     }

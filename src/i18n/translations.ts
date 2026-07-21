@@ -35,7 +35,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'dashboard.insights_error': 'שגיאה ביצירת התובנות',
     'dashboard.insights_title': 'מנטור לוגיסטי',
     'dashboard.insights_no_key': 'לא הוגדר מפתח לחיבור לתובנות',
-    'dashboard.geocode_no_key': 'שגיאה בחיבור ל-Airtable - בדוק את ה-Airtable Token ב-.env.local',
+    'dashboard.geocode_no_key': 'שגיאה בחיבור ל-Airtable - בדוק את ה-Airtable Token',
     'dashboard.address_verification': 'טיוב כתובות',
     'dashboard.loading_addresses': 'טוען כתובות...',
 
