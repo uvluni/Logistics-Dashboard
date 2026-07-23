@@ -7,10 +7,13 @@ export function calculateRouteKPI(route, equipment, normalWorkDayMinutes = 540) 
     const stops = (route.stops || []);
     // Only count ServiceableStop (actual customer deliveries), ignore DEPOT stops
     const serviceableStops = stops.filter((s) => s.stopType === 'ServiceableStop');
-    const totalWeight = serviceableStops.reduce((sum, s) => {
-        const info = s.serviceableStopInfo;
-        return sum + (info?.deliveryWeightUnits || 0);
-    }, 0);
+    // Get total weight from OriginDepotStop's runningQuantityAfter[0]
+    // This is the total load at the start of the route
+    let totalWeight = 0;
+    const originDepot = stops.find((s) => s.stopType === 'OriginDepotStop');
+    if (originDepot?.originDepotStopInfo?.runningQuantityAfter) {
+        totalWeight = originDepot.originDepotStopInfo.runningQuantityAfter[0] || 0;
+    }
     const serviceTimeMinutes = serviceableStops.reduce((sum, s) => {
         const info = s.serviceableStopInfo;
         const arrivalTime = new Date(info?.arrivalTimestamp).getTime();
