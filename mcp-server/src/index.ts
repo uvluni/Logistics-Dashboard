@@ -60,12 +60,16 @@ server.registerTool(
   },
   async ({ region, sessionDate }) => {
     const routes = await client.getRoutes(region, sessionDate, false);
-    const summary = routes.map((r: any) => ({
-      routeId: r.identity?.identifier,
-      description: r.description,
-      routeStartTime: r.routeStartTime,
-      stopCount: (r.stops || []).length,
-    }));
+    const summary = routes.map((r: any) => {
+      // Count only ServiceableStop (customer deliveries), exclude DEPOT stops
+      const serviceableStops = (r.stops || []).filter((s: any) => s.stopType === 'ServiceableStop');
+      return {
+        routeId: r.identity?.identifier,
+        description: r.description,
+        routeStartTime: r.routeStartTime,
+        stopCount: serviceableStops.length,
+      };
+    });
     return { content: [{ type: 'text', text: JSON.stringify(summary, null, 2) }] };
   }
 );
@@ -90,7 +94,9 @@ server.registerTool(
         isError: true,
       };
     }
-    return { content: [{ type: 'text', text: JSON.stringify(route.stops || [], null, 2) }] };
+    // Return only ServiceableStop (customer deliveries), exclude DEPOT stops
+    const serviceableStops = (route.stops || []).filter((s: any) => s.stopType === 'ServiceableStop');
+    return { content: [{ type: 'text', text: JSON.stringify(serviceableStops, null, 2) }] };
   }
 );
 

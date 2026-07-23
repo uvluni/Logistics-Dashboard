@@ -43,12 +43,16 @@ server.registerTool('get_routes', {
     },
 }, async ({ region, sessionDate }) => {
     const routes = await client.getRoutes(region, sessionDate, false);
-    const summary = routes.map((r) => ({
-        routeId: r.identity?.identifier,
-        description: r.description,
-        routeStartTime: r.routeStartTime,
-        stopCount: (r.stops || []).length,
-    }));
+    const summary = routes.map((r) => {
+        // Count only ServiceableStop (customer deliveries), exclude DEPOT stops
+        const serviceableStops = (r.stops || []).filter((s) => s.stopType === 'ServiceableStop');
+        return {
+            routeId: r.identity?.identifier,
+            description: r.description,
+            routeStartTime: r.routeStartTime,
+            stopCount: serviceableStops.length,
+        };
+    });
     return { content: [{ type: 'text', text: JSON.stringify(summary, null, 2) }] };
 });
 server.registerTool('get_route_stops', {
@@ -68,7 +72,9 @@ server.registerTool('get_route_stops', {
             isError: true,
         };
     }
-    return { content: [{ type: 'text', text: JSON.stringify(route.stops || [], null, 2) }] };
+    // Return only ServiceableStop (customer deliveries), exclude DEPOT stops
+    const serviceableStops = (route.stops || []).filter((s) => s.stopType === 'ServiceableStop');
+    return { content: [{ type: 'text', text: JSON.stringify(serviceableStops, null, 2) }] };
 });
 server.registerTool('get_equipment_types', {
     title: 'Get equipment types',

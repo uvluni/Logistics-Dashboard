@@ -5,9 +5,18 @@
  */
 export function calculateRouteKPI(route, equipment, normalWorkDayMinutes = 540) {
     const stops = (route.stops || []);
-    const serviceableStops = stops.filter((s) => s.type === 'SERVICEABLE_STOP');
-    const totalWeight = serviceableStops.reduce((sum, s) => sum + (s.weight || 0), 0);
-    const serviceTimeMinutes = serviceableStops.reduce((sum, s) => sum + (s.serviceTime || 0), 0);
+    // Only count ServiceableStop (actual customer deliveries), ignore DEPOT stops
+    const serviceableStops = stops.filter((s) => s.stopType === 'ServiceableStop');
+    const totalWeight = serviceableStops.reduce((sum, s) => {
+        const info = s.serviceableStopInfo;
+        return sum + (info?.deliveryWeightUnits || 0);
+    }, 0);
+    const serviceTimeMinutes = serviceableStops.reduce((sum, s) => {
+        const info = s.serviceableStopInfo;
+        const arrivalTime = new Date(info?.arrivalTimestamp).getTime();
+        const departureTime = new Date(info?.departureTimestamp).getTime();
+        return sum + (departureTime - arrivalTime) / (1000 * 60); // Convert ms to minutes
+    }, 0);
     const vehicleCapacity = equipment?.capacity?.size1 || 0;
     const weightUtilization = vehicleCapacity > 0 ? (totalWeight / vehicleCapacity) * 100 : 0;
     const totalTime = route.totalTime || 0;
