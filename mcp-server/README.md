@@ -15,28 +15,42 @@ the main `routes-report` app.
 All tools are read-only. Credentials are never accepted as tool
 parameters - they live only in the process environment.
 
-## Setup
+## Setup (First Time / For a New User)
 
 ```bash
+# 1. Navigate to the mcp-server directory
 cd mcp-server
+
+# 2. Install dependencies
 npm install
+
+# 3. Create .env file from template
 cp .env.example .env
-# edit .env with the real RNA_API_USERNAME / RNA_API_PASSWORD
+
+# 4. Edit .env with your ROADNET credentials
+#    - RNA_API_USERNAME: your ROADNET Anywhere username
+#    - RNA_API_PASSWORD: your ROADNET Anywhere password
+nano .env
+
+# 5. Build the server
 npm run build
 ```
 
 ## Registering with Claude Code
 
-From the `routes-report` project root:
+From the project root (wherever you copied `routes-report/` to):
 
 ```bash
+# This command registers the MCP server with Claude Code
+# It will be available in every Claude Code session within this project
 claude mcp add roadnet-rna -- node mcp-server/dist/index.js
 ```
 
-The server loads `mcp-server/.env` itself on startup (via `dotenv`),
-so no environment variables need to be passed through the `claude mcp
-add` command or your shell profile - just make sure `.env` exists
-with real values before registering.
+**Important:** The server loads `mcp-server/.env` automatically on startup (via `dotenv`), so:
+- ✅ Never pass credentials as tool parameters (they're handled internally)
+- ✅ Credentials are loaded from `.env` only
+- ✅ Each person gets their own credentials in their own `.env` file
+- ✅ The `.env` file should be in `.gitignore` (never commit credentials)
 
 ## Local dev loop
 
