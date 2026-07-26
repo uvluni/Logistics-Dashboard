@@ -770,7 +770,7 @@ export default function Home() {
                 <path d="M 50 90 L 90 60 L 110 90 L 70 110 Z" fill="currentColor"/>
                 <path d="M 100 110 L 140 90 L 160 150 L 120 170 Z" fill="currentColor"/>
               </svg>
-              <h2 style={{ fontSize: '16px', fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>Integration Layer</h2>
+              <h2 style={{ fontSize: '18px', fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>Integration Layer</h2>
             </div>
             <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
             <button onClick={() => setLanguage('he')} style={{ padding: '6px 12px', borderRadius: '6px', fontWeight: 600, transition: 'all 0.2s', backgroundColor: language === 'he' ? 'var(--color-blue)' : 'var(--border-primary)', color: language === 'he' ? 'white' : 'var(--text-secondary)', border: 'none', cursor: 'pointer' }}>
@@ -882,7 +882,7 @@ export default function Home() {
                 <path d="M 50 90 L 90 60 L 110 90 L 70 110 Z" fill="currentColor"/>
                 <path d="M 100 110 L 140 90 L 160 150 L 120 170 Z" fill="currentColor"/>
               </svg>
-              <h2 style={{ fontSize: '16px', fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>ROADNET</h2>
+              <h2 style={{ fontSize: '18px', fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>Integration Layer - ROADNET</h2>
             </div>
             <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
             <button onClick={() => setLanguage('he')} style={{ padding: '6px 12px', borderRadius: '6px', fontWeight: 600, transition: 'all 0.2s', backgroundColor: language === 'he' ? 'var(--color-blue)' : 'var(--border-primary)', color: language === 'he' ? 'white' : 'var(--text-secondary)', border: 'none', cursor: 'pointer' }}>
