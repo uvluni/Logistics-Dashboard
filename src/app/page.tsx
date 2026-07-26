@@ -80,6 +80,7 @@ export default function Home() {
   const [validatingRecordId, setValidatingRecordId] = useState<string | null>(null);
   const [validationMessage, setValidationMessage] = useState('');
   const [validationType, setValidationType] = useState<'google' | 'rodnet' | null>(null);
+  const [toastMessage, setToastMessage] = useState('');
   const datePickerRef = useRef<DatePicker>(null);
   const insightsRef = useRef<HTMLDivElement>(null);
   const airtableRef = useRef<HTMLDivElement>(null);
@@ -914,7 +915,14 @@ export default function Home() {
             {integrations.map((integration) => (
               <button
                 key={integration.id}
-                onClick={() => handleSelectIntegration(integration.id)}
+                onClick={() => {
+                  if (integration.id === 'roadnet') {
+                    handleSelectIntegration(integration.id);
+                  } else {
+                    setToastMessage(language === 'he' ? 'נדרש מפתח אינטגרציה' : 'Integration key required');
+                    setTimeout(() => setToastMessage(''), 3000);
+                  }
+                }}
                 style={{
                   backgroundColor: 'var(--bg-secondary)',
                   border: '2px solid var(--border-primary)',
@@ -956,6 +964,38 @@ export default function Home() {
           </div>
         </div>
         </div>
+
+        {/* Toast notification */}
+        {toastMessage && (
+          <div style={{
+            position: 'fixed',
+            bottom: '24px',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            backgroundColor: 'var(--color-blue)',
+            color: 'white',
+            padding: '12px 24px',
+            borderRadius: '6px',
+            boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+            zIndex: 1000,
+            animation: 'fadeInUp 0.3s ease-out',
+            fontWeight: 500
+          }}>
+            {toastMessage}
+          </div>
+        )}
+        <style>{`
+          @keyframes fadeInUp {
+            from {
+              opacity: 0;
+              transform: translateX(-50%) translateY(10px);
+            }
+            to {
+              opacity: 1;
+              transform: translateX(-50%) translateY(0);
+            }
+          }
+        `}</style>
       </div>
     );
   }
