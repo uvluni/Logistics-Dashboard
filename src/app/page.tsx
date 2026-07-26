@@ -982,7 +982,7 @@ export default function Home() {
               <h2 style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-tertiary)', margin: 0 }}>Integration Layer</h2>
             </div>
             <div style={{ width: '1px', height: '20px', backgroundColor: 'var(--border-primary)' }}></div>
-            <h1 style={{ fontSize: '18px', fontWeight: 600, color: 'var(--text-primary)', textAlign: 'left', margin: 0 }}>{t('dashboard.title', language)}</h1>
+            <h1 style={{ fontSize: '18px', fontWeight: 600, color: 'var(--text-primary)', textAlign: 'left', margin: 0 }}>ROADNET</h1>
           </div>
           <div style={{ display: 'flex', gap: '8px', alignItems: 'center', justifyContent: 'flex-end' }}>
             <button onClick={() => setLanguage('he')} style={{ padding: '6px 12px', borderRadius: '6px', fontWeight: 600, transition: 'all 0.2s', backgroundColor: language === 'he' ? 'var(--color-blue)' : 'var(--border-primary)', color: language === 'he' ? 'white' : 'var(--text-secondary)', border: 'none', cursor: 'pointer' }}>
