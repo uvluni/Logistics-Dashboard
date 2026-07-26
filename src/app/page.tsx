@@ -759,12 +759,21 @@ export default function Home() {
           <div style={{ display: 'flex', gap: '8px', alignItems: 'center', justifyContent: 'space-between' }}>
             <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
               <svg width="20" height="20" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ color: 'var(--color-green, #10b981)' }}>
-                <circle cx="100" cy="100" r="95" fill="none" stroke="currentColor" strokeWidth="28"/>
-                <path d="M 100 30 L 140 90 L 100 110 L 80 100 Z" fill="currentColor"/>
-                <path d="M 100 90 L 140 70 L 160 110 L 120 130 Z" fill="currentColor"/>
-                <path d="M 70 110 L 100 90 L 120 130 L 70 150 Z" fill="currentColor"/>
-                <path d="M 50 90 L 90 60 L 110 90 L 70 110 Z" fill="currentColor"/>
-                <path d="M 100 110 L 140 90 L 160 150 L 120 170 Z" fill="currentColor"/>
+                {/* Outer circle */}
+                <circle cx="100" cy="100" r="90" fill="none" stroke="currentColor" strokeWidth="32"/>
+                {/* Three arrows in clockwise pattern */}
+                {/* Top right arrow */}
+                <g transform="translate(100, 100) rotate(0)">
+                  <path d="M 0 -60 L 35 -20 L 20 0 L -20 0 L -35 -20 Z" fill="currentColor"/>
+                </g>
+                {/* Bottom right arrow */}
+                <g transform="translate(100, 100) rotate(120)">
+                  <path d="M 0 -60 L 35 -20 L 20 0 L -20 0 L -35 -20 Z" fill="currentColor"/>
+                </g>
+                {/* Left arrow */}
+                <g transform="translate(100, 100) rotate(240)">
+                  <path d="M 0 -60 L 35 -20 L 20 0 L -20 0 L -35 -20 Z" fill="currentColor"/>
+                </g>
               </svg>
               <h2 style={{ fontSize: '18px', fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>Integration Layer</h2>
             </div>
@@ -871,12 +880,21 @@ export default function Home() {
           <div style={{ display: 'flex', gap: '8px', alignItems: 'center', justifyContent: 'space-between' }}>
             <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
               <svg width="20" height="20" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ color: 'var(--color-green, #10b981)' }}>
-                <circle cx="100" cy="100" r="95" fill="none" stroke="currentColor" strokeWidth="28"/>
-                <path d="M 100 30 L 140 90 L 100 110 L 80 100 Z" fill="currentColor"/>
-                <path d="M 100 90 L 140 70 L 160 110 L 120 130 Z" fill="currentColor"/>
-                <path d="M 70 110 L 100 90 L 120 130 L 70 150 Z" fill="currentColor"/>
-                <path d="M 50 90 L 90 60 L 110 90 L 70 110 Z" fill="currentColor"/>
-                <path d="M 100 110 L 140 90 L 160 150 L 120 170 Z" fill="currentColor"/>
+                {/* Outer circle */}
+                <circle cx="100" cy="100" r="90" fill="none" stroke="currentColor" strokeWidth="32"/>
+                {/* Three arrows in clockwise pattern */}
+                {/* Top right arrow */}
+                <g transform="translate(100, 100) rotate(0)">
+                  <path d="M 0 -60 L 35 -20 L 20 0 L -20 0 L -35 -20 Z" fill="currentColor"/>
+                </g>
+                {/* Bottom right arrow */}
+                <g transform="translate(100, 100) rotate(120)">
+                  <path d="M 0 -60 L 35 -20 L 20 0 L -20 0 L -35 -20 Z" fill="currentColor"/>
+                </g>
+                {/* Left arrow */}
+                <g transform="translate(100, 100) rotate(240)">
+                  <path d="M 0 -60 L 35 -20 L 20 0 L -20 0 L -35 -20 Z" fill="currentColor"/>
+                </g>
               </svg>
               <h2 style={{ fontSize: '18px', fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>Integration Layer</h2>
             </div>
@@ -1007,12 +1025,21 @@ export default function Home() {
           <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
             <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
               <svg width="20" height="20" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ color: 'var(--color-green, #10b981)' }}>
-                <circle cx="100" cy="100" r="95" fill="none" stroke="currentColor" strokeWidth="28"/>
-                <path d="M 100 30 L 140 90 L 100 110 L 80 100 Z" fill="currentColor"/>
-                <path d="M 100 90 L 140 70 L 160 110 L 120 130 Z" fill="currentColor"/>
-                <path d="M 70 110 L 100 90 L 120 130 L 70 150 Z" fill="currentColor"/>
-                <path d="M 50 90 L 90 60 L 110 90 L 70 110 Z" fill="currentColor"/>
-                <path d="M 100 110 L 140 90 L 160 150 L 120 170 Z" fill="currentColor"/>
+                {/* Outer circle */}
+                <circle cx="100" cy="100" r="90" fill="none" stroke="currentColor" strokeWidth="32"/>
+                {/* Three arrows in clockwise pattern */}
+                {/* Top right arrow */}
+                <g transform="translate(100, 100) rotate(0)">
+                  <path d="M 0 -60 L 35 -20 L 20 0 L -20 0 L -35 -20 Z" fill="currentColor"/>
+                </g>
+                {/* Bottom right arrow */}
+                <g transform="translate(100, 100) rotate(120)">
+                  <path d="M 0 -60 L 35 -20 L 20 0 L -20 0 L -35 -20 Z" fill="currentColor"/>
+                </g>
+                {/* Left arrow */}
+                <g transform="translate(100, 100) rotate(240)">
+                  <path d="M 0 -60 L 35 -20 L 20 0 L -20 0 L -35 -20 Z" fill="currentColor"/>
+                </g>
               </svg>
               <h2 style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-tertiary)', margin: 0 }}>Integration Layer</h2>
             </div>
