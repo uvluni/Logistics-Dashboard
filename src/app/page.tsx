@@ -134,12 +134,7 @@ export default function Home() {
   useEffect(() => {
     setSelectedDate(getTodayDate());
     setMounted(true);
-
-    // Restore selectedIntegration from localStorage
-    const savedIntegration = localStorage.getItem('selectedIntegration');
-    if (savedIntegration) {
-      setSelectedIntegration(savedIntegration);
-    }
+    // Don't restore selectedIntegration - force user to choose on login
   }, []);
 
   // Reset date to today when logged in
