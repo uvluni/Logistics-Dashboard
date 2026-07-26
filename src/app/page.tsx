@@ -761,7 +761,12 @@ export default function Home() {
       <div style={{ backgroundColor: 'var(--bg-primary)', minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
         <div style={{ position: 'sticky', top: 0, backgroundColor: 'var(--bg-secondary)', borderBottom: '1px solid var(--border-primary)', boxShadow: '0 1px 2px rgba(0,0,0,0.05)', zIndex: 10, padding: '16px 32px', direction: 'ltr' }}>
           <div style={{ display: 'flex', gap: '8px', alignItems: 'center', justifyContent: 'space-between' }}>
-            <h2 style={{ fontSize: '16px', fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>Integration Layer</h2>
+            <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" style={{ color: 'var(--color-green, #10b981)' }}>
+                <path d="M10 1C5.03 1 1 5.03 1 10s4.03 9 9 9 9-4.03 9-9-4.03-9-9-9zm0 16c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7zm3.5-9L9 13.5 6.5 11l-1.41 1.41L9 16.32l5.5-5.5L13.5 9z" fill="currentColor"/>
+              </svg>
+              <h2 style={{ fontSize: '16px', fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>Integration Layer</h2>
+            </div>
             <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
             <button onClick={() => setLanguage('he')} style={{ padding: '6px 12px', borderRadius: '6px', fontWeight: 600, transition: 'all 0.2s', backgroundColor: language === 'he' ? 'var(--color-blue)' : 'var(--border-primary)', color: language === 'he' ? 'white' : 'var(--text-secondary)', border: 'none', cursor: 'pointer' }}>
               עב
@@ -862,7 +867,14 @@ export default function Home() {
     return (
       <div style={{ backgroundColor: 'var(--bg-primary)', minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
         <div style={{ position: 'sticky', top: 0, backgroundColor: 'var(--bg-secondary)', borderBottom: '1px solid var(--border-primary)', boxShadow: '0 1px 2px rgba(0,0,0,0.05)', zIndex: 10, padding: '16px 32px', direction: 'ltr' }}>
-          <div style={{ display: 'flex', gap: '8px', alignItems: 'center', justifyContent: 'flex-end' }}>
+          <div style={{ display: 'flex', gap: '8px', alignItems: 'center', justifyContent: 'space-between' }}>
+            <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" style={{ color: 'var(--color-green, #10b981)' }}>
+                <path d="M10 1C5.03 1 1 5.03 1 10s4.03 9 9 9 9-4.03 9-9-4.03-9-9-9zm0 16c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7zm3.5-9L9 13.5 6.5 11l-1.41 1.41L9 16.32l5.5-5.5L13.5 9z" fill="currentColor"/>
+              </svg>
+              <h2 style={{ fontSize: '16px', fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>Integration Layer</h2>
+            </div>
+            <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
             <button onClick={() => setLanguage('he')} style={{ padding: '6px 12px', borderRadius: '6px', fontWeight: 600, transition: 'all 0.2s', backgroundColor: language === 'he' ? 'var(--color-blue)' : 'var(--border-primary)', color: language === 'he' ? 'white' : 'var(--text-secondary)', border: 'none', cursor: 'pointer' }}>
               עב
             </button>
@@ -878,6 +890,7 @@ export default function Home() {
             <button onClick={handleLogout} style={{ padding: '8px 16px', borderRadius: '6px', fontWeight: 600, transition: 'all 0.2s', backgroundColor: '#dc2626', color: 'white', border: 'none', cursor: 'pointer', fontSize: '14px' }}>
               {t('auth.logout', language)}
             </button>
+            </div>
           </div>
         </div>
 
@@ -946,7 +959,16 @@ export default function Home() {
     <div style={{ backgroundColor: 'var(--bg-primary)', minHeight: '100vh' }}>
       <div style={{ position: 'sticky', top: 0, backgroundColor: 'var(--bg-secondary)', borderBottom: '1px solid var(--border-primary)', boxShadow: '0 1px 2px rgba(0,0,0,0.05)', zIndex: 10, direction: 'ltr' }}>
         <div style={{ maxWidth: '100%', margin: '0 auto', padding: '16px 32px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <h1 style={{ fontSize: '24px', fontWeight: 600, color: 'var(--text-primary)', textAlign: 'left' }}>{t('dashboard.title', language)}</h1>
+          <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+            <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" style={{ color: 'var(--color-green, #10b981)' }}>
+                <path d="M10 1C5.03 1 1 5.03 1 10s4.03 9 9 9 9-4.03 9-9-4.03-9-9-9zm0 16c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7zm3.5-9L9 13.5 6.5 11l-1.41 1.41L9 16.32l5.5-5.5L13.5 9z" fill="currentColor"/>
+              </svg>
+              <h2 style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-tertiary)', margin: 0 }}>Integration Layer</h2>
+            </div>
+            <div style={{ width: '1px', height: '20px', backgroundColor: 'var(--border-primary)' }}></div>
+            <h1 style={{ fontSize: '18px', fontWeight: 600, color: 'var(--text-primary)', textAlign: 'left', margin: 0 }}>{t('dashboard.title', language)}</h1>
+          </div>
           <div style={{ display: 'flex', gap: '8px', alignItems: 'center', justifyContent: 'flex-end' }}>
             <button onClick={() => setLanguage('he')} style={{ padding: '6px 12px', borderRadius: '6px', fontWeight: 600, transition: 'all 0.2s', backgroundColor: language === 'he' ? 'var(--color-blue)' : 'var(--border-primary)', color: language === 'he' ? 'white' : 'var(--text-secondary)', border: 'none', cursor: 'pointer' }}>
               עב
