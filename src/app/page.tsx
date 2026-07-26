@@ -762,8 +762,13 @@ export default function Home() {
         <div style={{ position: 'sticky', top: 0, backgroundColor: 'var(--bg-secondary)', borderBottom: '1px solid var(--border-primary)', boxShadow: '0 1px 2px rgba(0,0,0,0.05)', zIndex: 10, padding: '16px 32px', direction: 'ltr' }}>
           <div style={{ display: 'flex', gap: '8px', alignItems: 'center', justifyContent: 'space-between' }}>
             <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" style={{ color: 'var(--color-green, #10b981)' }}>
-                <path d="M10 1C5.03 1 1 5.03 1 10s4.03 9 9 9 9-4.03 9-9-4.03-9-9-9zm0 16c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7zm3.5-9L9 13.5 6.5 11l-1.41 1.41L9 16.32l5.5-5.5L13.5 9z" fill="currentColor"/>
+              <svg width="20" height="20" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ color: 'var(--color-green, #10b981)' }}>
+                <circle cx="100" cy="100" r="95" fill="none" stroke="currentColor" strokeWidth="28"/>
+                <path d="M 100 30 L 140 90 L 100 110 L 80 100 Z" fill="currentColor"/>
+                <path d="M 100 90 L 140 70 L 160 110 L 120 130 Z" fill="currentColor"/>
+                <path d="M 70 110 L 100 90 L 120 130 L 70 150 Z" fill="currentColor"/>
+                <path d="M 50 90 L 90 60 L 110 90 L 70 110 Z" fill="currentColor"/>
+                <path d="M 100 110 L 140 90 L 160 150 L 120 170 Z" fill="currentColor"/>
               </svg>
               <h2 style={{ fontSize: '16px', fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>Integration Layer</h2>
             </div>
@@ -869,10 +874,15 @@ export default function Home() {
         <div style={{ position: 'sticky', top: 0, backgroundColor: 'var(--bg-secondary)', borderBottom: '1px solid var(--border-primary)', boxShadow: '0 1px 2px rgba(0,0,0,0.05)', zIndex: 10, padding: '16px 32px', direction: 'ltr' }}>
           <div style={{ display: 'flex', gap: '8px', alignItems: 'center', justifyContent: 'space-between' }}>
             <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" style={{ color: 'var(--color-green, #10b981)' }}>
-                <path d="M10 1C5.03 1 1 5.03 1 10s4.03 9 9 9 9-4.03 9-9-4.03-9-9-9zm0 16c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7zm3.5-9L9 13.5 6.5 11l-1.41 1.41L9 16.32l5.5-5.5L13.5 9z" fill="currentColor"/>
+              <svg width="20" height="20" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ color: 'var(--color-green, #10b981)' }}>
+                <circle cx="100" cy="100" r="95" fill="none" stroke="currentColor" strokeWidth="28"/>
+                <path d="M 100 30 L 140 90 L 100 110 L 80 100 Z" fill="currentColor"/>
+                <path d="M 100 90 L 140 70 L 160 110 L 120 130 Z" fill="currentColor"/>
+                <path d="M 70 110 L 100 90 L 120 130 L 70 150 Z" fill="currentColor"/>
+                <path d="M 50 90 L 90 60 L 110 90 L 70 110 Z" fill="currentColor"/>
+                <path d="M 100 110 L 140 90 L 160 150 L 120 170 Z" fill="currentColor"/>
               </svg>
-              <h2 style={{ fontSize: '16px', fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>Integration Layer</h2>
+              <h2 style={{ fontSize: '16px', fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>ROADNET</h2>
             </div>
             <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
             <button onClick={() => setLanguage('he')} style={{ padding: '6px 12px', borderRadius: '6px', fontWeight: 600, transition: 'all 0.2s', backgroundColor: language === 'he' ? 'var(--color-blue)' : 'var(--border-primary)', color: language === 'he' ? 'white' : 'var(--text-secondary)', border: 'none', cursor: 'pointer' }}>
@@ -961,8 +971,13 @@ export default function Home() {
         <div style={{ maxWidth: '100%', margin: '0 auto', padding: '16px 32px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
             <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" style={{ color: 'var(--color-green, #10b981)' }}>
-                <path d="M10 1C5.03 1 1 5.03 1 10s4.03 9 9 9 9-4.03 9-9-4.03-9-9-9zm0 16c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7zm3.5-9L9 13.5 6.5 11l-1.41 1.41L9 16.32l5.5-5.5L13.5 9z" fill="currentColor"/>
+              <svg width="20" height="20" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ color: 'var(--color-green, #10b981)' }}>
+                <circle cx="100" cy="100" r="95" fill="none" stroke="currentColor" strokeWidth="28"/>
+                <path d="M 100 30 L 140 90 L 100 110 L 80 100 Z" fill="currentColor"/>
+                <path d="M 100 90 L 140 70 L 160 110 L 120 130 Z" fill="currentColor"/>
+                <path d="M 70 110 L 100 90 L 120 130 L 70 150 Z" fill="currentColor"/>
+                <path d="M 50 90 L 90 60 L 110 90 L 70 110 Z" fill="currentColor"/>
+                <path d="M 100 110 L 140 90 L 160 150 L 120 170 Z" fill="currentColor"/>
               </svg>
               <h2 style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-tertiary)', margin: 0 }}>Integration Layer</h2>
             </div>
