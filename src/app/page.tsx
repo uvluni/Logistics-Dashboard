@@ -911,7 +911,7 @@ export default function Home() {
               {language === 'he' ? 'Integration Layer' : language === 'es' ? 'Integration Layer' : 'Integration Layer'}
             </h1>
             <p style={{ color: 'var(--text-tertiary)', fontSize: '15px', fontWeight: 400 }}>
-              {language === 'he' ? 'בחר את מערכת ניהול ההפצה שברצונך להשתמש בה' : language === 'es' ? 'Elige el sistema que deseas usar' : 'Choose the system you want to use'}
+              {language === 'he' ? 'בחר את המערכת בה ברצונך להשתמש' : language === 'es' ? 'Elige el sistema que deseas usar' : 'Choose the system you want to use'}
             </p>
           </div>
 
