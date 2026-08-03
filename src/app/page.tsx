@@ -6,6 +6,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import * as XLSX from 'xlsx';
 import KPICard from '@/components/KPICard';
 import DashboardSummary from '@/components/DashboardSummary';
+import Navbar from '@/components/Navbar';
 import { RouteKPI, DashboardSummary as Summary } from '@/types';
 import { useLanguage } from '@/context/LanguageContext';
 import { t } from '@/i18n/translations';
@@ -1020,50 +1021,11 @@ export default function Home() {
 
   return (
     <div style={{ backgroundColor: 'var(--bg-primary)', minHeight: '100vh' }}>
-      <div style={{ position: 'sticky', top: 0, backgroundColor: 'var(--bg-secondary)', borderBottom: '1px solid var(--border-primary)', boxShadow: '0 1px 2px rgba(0,0,0,0.05)', zIndex: 10, direction: 'ltr' }}>
-        <div style={{ maxWidth: '100%', margin: '0 auto', padding: '16px 32px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
-            <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-              <svg width="20" height="20" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ color: 'var(--color-green, #10b981)' }}>
-                {/* Outer circle */}
-                <circle cx="100" cy="100" r="90" fill="none" stroke="currentColor" strokeWidth="32"/>
-                {/* Three arrows in clockwise pattern */}
-                {/* Top right arrow */}
-                <g transform="translate(100, 100) rotate(0)">
-                  <path d="M 0 -60 L 35 -20 L 20 0 L -20 0 L -35 -20 Z" fill="currentColor"/>
-                </g>
-                {/* Bottom right arrow */}
-                <g transform="translate(100, 100) rotate(120)">
-                  <path d="M 0 -60 L 35 -20 L 20 0 L -20 0 L -35 -20 Z" fill="currentColor"/>
-                </g>
-                {/* Left arrow */}
-                <g transform="translate(100, 100) rotate(240)">
-                  <path d="M 0 -60 L 35 -20 L 20 0 L -20 0 L -35 -20 Z" fill="currentColor"/>
-                </g>
-              </svg>
-              <h2 style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-tertiary)', margin: 0 }}>Integration Layer</h2>
-            </div>
-            <div style={{ width: '1px', height: '20px', backgroundColor: 'var(--border-primary)' }}></div>
-            <h1 style={{ fontSize: '18px', fontWeight: 600, color: 'var(--text-primary)', textAlign: 'left', margin: 0 }}>ROADNET</h1>
-          </div>
-          <div style={{ display: 'flex', gap: '8px', alignItems: 'center', justifyContent: 'flex-end' }}>
-            <button onClick={() => setLanguage('he')} style={{ padding: '6px 12px', borderRadius: '6px', fontWeight: 600, transition: 'all 0.2s', backgroundColor: language === 'he' ? 'var(--color-blue)' : 'var(--border-primary)', color: language === 'he' ? 'white' : 'var(--text-secondary)', border: 'none', cursor: 'pointer' }}>
-              עב
-            </button>
-            <button onClick={() => setLanguage('en')} style={{ padding: '6px 12px', borderRadius: '6px', fontWeight: 600, transition: 'all 0.2s', backgroundColor: language === 'en' ? 'var(--color-blue)' : 'var(--border-primary)', color: language === 'en' ? 'white' : 'var(--text-secondary)', border: 'none', cursor: 'pointer' }}>
-              EN
-            </button>
-            <button onClick={() => setLanguage('es')} style={{ padding: '6px 12px', borderRadius: '6px', fontWeight: 600, transition: 'all 0.2s', backgroundColor: language === 'es' ? 'var(--color-blue)' : 'var(--border-primary)', color: language === 'es' ? 'white' : 'var(--text-secondary)', border: 'none', cursor: 'pointer' }}>
-              ES
-            </button>
-            <button onClick={toggleTheme} style={{ padding: '6px 12px', borderRadius: '6px', fontWeight: 600, backgroundColor: '#e5e7eb', color: '#6b7280', border: 'none', cursor: 'pointer', fontSize: '18px', display: 'inline-block', minWidth: '40px', textAlign: 'center' }} title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}>
-              {theme === 'dark' ? '☀️' : '🌙'}
-            </button>
-            <button onClick={handleLogout} style={{ padding: '8px 16px', borderRadius: '6px', fontWeight: 600, transition: 'all 0.2s', backgroundColor: '#dc2626', color: 'white', border: 'none', cursor: 'pointer', fontSize: '14px' }}>
-              {t('auth.logout', language)}
-            </button>
-          </div>
-        </div>
+      <Navbar />
+      <div style={{ position: 'sticky', top: 60, backgroundColor: 'var(--bg-secondary)', borderBottom: '1px solid var(--border-primary)', boxShadow: '0 1px 2px rgba(0,0,0,0.05)', zIndex: 9, padding: '8px 32px', display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: '8px' }}>
+        <button onClick={handleLogout} style={{ padding: '8px 16px', borderRadius: '6px', fontWeight: 600, transition: 'all 0.2s', backgroundColor: '#dc2626', color: 'white', border: 'none', cursor: 'pointer', fontSize: '14px' }}>
+          {t('auth.logout', language)}
+        </button>
       </div>
 
       <div style={{ maxWidth: '100%', margin: '0 auto', padding: '32px' }}>
