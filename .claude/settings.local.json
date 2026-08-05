@@ -105,7 +105,10 @@
       "Bash(cp \"/c/Users/yuval/OneDrive - Aman Computers/Claude OLD/Code/routes-report/src/app/page.tsx\" \"/c/Users/yuval/OneDrive - Aman Computers/Claude Aman/Code/routes-report/src/app/page.tsx\")",
       "PowerShell(Get-Process -Name node -ErrorAction SilentlyContinue)",
       "PowerShell(Stop-Process -Force -ErrorAction SilentlyContinue)",
-      "PowerShell(\"Ready\")"
+      "PowerShell(\"Ready\")",
+      "Bash(/c/Users/yuval/AppData/Local/Microsoft/WindowsApps/python3 /c/Users/yuval/AppData/Local/Temp/claude/C--Users-yuval-OneDrive---Aman-Computers-Claude-Aman-Code-routes-report/4d733b18-6726-490d-b967-84274ee3f689/scratchpad/create_stops_report.py)",
+      "Bash(cp /c/Users/yuval/AppData/Local/Temp/claude/C--Users-yuval-OneDrive---Aman-Computers-Claude-Aman-Code-routes-report/4d733b18-6726-490d-b967-84274ee3f689/scratchpad/create_stops_report.py /c/Users/yuval/AppData/Roaming/Claude/local-agent-mode-sessions/skills-plugin/6673879c-51a1-427f-ad14-f26628c9eec6/ee10d4f6-7bbd-412d-9905-7dcc4210d14e/skills/xlsx/ && echo \"Script copied to skill directory\")",
+      "PowerShell(& \"C:\\\\Users\\\\yuval\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\C--Users-yuval-OneDrive---Aman-Computers-Claude-Aman-Code-routes-report\\\\4d733b18-6726-490d-b967-84274ee3f689\\\\scratchpad\\\\create_excel_utf8.ps1\")"
     ]
   }
 }
