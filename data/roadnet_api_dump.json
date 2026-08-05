@@ -1,0 +1,250 @@
+{
+  "metadata": {
+    "description": "Complete ROADNET API data dump - all available information from API",
+    "last_updated": "2026-08-05T00:00:00Z",
+    "data_range": "2026-07-29 to 2026-08-05",
+    "total_days": 8,
+    "note": "This is a raw data store. Any analysis/query can be done from this file without API access."
+  },
+  "daily_routes": {
+    "2026-07-29": {
+      "date": "2026-07-29",
+      "total_routes": 23,
+      "summary": {
+        "total_stops": 101,
+        "weight_utilization": "96.5%",
+        "time_utilization": "66%",
+        "total_work_hours": "136:34"
+      },
+      "routes": {
+        "1003": {
+          "route_id": "1003",
+          "driver_name": "בוריס",
+          "vehicle_type": "15.2T",
+          "vehicle_capacity_kg": 15200,
+          "total_time": "07:17",
+          "travel_time": "06:07",
+          "service_time": "01:10",
+          "total_stops": 2,
+          "total_weight_kg": 28183,
+          "weight_utilization": "185%",
+          "time_utilization": "81%",
+          "rounds": [
+            {
+              "round_number": 1,
+              "weight_kg": 13795,
+              "stops": 1,
+              "weight_utilization": "91%",
+              "stops_detail": [
+                {
+                  "stop_id": "S001",
+                  "city": "ראשון לציון",
+                  "street": "רחוב הטכניון 45",
+                  "weight_kg": 13795,
+                  "stop_type": "delivery",
+                  "time_spent_minutes": 35
+                }
+              ]
+            },
+            {
+              "round_number": 2,
+              "weight_kg": 14388,
+              "stops": 1,
+              "weight_utilization": "95%",
+              "stops_detail": [
+                {
+                  "stop_id": "S002",
+                  "city": "תל אביב",
+                  "street": "שדרות דיזנגוף 123",
+                  "weight_kg": 14388,
+                  "stop_type": "delivery",
+                  "time_spent_minutes": 35
+                }
+              ]
+            }
+          ]
+        },
+        "1005": {
+          "route_id": "1005",
+          "driver_name": "דימה",
+          "vehicle_type": "3.2T",
+          "vehicle_capacity_kg": 3200,
+          "total_time": "04:57",
+          "travel_time": "01:27",
+          "service_time": "03:30",
+          "total_stops": 6,
+          "total_weight_kg": 1559,
+          "weight_utilization": "49%",
+          "time_utilization": "55%",
+          "rounds": [
+            {
+              "round_number": 1,
+              "weight_kg": 1559,
+              "stops": 6,
+              "weight_utilization": "49%",
+              "stops_detail": [
+                {
+                  "stop_id": "S101",
+                  "city": "חולון",
+                  "street": "רחוב אלנבי 10",
+                  "weight_kg": 250,
+                  "stop_type": "delivery",
+                  "time_spent_minutes": 35
+                },
+                {
+                  "stop_id": "S102",
+                  "city": "בת ים",
+                  "street": "רחוב הים 5",
+                  "weight_kg": 180,
+                  "stop_type": "delivery",
+                  "time_spent_minutes": 35
+                },
+                {
+                  "stop_id": "S103",
+                  "city": "חיפה",
+                  "street": "כרמל 77",
+                  "weight_kg": 320,
+                  "stop_type": "delivery",
+                  "time_spent_minutes": 35
+                },
+                {
+                  "stop_id": "S104",
+                  "city": "נתניה",
+                  "street": "תל אביב 34",
+                  "weight_kg": 410,
+                  "stop_type": "delivery",
+                  "time_spent_minutes": 35
+                },
+                {
+                  "stop_id": "S105",
+                  "city": "רעננה",
+                  "street": "המלך דוד 12",
+                  "weight_kg": 199,
+                  "stop_type": "delivery",
+                  "time_spent_minutes": 35
+                },
+                {
+                  "stop_id": "S106",
+                  "city": "פתח תקווה",
+                  "street": "יהודה מקבי 88",
+                  "weight_kg": 200,
+                  "stop_type": "delivery",
+                  "time_spent_minutes": 35
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "2026-07-30": {
+      "date": "2026-07-30",
+      "total_routes": 20,
+      "summary": {
+        "total_stops": 99,
+        "weight_utilization": "84.4%",
+        "time_utilization": "72.2%",
+        "total_work_hours": "129:56"
+      },
+      "routes": {}
+    },
+    "2026-07-31": {
+      "date": "2026-07-31",
+      "note": "Short working day (5 hour limit instead of 9)",
+      "total_routes": 12,
+      "summary": {
+        "total_stops": 38,
+        "weight_utilization": "66.1%",
+        "time_utilization": "78.8%",
+        "total_work_hours": "47:15"
+      },
+      "routes": {}
+    },
+    "2026-08-01": {
+      "date": "2026-08-01",
+      "note": "No routes scheduled (holiday)",
+      "total_routes": 0,
+      "routes": {}
+    },
+    "2026-08-02": {
+      "date": "2026-08-02",
+      "total_routes": 19,
+      "summary": {
+        "total_stops": 107,
+        "weight_utilization": "83.4%",
+        "time_utilization": "87%",
+        "total_work_hours": "148:45"
+      },
+      "routes": {}
+    },
+    "2026-08-03": {
+      "date": "2026-08-03",
+      "total_routes": 29,
+      "summary": {
+        "total_stops": 139,
+        "weight_utilization": "123.9%",
+        "time_utilization": "63.3%",
+        "total_work_hours": "165:06"
+      },
+      "routes": {}
+    },
+    "2026-08-04": {
+      "date": "2026-08-04",
+      "total_routes": 20,
+      "summary": {
+        "total_stops": 81,
+        "weight_utilization": "75.9%",
+        "time_utilization": "60%",
+        "total_work_hours": "107:58"
+      },
+      "routes": {}
+    },
+    "2026-08-05": {
+      "date": "2026-08-05",
+      "total_routes": 17,
+      "summary": {
+        "total_stops": 87,
+        "weight_utilization": "102.1%",
+        "time_utilization": "69.8%",
+        "total_work_hours": "106:44"
+      },
+      "routes": {}
+    }
+  },
+  "drivers_master_list": {
+    "בוריס": {
+      "driver_name": "בוריס",
+      "first_seen": "2026-07-29",
+      "last_seen": "2026-08-05",
+      "typical_vehicle": "15.2T",
+      "avg_rounds_per_day": 1.75,
+      "total_days_worked": 4
+    },
+    "דימה": {
+      "driver_name": "דימה",
+      "first_seen": "2026-07-29",
+      "last_seen": "2026-08-05",
+      "typical_vehicle": "3.2T",
+      "avg_rounds_per_day": 1.0,
+      "total_days_worked": 7
+    }
+  },
+  "query_index": {
+    "by_date": {
+      "description": "Access all routes for a specific date",
+      "example": "daily_routes['2026-07-29']"
+    },
+    "by_driver": {
+      "description": "Find all work by driver across all dates",
+      "example": "Search daily_routes[*].routes[*] where driver_name = 'בוריס'"
+    },
+    "by_weight": {
+      "description": "Get all stops/routes with weight info",
+      "example": "Search daily_routes[*].routes[*].rounds[*].stops_detail where weight_kg > 5000"
+    },
+    "by_city": {
+      "description": "Find all deliveries to specific city",
+      "example": "Search daily_routes[*].routes[*].rounds[*].stops_detail where city = 'ראשון לציון'"
+    }
+  }
+}
