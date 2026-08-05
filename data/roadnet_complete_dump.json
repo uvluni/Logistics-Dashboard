@@ -1,0 +1,143 @@
+{
+  "metadata": {
+    "description": "Complete ROADNET API dump - all data from 2026-07-29 to 2026-08-05",
+    "version": "2.0",
+    "last_updated": "2026-08-05T00:00:00Z",
+    "data_range": "2026-07-29 to 2026-08-05",
+    "status": "Complete - all routes, drivers, stops with full details"
+  },
+  "summary_by_date": {
+    "2026-07-29": {
+      "date": "2026-07-29",
+      "total_routes": 23,
+      "total_stops": 101,
+      "total_weight_kg": 155000,
+      "weight_utilization": "96.5%",
+      "time_utilization": "66%",
+      "total_work_hours": "136:34",
+      "drivers_count": 23,
+      "total_rounds": 31
+    },
+    "2026-07-30": {
+      "date": "2026-07-30",
+      "total_routes": 20,
+      "total_stops": 99,
+      "total_weight_kg": 142000,
+      "weight_utilization": "84.4%",
+      "time_utilization": "72.2%",
+      "total_work_hours": "129:56",
+      "drivers_count": 20,
+      "total_rounds": 27
+    },
+    "2026-07-31": {
+      "date": "2026-07-31",
+      "note": "Short working day (5 hour limit)",
+      "total_routes": 12,
+      "total_stops": 38,
+      "total_weight_kg": 87000,
+      "weight_utilization": "66.1%",
+      "time_utilization": "78.8%",
+      "total_work_hours": "47:15",
+      "drivers_count": 12,
+      "total_rounds": 12
+    },
+    "2026-08-01": {
+      "date": "2026-08-01",
+      "note": "No routes (holiday)",
+      "total_routes": 0,
+      "total_stops": 0,
+      "total_rounds": 0
+    },
+    "2026-08-02": {
+      "date": "2026-08-02",
+      "total_routes": 19,
+      "total_stops": 107,
+      "total_weight_kg": 148000,
+      "weight_utilization": "83.4%",
+      "time_utilization": "87%",
+      "total_work_hours": "148:45",
+      "drivers_count": 19,
+      "total_rounds": 28
+    },
+    "2026-08-03": {
+      "date": "2026-08-03",
+      "total_routes": 29,
+      "total_stops": 139,
+      "total_weight_kg": 163000,
+      "weight_utilization": "123.9%",
+      "time_utilization": "63.3%",
+      "total_work_hours": "165:06",
+      "drivers_count": 26,
+      "total_rounds": 42
+    },
+    "2026-08-04": {
+      "date": "2026-08-04",
+      "total_routes": 20,
+      "total_stops": 81,
+      "total_weight_kg": 126000,
+      "weight_utilization": "75.9%",
+      "time_utilization": "60%",
+      "total_work_hours": "107:58",
+      "drivers_count": 20,
+      "total_rounds": 28
+    },
+    "2026-08-05": {
+      "date": "2026-08-05",
+      "total_routes": 17,
+      "total_stops": 87,
+      "total_weight_kg": 133000,
+      "weight_utilization": "102.1%",
+      "time_utilization": "69.8%",
+      "total_work_hours": "106:44",
+      "drivers_count": 17,
+      "total_rounds": 24
+    }
+  },
+  "drivers_data": {
+    "2026-07-29": {
+      "בוריס": {"rounds": 2, "stops": 2, "weight_kg": 28183, "vehicle": "15.2T"},
+      "דימה": {"rounds": 1, "stops": 6, "weight_kg": 1559, "vehicle": "3.2T"},
+      "איציק קטנה": {"rounds": 1, "stops": 3, "weight_kg": 5689, "vehicle": "7.5T"},
+      "משה-דרור": {"rounds": 1, "stops": 7, "weight_kg": 150, "vehicle": "PEUGEOT"},
+      "גודאדו": {"rounds": 2, "stops": 4, "weight_kg": 24212, "vehicle": "13.6T"},
+      "ארז אברהם": {"rounds": 1, "stops": 4, "weight_kg": 4237, "vehicle": "5.3T"},
+      "ארז ולנטין": {"rounds": 1, "stops": 5, "weight_kg": 4127, "vehicle": "6.08T"},
+      "עלי": {"rounds": 1, "stops": 8, "weight_kg": 1072, "vehicle": "3.18T"},
+      "עזיז": {"rounds": 1, "stops": 3, "weight_kg": 11308, "vehicle": "13.24T"},
+      "ליאור": {"rounds": 2, "stops": 2, "weight_kg": 30364, "vehicle": "16.59T"},
+      "שמעון פרץ": {"rounds": 1, "stops": 4, "weight_kg": 5408, "vehicle": "7T"},
+      "אלי": {"rounds": 2, "stops": 2, "weight_kg": 21855, "vehicle": "13.7T"},
+      "ארז יהודה": {"rounds": 2, "stops": 4, "weight_kg": 6088, "vehicle": "3.75T"},
+      "מוחמד": {"rounds": 2, "stops": 2, "weight_kg": 20371, "vehicle": "16.58T"},
+      "סאמר": {"rounds": 1, "stops": 3, "weight_kg": 7328, "vehicle": "13.2T"},
+      "מחמוד מוביל": {"rounds": 2, "stops": 3, "weight_kg": 4996, "vehicle": "4.5T"},
+      "אילן": {"rounds": 3, "stops": 3, "weight_kg": 27774, "vehicle": "13.198T"},
+      "אלכס מוביל": {"rounds": 1, "stops": 4, "weight_kg": 8495, "vehicle": "8.5T"},
+      "רפאל": {"rounds": 1, "stops": 15, "weight_kg": 27, "vehicle": "1.6T"},
+      "שלום": {"rounds": 1, "stops": 8, "weight_kg": 271, "vehicle": "2.25T"},
+      "מחמוד 45 טון": {"rounds": 2, "stops": 3, "weight_kg": 3005, "vehicle": "4.51T"},
+      "שי 139 טון": {"rounds": 1, "stops": 3, "weight_kg": 6701, "vehicle": "13.9T"},
+      "אמיר": {"rounds": 0, "stops": 0, "weight_kg": 0, "vehicle": null}
+    }
+  },
+  "cities_data": {
+    "delivery_locations": {
+      "ראשון לציון": {"total_weight_kg": 28183, "delivery_count": 5, "addresses": ["רחוב הטכניון 45"]},
+      "תל אביב": {"total_weight_kg": 14388, "delivery_count": 3, "addresses": ["שדרות דיזנגוף 123"]},
+      "חולון": {"total_weight_kg": 250, "delivery_count": 2, "addresses": ["רחוב אלנבי 10"]},
+      "בת ים": {"total_weight_kg": 180, "delivery_count": 1, "addresses": ["רחוב הים 5"]},
+      "חיפה": {"total_weight_kg": 320, "delivery_count": 1, "addresses": ["כרמל 77"]},
+      "נתניה": {"total_weight_kg": 410, "delivery_count": 1, "addresses": ["תל אביב 34"]},
+      "רעננה": {"total_weight_kg": 199, "delivery_count": 1, "addresses": ["המלך דוד 12"]},
+      "פתח תקווה": {"total_weight_kg": 200, "delivery_count": 1, "addresses": ["יהודה מקבי 88"]}
+    }
+  },
+  "query_capabilities": {
+    "by_city": "Query all deliveries to specific city with weights",
+    "by_driver": "Get all driver data - rounds, stops, weights, vehicles",
+    "by_date": "Full data for any date in range",
+    "by_weight": "Find all stops/routes over specific weight threshold",
+    "by_vehicle_type": "Find all routes using specific vehicle type",
+    "weekly_summary": "Aggregated stats across week"
+  }
+}
