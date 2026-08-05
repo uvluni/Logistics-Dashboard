@@ -65,6 +65,7 @@ server.registerTool(
       const serviceableStops = (r.stops || []).filter((s: any) => s.stopType === 'ServiceableStop');
       return {
         routeId: r.identity?.identifier,
+        entityKey: r.identity?.entityKey,
         description: r.description,
         routeStartTime: r.routeStartTime,
         stopCount: serviceableStops.length,

@@ -97,7 +97,15 @@
       "Bash(Start-Sleep -Milliseconds 1500)",
       "Bash(start presentation.html)",
       "Bash(powershell -Command \"Start-Process presentation.html\")",
-      "Bash(powershell -Command \"& { [System.Diagnostics.Process]::Start\\('presentation.html'\\) }\")"
+      "Bash(powershell -Command \"& { [System.Diagnostics.Process]::Start\\('presentation.html'\\) }\")",
+      "Bash(ls \"/c/Users/yuval/OneDrive - Aman Computers/\" | grep -i claude)",
+      "Bash(find ~ -name \"Navbar.tsx\" -type f 2>/dev/null)",
+      "Bash(pkill -f \"node.*next\\\\|node.*dev\")",
+      "Bash(cp \"/c/Users/yuval/OneDrive - Aman Computers/Claude OLD/Code/routes-report/src/components/Navbar.tsx\" \"/c/Users/yuval/OneDrive - Aman Computers/Claude Aman/Code/routes-report/src/components/Navbar.tsx\")",
+      "Bash(cp \"/c/Users/yuval/OneDrive - Aman Computers/Claude OLD/Code/routes-report/src/app/page.tsx\" \"/c/Users/yuval/OneDrive - Aman Computers/Claude Aman/Code/routes-report/src/app/page.tsx\")",
+      "PowerShell(Get-Process -Name node -ErrorAction SilentlyContinue)",
+      "PowerShell(Stop-Process -Force -ErrorAction SilentlyContinue)",
+      "PowerShell(\"Ready\")"
     ]
   }
 }

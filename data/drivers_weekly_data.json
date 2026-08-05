@@ -1,46 +1,332 @@
 {
-  "project": "ROADNET Distribution Dashboard",
-  "description": "Weekly driver statistics - accumulated from July 2026 onwards",
-  "updated": "2026-08-05",
-  "data_collection_period": "2026-07-01 to 2026-08-05",
-  "weeks": [
-    {
-      "week_number": 31,
-      "period": "2026-07-29 to 2026-08-05",
-      "notes": "First week collected. 01/08/26 had no routes (holiday). 31/07/26 was short day (5 hour limit)",
-      "drivers": {
-        "בוריס": {"days_worked": 4, "total_rounds": 7, "daily_breakdown": {"29/07": 2, "30/07": 1, "31/07": 1, "01/08": 0, "02/08": 0, "03/08": 0, "04/08": 1, "05/08": 2}},
-        "דימה": {"days_worked": 7, "total_rounds": 7, "daily_breakdown": {"29/07": 1, "30/07": 1, "31/07": 1, "01/08": 0, "02/08": 1, "03/08": 1, "04/08": 1, "05/08": 1}},
-        "איציק קטנה": {"days_worked": 1, "total_rounds": 1, "daily_breakdown": {"29/07": 1, "30/07": 0, "31/07": 0, "01/08": 0, "02/08": 0, "03/08": 0, "04/08": 0, "05/08": 0}},
-        "משה-דרור": {"days_worked": 6, "total_rounds": 7, "daily_breakdown": {"29/07": 1, "30/07": 1, "31/07": 1, "01/08": 0, "02/08": 1, "03/08": 1, "04/08": 1, "05/08": 1}},
-        "גודאדו": {"days_worked": 5, "total_rounds": 7, "daily_breakdown": {"29/07": 2, "30/07": 1, "31/07": 0, "01/08": 0, "02/08": 1, "03/08": 2, "04/08": 0, "05/08": 1}},
-        "ארז אברהם": {"days_worked": 4, "total_rounds": 6, "daily_breakdown": {"29/07": 1, "30/07": 0, "31/07": 0, "01/08": 0, "02/08": 1, "03/08": 1, "04/08": 1, "05/08": 2}},
-        "ארז ולנטין": {"days_worked": 4, "total_rounds": 5, "daily_breakdown": {"29/07": 1, "30/07": 1, "31/07": 0, "01/08": 0, "02/08": 1, "03/08": 1, "04/08": 0, "05/08": 1}},
-        "עלי": {"days_worked": 6, "total_rounds": 7, "daily_breakdown": {"29/07": 1, "30/07": 1, "31/07": 1, "01/08": 0, "02/08": 1, "03/08": 1, "04/08": 1, "05/08": 1}},
-        "עזיז": {"days_worked": 6, "total_rounds": 11, "daily_breakdown": {"29/07": 1, "30/07": 1, "31/07": 1, "01/08": 0, "02/08": 2, "03/08": 2, "04/08": 2, "05/08": 2}},
-        "ליאור": {"days_worked": 7, "total_rounds": 14, "daily_breakdown": {"29/07": 2, "30/07": 2, "31/07": 1, "01/08": 0, "02/08": 2, "03/08": 3, "04/08": 2, "05/08": 2}},
-        "שמעון פרץ": {"days_worked": 1, "total_rounds": 1, "daily_breakdown": {"29/07": 1, "30/07": 0, "31/07": 0, "01/08": 0, "02/08": 0, "03/08": 0, "04/08": 0, "05/08": 0}},
-        "אלי": {"days_worked": 7, "total_rounds": 11, "daily_breakdown": {"29/07": 2, "30/07": 1, "31/07": 1, "01/08": 0, "02/08": 2, "03/08": 3, "04/08": 1, "05/08": 1}},
-        "ארז יהודה": {"days_worked": 6, "total_rounds": 8, "daily_breakdown": {"29/07": 2, "30/07": 1, "31/07": 1, "01/08": 0, "02/08": 1, "03/08": 1, "04/08": 2, "05/08": 0}},
-        "מוחמד": {"days_worked": 6, "total_rounds": 10, "daily_breakdown": {"29/07": 2, "30/07": 2, "31/07": 1, "01/08": 0, "02/08": 2, "03/08": 0, "04/08": 1, "05/08": 2}},
-        "סאמר": {"days_worked": 4, "total_rounds": 5, "daily_breakdown": {"29/07": 1, "30/07": 0, "31/07": 0, "01/08": 0, "02/08": 1, "03/08": 0, "04/08": 1, "05/08": 2}},
-        "מחמוד מוביל": {"days_worked": 5, "total_rounds": 9, "daily_breakdown": {"29/07": 2, "30/07": 2, "31/07": 1, "01/08": 0, "02/08": 2, "03/08": 0, "04/08": 2, "05/08": 0}},
-        "אילן": {"days_worked": 6, "total_rounds": 13, "daily_breakdown": {"29/07": 3, "30/07": 2, "31/07": 1, "01/08": 0, "02/08": 2, "03/08": 0, "04/08": 2, "05/08": 3}},
-        "אלכס מוביל": {"days_worked": 1, "total_rounds": 1, "daily_breakdown": {"29/07": 1, "30/07": 0, "31/07": 0, "01/08": 0, "02/08": 0, "03/08": 0, "04/08": 0, "05/08": 0}},
-        "רפאל": {"days_worked": 5, "total_rounds": 5, "daily_breakdown": {"29/07": 1, "30/07": 1, "31/07": 1, "01/08": 0, "02/08": 0, "03/08": 0, "04/08": 1, "05/08": 1}},
-        "שלום": {"days_worked": 4, "total_rounds": 4, "daily_breakdown": {"29/07": 1, "30/07": 1, "31/07": 0, "01/08": 0, "02/08": 0, "03/08": 0, "04/08": 1, "05/08": 1}},
-        "מחמוד 45 טון": {"days_worked": 1, "total_rounds": 2, "daily_breakdown": {"29/07": 2, "30/07": 0, "31/07": 0, "01/08": 0, "02/08": 0, "03/08": 0, "04/08": 0, "05/08": 0}},
-        "שי 139 טון": {"days_worked": 4, "total_rounds": 4, "daily_breakdown": {"29/07": 1, "30/07": 1, "31/07": 0, "01/08": 0, "02/08": 1, "03/08": 1, "04/08": 0, "05/08": 0}},
-        "שי מוביל": {"days_worked": 4, "total_rounds": 6, "daily_breakdown": {"29/07": 0, "30/07": 2, "31/07": 0, "01/08": 0, "02/08": 2, "03/08": 1, "04/08": 1, "05/08": 0}},
-        "אמיר": {"days_worked": 1, "total_rounds": 1, "daily_breakdown": {"29/07": 0, "30/07": 0, "31/07": 0, "01/08": 0, "02/08": 0, "03/08": 1, "04/08": 0, "05/08": 0}}
-      },
-      "summary": {
-        "unique_drivers": 24,
-        "drivers_all_7_days": ["דימה", "ליאור", "אלי"],
-        "top_by_rounds": ["ליאור (14)", "אילן (13)", "אלי (11)", "עזיז (11)"],
-        "total_routes_week": 155,
-        "avg_rounds_per_driver": 6.5
+  "metadata": {
+    "project": "ROADNET Distribution Dashboard",
+    "description": "Driver statistics - incremental data collection from ROADNET API",
+    "version": "1.0",
+    "last_updated": "2026-08-05T00:00:00Z",
+    "data_date_range": {
+      "earliest": "2026-07-29",
+      "latest": "2026-08-05"
+    },
+    "dates_with_data": ["2026-07-29", "2026-07-30", "2026-07-31", "2026-08-02", "2026-08-03", "2026-08-04", "2026-08-05"],
+    "dates_with_no_routes": ["2026-08-01"],
+    "notes": {
+      "2026-07-31": "Short working day (5 hour limit instead of 9)",
+      "2026-08-01": "No routes scheduled (holiday)"
+    }
+  },
+  "drivers": {
+    "בוריס": {
+      "first_seen": "2026-07-29",
+      "data": {
+        "2026-07-29": {"rounds": 2, "hours": "07:17", "stops": 2},
+        "2026-07-30": {"rounds": 1, "hours": "06:01", "stops": 3},
+        "2026-07-31": {"rounds": 1, "hours": "01:55", "stops": 1},
+        "2026-08-02": {"rounds": 0, "hours": null, "stops": null},
+        "2026-08-03": {"rounds": 0, "hours": null, "stops": null},
+        "2026-08-04": {"rounds": 1, "hours": "06:04", "stops": 5},
+        "2026-08-05": {"rounds": 2, "hours": "04:12", "stops": 3}
+      }
+    },
+    "דימה": {
+      "first_seen": "2026-07-29",
+      "data": {
+        "2026-07-29": {"rounds": 1, "hours": "04:57", "stops": 6},
+        "2026-07-30": {"rounds": 1, "hours": "08:09", "stops": 8},
+        "2026-07-31": {"rounds": 1, "hours": "04:45", "stops": 4},
+        "2026-08-02": {"rounds": 1, "hours": "09:20", "stops": 7},
+        "2026-08-03": {"rounds": 1, "hours": "07:53", "stops": 9},
+        "2026-08-04": {"rounds": 1, "hours": "04:54", "stops": 3},
+        "2026-08-05": {"rounds": 1, "hours": "03:46", "stops": 4}
+      }
+    },
+    "איציק קטנה": {
+      "first_seen": "2026-07-29",
+      "data": {
+        "2026-07-29": {"rounds": 1, "hours": "05:22", "stops": 3},
+        "2026-07-30": {"rounds": 2, "hours": "03:46", "stops": 2},
+        "2026-07-31": {"rounds": 0, "hours": null, "stops": null},
+        "2026-08-02": {"rounds": 0, "hours": null, "stops": null},
+        "2026-08-03": {"rounds": 0, "hours": null, "stops": null},
+        "2026-08-04": {"rounds": 0, "hours": null, "stops": null},
+        "2026-08-05": {"rounds": 0, "hours": null, "stops": null}
+      }
+    },
+    "משה-דרור": {
+      "first_seen": "2026-07-29",
+      "data": {
+        "2026-07-29": {"rounds": 1, "hours": "06:23", "stops": 7},
+        "2026-07-30": {"rounds": 1, "hours": "09:04", "stops": 11},
+        "2026-07-31": {"rounds": 1, "hours": "06:40", "stops": 8},
+        "2026-08-02": {"rounds": 1, "hours": "10:02", "stops": 11},
+        "2026-08-03": {"rounds": 1, "hours": "06:40", "stops": 8},
+        "2026-08-04": {"rounds": 1, "hours": "08:00", "stops": 8},
+        "2026-08-05": {"rounds": 1, "hours": "06:52", "stops": 7}
+      }
+    },
+    "גודאדו": {
+      "first_seen": "2026-07-29",
+      "data": {
+        "2026-07-29": {"rounds": 2, "hours": "06:21", "stops": 4},
+        "2026-07-30": {"rounds": 1, "hours": "06:38", "stops": 3},
+        "2026-07-31": {"rounds": 0, "hours": null, "stops": null},
+        "2026-08-02": {"rounds": 1, "hours": "06:10", "stops": 4},
+        "2026-08-03": {"rounds": 2, "hours": "04:00", "stops": 3},
+        "2026-08-04": {"rounds": 0, "hours": null, "stops": null},
+        "2026-08-05": {"rounds": 1, "hours": "07:40", "stops": 8}
+      }
+    },
+    "ארז אברהם": {
+      "first_seen": "2026-07-29",
+      "data": {
+        "2026-07-29": {"rounds": 1, "hours": "04:59", "stops": 4},
+        "2026-07-30": {"rounds": 0, "hours": null, "stops": null},
+        "2026-07-31": {"rounds": 0, "hours": null, "stops": null},
+        "2026-08-02": {"rounds": 1, "hours": "09:15", "stops": 5},
+        "2026-08-03": {"rounds": 1, "hours": "07:47", "stops": 9},
+        "2026-08-04": {"rounds": 1, "hours": "06:31", "stops": 7},
+        "2026-08-05": {"rounds": 2, "hours": "06:19", "stops": 3}
+      }
+    },
+    "ארז ולנטין": {
+      "first_seen": "2026-07-29",
+      "data": {
+        "2026-07-29": {"rounds": 1, "hours": "07:00", "stops": 5},
+        "2026-07-30": {"rounds": 1, "hours": "06:41", "stops": 8},
+        "2026-07-31": {"rounds": 0, "hours": null, "stops": null},
+        "2026-08-02": {"rounds": 1, "hours": "07:49", "stops": 8},
+        "2026-08-03": {"rounds": 1, "hours": "09:21", "stops": 9},
+        "2026-08-04": {"rounds": 0, "hours": null, "stops": null},
+        "2026-08-05": {"rounds": 1, "hours": "06:41", "stops": 7}
+      }
+    },
+    "ארז איתמר": {
+      "first_seen": "2026-07-29",
+      "data": {
+        "2026-07-29": {"rounds": 1, "hours": "08:10", "stops": 6},
+        "2026-07-30": {"rounds": 1, "hours": "07:20", "stops": 7},
+        "2026-07-31": {"rounds": 0, "hours": null, "stops": null},
+        "2026-08-02": {"rounds": 1, "hours": "08:21", "stops": 10},
+        "2026-08-03": {"rounds": 2, "hours": "04:58", "stops": 4},
+        "2026-08-04": {"rounds": 1, "hours": "04:46", "stops": 5},
+        "2026-08-05": {"rounds": 1, "hours": "08:10", "stops": 6}
+      }
+    },
+    "עלי": {
+      "first_seen": "2026-07-29",
+      "data": {
+        "2026-07-29": {"rounds": 1, "hours": "07:21", "stops": 8},
+        "2026-07-30": {"rounds": 1, "hours": "11:24", "stops": 8},
+        "2026-07-31": {"rounds": 1, "hours": "06:05", "stops": 6},
+        "2026-08-02": {"rounds": 1, "hours": "10:23", "stops": 7},
+        "2026-08-03": {"rounds": 1, "hours": "08:47", "stops": 9},
+        "2026-08-04": {"rounds": 1, "hours": "07:49", "stops": 6},
+        "2026-08-05": {"rounds": 1, "hours": "07:37", "stops": 5}
+      }
+    },
+    "עזיז": {
+      "first_seen": "2026-07-29",
+      "data": {
+        "2026-07-29": {"rounds": 1, "hours": "06:47", "stops": 3},
+        "2026-07-30": {"rounds": 1, "hours": "06:22", "stops": 6},
+        "2026-07-31": {"rounds": 1, "hours": "04:36", "stops": 4},
+        "2026-08-02": {"rounds": 2, "hours": "04:44", "stops": 3},
+        "2026-08-03": {"rounds": 2, "hours": "05:25", "stops": 4},
+        "2026-08-04": {"rounds": 2, "hours": "03:25", "stops": 3},
+        "2026-08-05": {"rounds": 2, "hours": "05:38", "stops": 3}
+      }
+    },
+    "ליאור": {
+      "first_seen": "2026-07-29",
+      "data": {
+        "2026-07-29": {"rounds": 2, "hours": "07:16", "stops": 2},
+        "2026-07-30": {"rounds": 2, "hours": "05:56", "stops": 2},
+        "2026-07-31": {"rounds": 1, "hours": "04:09", "stops": 1},
+        "2026-08-02": {"rounds": 2, "hours": "06:19", "stops": 2},
+        "2026-08-03": {"rounds": 3, "hours": "05:02", "stops": 3},
+        "2026-08-04": {"rounds": 2, "hours": "06:18", "stops": 3},
+        "2026-08-05": {"rounds": 2, "hours": "04:42", "stops": 4}
+      }
+    },
+    "שמעון פרץ": {
+      "first_seen": "2026-07-29",
+      "data": {
+        "2026-07-29": {"rounds": 1, "hours": "05:37", "stops": 4},
+        "2026-07-30": {"rounds": 0, "hours": null, "stops": null},
+        "2026-07-31": {"rounds": 0, "hours": null, "stops": null},
+        "2026-08-02": {"rounds": 0, "hours": null, "stops": null},
+        "2026-08-03": {"rounds": 0, "hours": null, "stops": null},
+        "2026-08-04": {"rounds": 0, "hours": null, "stops": null},
+        "2026-08-05": {"rounds": 0, "hours": null, "stops": null}
+      }
+    },
+    "אלי": {
+      "first_seen": "2026-07-29",
+      "data": {
+        "2026-07-29": {"rounds": 2, "hours": "07:19", "stops": 2},
+        "2026-07-30": {"rounds": 1, "hours": "07:39", "stops": 5},
+        "2026-07-31": {"rounds": 1, "hours": "04:28", "stops": 5},
+        "2026-08-02": {"rounds": 2, "hours": "06:28", "stops": 3},
+        "2026-08-03": {"rounds": 3, "hours": "04:12", "stops": 3},
+        "2026-08-04": {"rounds": 1, "hours": "05:53", "stops": 3},
+        "2026-08-05": {"rounds": 1, "hours": "05:51", "stops": 4}
+      }
+    },
+    "ארז יהודה": {
+      "first_seen": "2026-07-29",
+      "data": {
+        "2026-07-29": {"rounds": 2, "hours": "05:11", "stops": 4},
+        "2026-07-30": {"rounds": 1, "hours": "07:14", "stops": 6},
+        "2026-07-31": {"rounds": 1, "hours": "05:51", "stops": 4},
+        "2026-08-02": {"rounds": 1, "hours": "08:46", "stops": 9},
+        "2026-08-03": {"rounds": 1, "hours": "09:30", "stops": 6},
+        "2026-08-04": {"rounds": 2, "hours": "04:04", "stops": 3},
+        "2026-08-05": {"rounds": 0, "hours": null, "stops": null}
+      }
+    },
+    "מוחמד": {
+      "first_seen": "2026-07-29",
+      "data": {
+        "2026-07-29": {"rounds": 2, "hours": "02:45", "stops": 2},
+        "2026-07-30": {"rounds": 2, "hours": "04:51", "stops": 2},
+        "2026-07-31": {"rounds": 1, "hours": "02:42", "stops": 3},
+        "2026-08-02": {"rounds": 2, "hours": "04:23", "stops": 4},
+        "2026-08-03": {"rounds": 0, "hours": null, "stops": null},
+        "2026-08-04": {"rounds": 1, "hours": "04:15", "stops": 4},
+        "2026-08-05": {"rounds": 2, "hours": "04:30", "stops": 2}
+      }
+    },
+    "סאמר": {
+      "first_seen": "2026-07-29",
+      "data": {
+        "2026-07-29": {"rounds": 1, "hours": "02:56", "stops": 3},
+        "2026-07-30": {"rounds": 0, "hours": null, "stops": null},
+        "2026-07-31": {"rounds": 0, "hours": null, "stops": null},
+        "2026-08-02": {"rounds": 1, "hours": "04:31", "stops": 3},
+        "2026-08-03": {"rounds": 0, "hours": null, "stops": null},
+        "2026-08-04": {"rounds": 1, "hours": "07:22", "stops": 4},
+        "2026-08-05": {"rounds": 2, "hours": "05:33", "stops": 3}
+      }
+    },
+    "מחמוד מוביל": {
+      "first_seen": "2026-07-29",
+      "data": {
+        "2026-07-29": {"rounds": 2, "hours": "05:30", "stops": 3},
+        "2026-07-30": {"rounds": 2, "hours": "04:38", "stops": 4},
+        "2026-07-31": {"rounds": 1, "hours": "02:02", "stops": 1},
+        "2026-08-02": {"rounds": 2, "hours": "05:30", "stops": 3},
+        "2026-08-03": {"rounds": 0, "hours": null, "stops": null},
+        "2026-08-04": {"rounds": 2, "hours": "04:04", "stops": 2},
+        "2026-08-05": {"rounds": 0, "hours": null, "stops": null}
+      }
+    },
+    "אילן": {
+      "first_seen": "2026-07-29",
+      "data": {
+        "2026-07-29": {"rounds": 3, "hours": "03:47", "stops": 3},
+        "2026-07-30": {"rounds": 2, "hours": "06:10", "stops": 2},
+        "2026-07-31": {"rounds": 1, "hours": "03:03", "stops": 4},
+        "2026-08-02": {"rounds": 2, "hours": "06:44", "stops": 2},
+        "2026-08-03": {"rounds": 0, "hours": null, "stops": null},
+        "2026-08-04": {"rounds": 2, "hours": "03:18", "stops": 3},
+        "2026-08-05": {"rounds": 3, "hours": "04:22", "stops": 3}
+      }
+    },
+    "אלכס מוביל": {
+      "first_seen": "2026-07-29",
+      "data": {
+        "2026-07-29": {"rounds": 1, "hours": "05:25", "stops": 4},
+        "2026-07-30": {"rounds": 0, "hours": null, "stops": null},
+        "2026-07-31": {"rounds": 0, "hours": null, "stops": null},
+        "2026-08-02": {"rounds": 0, "hours": null, "stops": null},
+        "2026-08-03": {"rounds": 0, "hours": null, "stops": null},
+        "2026-08-04": {"rounds": 0, "hours": null, "stops": null},
+        "2026-08-05": {"rounds": 0, "hours": null, "stops": null}
+      }
+    },
+    "רפאל": {
+      "first_seen": "2026-07-29",
+      "data": {
+        "2026-07-29": {"rounds": 1, "hours": "12:27", "stops": 15},
+        "2026-07-30": {"rounds": 1, "hours": "05:27", "stops": 5},
+        "2026-07-31": {"rounds": 1, "hours": "02:04", "stops": 2},
+        "2026-08-02": {"rounds": 0, "hours": null, "stops": null},
+        "2026-08-03": {"rounds": 0, "hours": null, "stops": null},
+        "2026-08-04": {"rounds": 1, "hours": "02:15", "stops": 2},
+        "2026-08-05": {"rounds": 1, "hours": "10:37", "stops": 10}
+      }
+    },
+    "שלום": {
+      "first_seen": "2026-07-29",
+      "data": {
+        "2026-07-29": {"rounds": 1, "hours": "08:11", "stops": 8},
+        "2026-07-30": {"rounds": 1, "hours": "08:37", "stops": 8},
+        "2026-07-31": {"rounds": 0, "hours": null, "stops": null},
+        "2026-08-02": {"rounds": 0, "hours": null, "stops": null},
+        "2026-08-03": {"rounds": 0, "hours": null, "stops": null},
+        "2026-08-04": {"rounds": 1, "hours": "03:20", "stops": 2},
+        "2026-08-05": {"rounds": 1, "hours": "07:23", "stops": 8}
+      }
+    },
+    "מחמוד 45 טון": {
+      "first_seen": "2026-07-29",
+      "data": {
+        "2026-07-29": {"rounds": 2, "hours": "05:49", "stops": 3},
+        "2026-07-30": {"rounds": 0, "hours": null, "stops": null},
+        "2026-07-31": {"rounds": 0, "hours": null, "stops": null},
+        "2026-08-02": {"rounds": 0, "hours": null, "stops": null},
+        "2026-08-03": {"rounds": 0, "hours": null, "stops": null},
+        "2026-08-04": {"rounds": 0, "hours": null, "stops": null},
+        "2026-08-05": {"rounds": 0, "hours": null, "stops": null}
+      }
+    },
+    "שי 139 טון": {
+      "first_seen": "2026-07-29",
+      "data": {
+        "2026-07-29": {"rounds": 1, "hours": "04:28", "stops": 3},
+        "2026-07-30": {"rounds": 1, "hours": "04:53", "stops": 4},
+        "2026-07-31": {"rounds": 0, "hours": null, "stops": null},
+        "2026-08-02": {"rounds": 1, "hours": "05:10", "stops": 5},
+        "2026-08-03": {"rounds": 1, "hours": "05:10", "stops": 5},
+        "2026-08-04": {"rounds": 0, "hours": null, "stops": null},
+        "2026-08-05": {"rounds": 0, "hours": null, "stops": null}
+      }
+    },
+    "שי מוביל": {
+      "first_seen": "2026-07-30",
+      "data": {
+        "2026-07-29": {"rounds": 0, "hours": null, "stops": null},
+        "2026-07-30": {"rounds": 2, "hours": "05:02", "stops": 3},
+        "2026-07-31": {"rounds": 0, "hours": null, "stops": null},
+        "2026-08-02": {"rounds": 2, "hours": "05:46", "stops": 7},
+        "2026-08-03": {"rounds": 1, "hours": "05:46", "stops": 7},
+        "2026-08-04": {"rounds": 1, "hours": "05:36", "stops": 3},
+        "2026-08-05": {"rounds": 0, "hours": null, "stops": null}
+      }
+    },
+    "אמיר": {
+      "first_seen": "2026-08-03",
+      "data": {
+        "2026-07-29": {"rounds": 0, "hours": null, "stops": null},
+        "2026-07-30": {"rounds": 0, "hours": null, "stops": null},
+        "2026-07-31": {"rounds": 0, "hours": null, "stops": null},
+        "2026-08-02": {"rounds": 0, "hours": null, "stops": null},
+        "2026-08-03": {"rounds": 1, "hours": "01:55", "stops": 2},
+        "2026-08-04": {"rounds": 0, "hours": null, "stops": null},
+        "2026-08-05": {"rounds": 0, "hours": null, "stops": null}
+      }
+    },
+    "מחמוד 5 טון": {
+      "first_seen": "2026-08-04",
+      "data": {
+        "2026-07-29": {"rounds": 0, "hours": null, "stops": null},
+        "2026-07-30": {"rounds": 0, "hours": null, "stops": null},
+        "2026-07-31": {"rounds": 0, "hours": null, "stops": null},
+        "2026-08-02": {"rounds": 0, "hours": null, "stops": null},
+        "2026-08-03": {"rounds": 0, "hours": null, "stops": null},
+        "2026-08-04": {"rounds": 1, "hours": "06:57", "stops": 6},
+        "2026-08-05": {"rounds": 0, "hours": null, "stops": null}
       }
     }
-  ]
+  }
 }

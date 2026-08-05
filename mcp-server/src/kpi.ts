@@ -1,5 +1,6 @@
 export interface RouteKPI {
   routeId: string;
+  entityKey: number | null;
   totalDurationMinutes: number;
   travelTimeMinutes: number;
   serviceTimeMinutes: number;
@@ -70,6 +71,7 @@ export function calculateRouteKPI(route: any, equipment: any, normalWorkDayMinut
 
   return {
     routeId: route.identity?.identifier || route.id || '',
+    entityKey: route.identity?.entityKey ?? null,
     totalDurationMinutes: totalTime,
     travelTimeMinutes: route.travelTime || 0,
     serviceTimeMinutes,
