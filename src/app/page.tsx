@@ -819,6 +819,7 @@ export default function Home() {
                 type="email"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
+                autoComplete="username"
                 style={{ width: '100%', padding: '10px 12px', border: '1px solid var(--border-primary)', borderRadius: '4px', backgroundColor: 'var(--bg-secondary)', color: 'var(--text-primary)', fontSize: '14px', textAlign: isRTL ? 'right' : 'left', transition: 'border-color 0.2s' }}
               />
             </div>
@@ -831,6 +832,7 @@ export default function Home() {
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                autoComplete="current-password"
                 style={{ width: '100%', padding: '10px 12px', border: '1px solid var(--border-primary)', borderRadius: '4px', backgroundColor: 'var(--bg-secondary)', color: 'var(--text-primary)', fontSize: '14px', textAlign: isRTL ? 'right' : 'left', transition: 'border-color 0.2s' }}
               />
             </div>
