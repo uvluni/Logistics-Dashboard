@@ -57,7 +57,8 @@ export async function GET(request: NextRequest) {
     }
 
     // Rate limiting: 30 requests per minute per token
-    if (!checkRateLimit(token, 30, 60000)) {
+    const rateLimitAllowed = await checkRateLimit(token, 30, 60000);
+    if (!rateLimitAllowed) {
       return NextResponse.json(
         { error: 'Rate limit exceeded. Maximum 30 requests per minute' },
         { status: 429 }
@@ -83,25 +84,6 @@ export async function GET(request: NextRequest) {
         { error: 'Invalid language parameter' },
         { status: 400 }
       );
-    }
-
-    // Mock mode for development
-    if (token === 'mock-token-dev') {
-      return NextResponse.json({
-        routes: [],
-        kpis: [],
-        summary: {
-          totalRoutes: 0,
-          totalStops: 0,
-          totalDistance: 0,
-          totalDuration: 0,
-          averageUtilization: 0,
-          completionRate: 0,
-          weather: null,
-          insights: 'Demo mode - no data',
-        },
-        timestamp: new Date().toISOString(),
-      });
     }
 
     if (!baseUrl) {

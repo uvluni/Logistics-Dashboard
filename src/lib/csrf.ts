@@ -1,6 +1,17 @@
 import crypto from 'crypto';
 
-const CSRF_SECRET = process.env.CSRF_SECRET || 'dev-insecure-secret-change-in-production';
+const CSRF_SECRET = process.env.CSRF_SECRET || getDefaultCSRFSecret();
+
+function getDefaultCSRFSecret(): string {
+  if (process.env.NODE_ENV === 'production') {
+    throw new Error(
+      'CRITICAL: CSRF_SECRET environment variable is required in production. ' +
+      'Generate with: openssl rand -hex 32'
+    );
+  }
+  // Development only: generate a temporary secret
+  return crypto.randomBytes(32).toString('hex');
+}
 
 export function generateCSRFToken(): string {
   // Generate a random token

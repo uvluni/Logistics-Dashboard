@@ -3,14 +3,21 @@ import { verifyCSRFToken } from '@/lib/csrf';
 
 export async function POST(request: NextRequest) {
   try {
-    // Verify CSRF token (in dev, allow bypass if needed)
+    // DEPRECATED: Mock login endpoint no longer supported
+    // Use real ROADNET credentials instead
+    // This endpoint is disabled in production for security
+    if (process.env.NODE_ENV === 'production') {
+      return NextResponse.json(
+        { error: 'Mock login is not available in production' },
+        { status: 403 }
+      );
+    }
+
+    // In development, require CSRF token validation for consistency
     const csrfToken = request.cookies.get('csrf_token')?.value;
     const csrfHeader = request.headers.get('x-csrf-token');
 
-    const isDev = process.env.NODE_ENV !== 'production';
-    const csrfValid = csrfToken && csrfHeader && verifyCSRFToken(csrfHeader) && csrfHeader === csrfToken;
-
-    if (!isDev && !csrfValid) {
+    if (!csrfToken || !csrfHeader || !verifyCSRFToken(csrfHeader) || csrfHeader !== csrfToken) {
       return NextResponse.json(
         { error: 'CSRF token validation failed' },
         { status: 403 }
@@ -27,9 +34,7 @@ export async function POST(request: NextRequest) {
     });
 
     // Clear CSRF token after use
-    if (csrfValid) {
-      res.cookies.delete('csrf_token');
-    }
+    res.cookies.delete('csrf_token');
 
     return res;
   } catch (error) {

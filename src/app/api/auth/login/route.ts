@@ -36,20 +36,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Dev mode: allow admin/admin for development
-    if (process.env.NODE_ENV !== 'production' && username === 'admin' && password === 'admin') {
-      const res = NextResponse.json({ token: 'mock-token-dev', success: true });
-      res.cookies.set('roadnet_token', 'mock-token-dev', {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production' || process.env.FORCE_HTTPS === 'true',
-        sameSite: 'strict',
-        maxAge: 86400,
-        path: '/',
-      });
-      res.cookies.delete('csrf_token');
-      return res;
-    }
-
     const response = await fetch(`${baseUrl}/v1/login`, {
       method: 'POST',
       headers: {
